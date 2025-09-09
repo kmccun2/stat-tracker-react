@@ -1,0 +1,161 @@
+﻿AssessmentType,Unit,AgeRange,MaleGoal,MaleMinGoal,MaleMaxGoal,FemaleGoal,FemaleMinGoal,FemaleMaxGoal,LowIsGood
+10 Yard-Split,seconds,12 or less,1.9,,,1.9,,,1
+10 Yard-Split,seconds,13-14,1.78,,,1.78,,,1
+10 Yard-Split,seconds,15-16,1.66,,,1.7,,,1
+10 Yard-Split,seconds,17-18,1.66,,,1.66,,,1
+10 Yard-Split,seconds,18+,1.6,,,1.65,,,1
+40 Yard-Sprint,seconds,12 or less,6,,,6.4,,,1
+40 Yard-Sprint,seconds,13-14,5.1,,,5.5,,,1
+40 Yard-Sprint,seconds,15-16,4.8,,,5.2,,,1
+40 Yard-Sprint,seconds,17-18,4.6,,,5,,,1
+40 Yard-Sprint,seconds,18+,4.5,,,4.9,,,1
+60 Yard-Sprint,seconds,12 or less,8.5,,,9,,,1
+60 Yard-Sprint,seconds,13-14,7.8,,,8.3,,,1
+60 Yard-Sprint,seconds,15-16,7.1,,,7.6,,,1
+60 Yard-Sprint,seconds,17-18,6.7,,,7.2,,,1
+60 Yard-Sprint,seconds,18+,6.5,,,7,,,1
+Attack Angle (Tee),degrees,12 or less,,3,10,,3,10,
+Attack Angle (Tee),degrees,13-14,,3,10,,3,10,
+Attack Angle (Tee),degrees,15-16,,3,10,,3,10,
+Attack Angle (Tee),degrees,17-18,,3,10,,3,10,
+Attack Angle (Tee),degrees,18+,,3,10,,3,10,
+Attack Angle (Front Toss),degrees,12 or less,,3,10,,3,10,
+Attack Angle (Front Toss),degrees,13-14,,3,10,,3,10,
+Attack Angle (Front Toss),degrees,15-16,,3,10,,3,10,
+Attack Angle (Front Toss),degrees,17-18,,3,10,,3,10,
+Attack Angle (Front Toss),degrees,18+,,3,10,,3,10,
+Attack Angle (BP),degrees,12 or less,,3,10,,3,10,
+Attack Angle (BP),degrees,13-14,,3,10,,3,10,
+Attack Angle (BP),degrees,15-16,,3,10,,3,10,
+Attack Angle (BP),degrees,17-18,,3,10,,3,10,
+Attack Angle (BP),degrees,18+,,3,10,,3,10,
+Attack Angle (Live),degrees,12 or less,,3,10,,3,10,
+Attack Angle (Live),degrees,13-14,,3,10,,3,10,
+Attack Angle (Live),degrees,15-16,,3,10,,3,10,
+Attack Angle (Live),degrees,17-18,,3,10,,3,10,
+Attack Angle (Live),degrees,18+,,3,10,,3,10,
+Back Squat,lbs,12 or less,95,,,75,,,0
+Back Squat,lbs,13-14,135,,,115,,,0
+Back Squat,lbs,15-16,225,,,175,,,0
+Back Squat,lbs,17-18,275,,,225,,,0
+Back Squat,lbs,18+,315,,,265,,,0
+Bench Press,lbs,12 or less,100,,,80,,,0
+Bench Press,lbs,13-14,135,,,115,,,0
+Bench Press,lbs,15-16,185,,,135,,,0
+Bench Press,lbs,17-18,225,,,175,,,0
+Bench Press,lbs,18+,250,,,200,,,0
+Broad Jump,inches,12 or less,70,,,55,,,0
+Broad Jump,inches,13-14,80,,,65,,,0
+Broad Jump,inches,15-16,90,,,75,,,0
+Broad Jump,inches,17-18,100,,,85,,,0
+Broad Jump,inches,18+,110,,,95,,,0
+Chin-Up,repetitions,12 or less,5,,,2,,,0
+Chin-Up,repetitions,13-14,8,,,5,,,0
+Chin-Up,repetitions,15-16,11,,,8,,,0
+Chin-Up,repetitions,17-18,13,,,10,,,0
+Chin-Up,repetitions,18+,15,,,12,,,0
+Deadlift,lbs,12 or less,150,,,100,,,0
+Deadlift,lbs,13-14,230,,,180,,,0
+Deadlift,lbs,15-16,310,,,260,,,0
+Deadlift,lbs,17-18,360,,,310,,,0
+Deadlift,lbs,18+,400,,,350,,,0
+Exit Velo (BP),mph,12 or less,59,,,56,,,0
+Exit Velo (Front Toss),mph,12 or less,57,,,54,,,0
+Exit Velo (Live),mph,12 or less,61,,,58,,,0
+Exit Velo (Tee),mph,12 or less,55,,,52,,,0
+Exit Velo (BP),mph,13-14,77,,,73,,,0
+Exit Velo (Front Toss),mph,13-14,75,,,71,,,0
+Exit Velo (Live),mph,13-14,79,,,75,,,0
+Exit Velo (Tee),mph,13-14,73,,,69,,,0
+Exit Velo (BP),mph,15-16,92,,,85,,,0
+Exit Velo (Front Toss),mph,15-16,90,,,83,,,0
+Exit Velo (Live),mph,15-16,94,,,87,,,0
+Exit Velo (Tee),mph,15-16,88,,,81,,,0
+Exit Velo (BP),mph,17-18,92,,,85,,,0
+Exit Velo (Front Toss),mph,17-18,90,,,83,,,0
+Exit Velo (Live),mph,17-18,94,,,87,,,0
+Exit Velo (Tee),mph,17-18,88,,,81,,,0
+Exit Velo (BP),mph,18+,96,,,89,,,0
+Exit Velo (Front Toss),mph,18+,94,,,87,,,0
+Exit Velo (Live),mph,18+,98,,,91,,,0
+Exit Velo (Tee),mph,18+,92,,,85,,,0
+Fastball Speed,mph,12 or less,65,,,50,,,0
+Fastball Speed,mph,13-14,75,,,55,,,0
+Fastball Speed,mph,15-16,85,,,60,,,0
+Fastball Speed,mph,17-18,90,,,65,,,0
+Fastball Speed,mph,18+,93,,,70,,,0
+Front Squat,lbs,12 or less,100,,,50,,,0
+Front Squat,lbs,13-14,135,,,85,,,0
+Front Squat,lbs,15-16,175,,,125,,,0
+Front Squat,lbs,17-18,225,,,175,,,0
+Front Squat,lbs,18+,275,,,225,,,0
+Hang,seconds,12 or less,10,,,5,,,0
+Hang,seconds,13-14,20,,,15,,,0
+Hang,seconds,15-16,35,,,30,,,0
+Hang,seconds,17-18,45,,,40,,,0
+Hang,seconds,18+,50,,,45,,,0
+Home-to-First Time,seconds,12 or less,5,,,5,,,1
+Home-to-First Time,seconds,13-14,5.2,,,4.2,,,1
+Home-to-First Time,seconds,15-16,5,,,4,,,1
+Home-to-First Time,seconds,17-18,4.6,,,3.3,,,1
+Home-to-First Time,seconds,18+,4.3,,,2.8,,,1
+First-to-Second (Steal),seconds,12 or less,3.5,,,3.5,,,1
+First-to-Second (Steal),seconds,13-14,3.3,,,3.3,,,1
+First-to-Second (Steal),seconds,15-16,3.7,,,3.7,,,1
+First-to-Second (Steal),seconds,17-18,3.5,,,3.5,,,1
+First-to-Second (Steal),seconds,18+,3.3,,,3.3,,,1
+Iso Lunge,seconds,12 or less,20,,,20,,,0
+Iso Lunge,seconds,13-14,30,,,30,,,0
+Iso Lunge,seconds,15-16,40,,,40,,,0
+Iso Lunge,seconds,17-18,50,,,50,,,0
+Iso Lunge,seconds,18+,60,,,60,,,0
+Long Toss,feet,12 or less,150,,,100,,,0
+Long Toss,feet,13-14,200,,,130,,,0
+Long Toss,feet,15-16,300,,,160,,,0
+Long Toss,feet,17-18,300,,,220,,,0
+Long Toss,feet,18+,330,,,250,,,0
+Plank,seconds,12 or less,45,,,45,,,0
+Plank,seconds,13-14,60,,,60,,,0
+Plank,seconds,15-16,90,,,90,,,0
+Plank,seconds,17-18,115,,,115,,,0
+Plank,seconds,18+,120,,,120,,,0
+Pop Time (Catcher),seconds,12 or less,2.5,,,2.5,,,1
+Pop Time (Catcher),seconds,13-14,2.5,,,2.5,,,1
+Pop Time (Catcher),seconds,15-16,2,,,2,,,1
+Pop Time (Catcher),seconds,17-18,2,,,2,,,1
+Pop Time (Catcher),seconds,18+,1.9,,,1.9,,,1
+Infield Velocity,mph,12 or less,64,,,49,,,0
+Infield Velocity,mph,13-14,74,,,54,,,0
+Infield Velocity,mph,15-16,84,,,59,,,0
+Infield Velocity,mph,17-18,89,,,64,,,0
+Infield Velocity,mph,18+,92,,,69,,,0
+Outfield Velocity,mph,12 or less,67,,,52,,,0
+Outfield Velocity,mph,13-14,77,,,57,,,0
+Outfield Velocity,mph,15-16,87,,,62,,,0
+Outfield Velocity,mph,17-18,92,,,67,,,0
+Outfield Velocity,mph,18+,95,,,72,,,0
+Reverse Lunge,lbs,12 or less,85,,,45,,,0
+Reverse Lunge,lbs,13-14,100,,,60,,,0
+Reverse Lunge,lbs,15-16,145,,,105,,,0
+Reverse Lunge,lbs,17-18,185,,,145,,,0
+Reverse Lunge,lbs,18+,225,,,185,,,0
+Vertical Jump,inches,12 or less,15,,,12,,,0
+Vertical Jump,inches,13-14,20,,,17,,,0
+Vertical Jump,inches,15-16,24,,,21,,,0
+Vertical Jump,inches,17-18,27,,,24,,,0
+Vertical Jump,inches,18+,30,,,27,,,0
+Rocket Toss (8 lb),feet,12 or less,6,,,6,,,0
+Rocket Toss (8 lb),feet,13-14,8,,,8,,,0
+Rocket Toss (8 lb),feet,15-16,10,,,10,,,0
+Rocket Toss (8 lb),feet,17-18,12,,,12,,,0
+Rocket Toss (8 lb),feet,18+,13,,,13,,,0
+Sit-Ups (30 sec),repetitions,12 or less,20,,,16,,,0
+Sit-Ups (30 sec),repetitions,13-14,26,,,22,,,0
+Sit-Ups (30 sec),repetitions,15-16,30,,,26,,,0
+Sit-Ups (30 sec),repetitions,17-18,34,,,30,,,0
+Sit-Ups (30 sec),repetitions,18+,34,,,30,,,0
+Kneeling Chest Pass (8 lb),feet,12 or less,4,,,2,,,0
+Kneeling Chest Pass (8 lb),feet,13-14,6,,,4,,,0
+Kneeling Chest Pass (8 lb),feet,15-16,8,,,6,,,0
+Kneeling Chest Pass (8 lb),feet,17-18,10,,,8,,,0
+Kneeling Chest Pass (8 lb),feet,18+,11,,,9,,,0
