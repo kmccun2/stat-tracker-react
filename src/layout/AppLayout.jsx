@@ -7,7 +7,8 @@ import {
   FaBullseye, 
   FaCog, 
   FaBars,
-  FaBaseballBall
+  FaBaseballBall,
+  FaRuler
 } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import UserProfile from '../components/auth/UserProfile';
@@ -28,12 +29,18 @@ const AppLayout = ({ children }) => {
       icon: <FaUsers />,
       description: 'Manage player profiles'
     },
-    { 
-      path: '/reports', 
-      label: 'Reports', 
+        { 
+      path: '/analytics', 
+      label: 'Analytics', 
       icon: <FaChartLine />,
       description: 'View progress reports',
       comingSoon: true
+    },
+    { 
+      path: '/metrics', 
+      label: 'Metrics', 
+      icon: <FaRuler />,
+      description: 'Manage assessment metrics'
     },
     { 
       path: '/goals', 

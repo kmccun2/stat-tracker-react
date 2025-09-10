@@ -33,6 +33,7 @@ class ApiService {
     }
 
     try {
+      console.log(url, config);
       const response = await fetch(url, config);
       
       if (!response.ok) {
@@ -124,6 +125,27 @@ class ApiService {
 
   async deleteAssessmentResult(id) {
     return await this.request(`/assessments/result/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
+  // Assessment types management
+  async createAssessmentType(typeData) {
+    return await this.request('/assessments/types', {
+      method: 'POST',
+      body: JSON.stringify(typeData),
+    });
+  }
+
+  async updateAssessmentType(id, typeData) {
+    return await this.request(`/assessments/types/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(typeData),
+    });
+  }
+
+  async deleteAssessmentType(id) {
+    return await this.request(`/assessments/types/${id}`, {
       method: 'DELETE',
     });
   }

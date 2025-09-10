@@ -1,20 +1,16 @@
 # ⚾ Baseball Stat Tracker - Full Stack Application
 
-A comprehensive baseball statistics tracking application with React frontend and Node.js backend.
+A comprehensive baseball statistics tracking application with React frontend and Node.js backend using SQLite database.
 
 ## 🏗️ **Project Structure**
 
 ```
 stat-tracker-react/                 # Main frontend repository
 ├── src/                            # React application source
-├── public/                         # Static assets and sample CSV data
+├── public/                         # Static assets
 ├── docs/                          # Project-wide documentation
 │   ├── AUTH0_SETUP.md            # Auth0 configuration guide
 │   └── INTEGRATION_GUIDE.md      # Backend integration guide
-├── shared-data/                   # Master CSV data files
-│   ├── assessment-types.csv      # Assessment type definitions
-│   ├── goals.csv                 # Sample goal data
-│   └── players.csv               # Sample player data
 └── README.md                     # This file
 ```
 
@@ -100,7 +96,7 @@ A player development tracker for baseball coaches that allows inputting player p
 ### Key Features from Original Plan
 
 - **User Roles**: Coaches (authenticated users) can manage multiple players
-- **Data Sources**: Preload assessment types and default goals from Excel/CSV files
+- **Data Sources**: Assessment types and goals are managed via backend database
 - **Core Workflow**:
   1. Add/edit players
   2. Set/customize goals
@@ -123,7 +119,9 @@ We've successfully implemented a simplified version focusing on core functionali
 **Tech Stack Chosen:**
 
 - **Frontend**: React + Vite + React Bootstrap
-- **Data Storage**: Local memory (CSV parsing with PapaParse)
+- **Backend**: Node.js + Express + SQLite Database
+- **Data Storage**: SQLite database with persistent storage
+- **Authentication**: Auth0 integration
 - **Styling**: React Bootstrap + Custom CSS
 - **Navigation**: React Router
 
@@ -134,7 +132,7 @@ We've successfully implemented a simplified version focusing on core functionali
 - ✅ Assessment categories (Hitting, Throwing, Strength, Speed, Power, General)
 - ✅ Goal calculation based on age and gender
 - ✅ Real-time goal status (Met/Not Met/Not Entered)
-- ✅ Input fields for assessment results
+- ✅ Input fields for assessment results with database persistence
 - ✅ CSV export functionality (individual player or all players)
 - ✅ Responsive design with professional UI
 - ✅ Age-based goal ranges (12 or less, 13-14, 15-16, 17-18, 18+)
@@ -142,27 +140,27 @@ We've successfully implemented a simplified version focusing on core functionali
 - ✅ **Navigation Structure**: Players, Reports, Goals, Settings
 - ✅ **Mobile-responsive** sidebar with collapsible navigation
 - ✅ **Placeholder pages** for future features with phase indicators
+- ✅ **Database persistence** with SQLite backend
+- ✅ **Authentication system** with Auth0
+- ✅ **Backend API integration** with full CRUD operations
+- ✅ **Assessment type management** (create, edit, delete metrics)
 
 ### 📊 Data Structure
 
-**Players CSV Fields:**
+**Database Tables:**
 
-- Name, Gender, DOB (Excel serial format)
-
-**Assessment Types CSV Fields:**
-
-- AssessmentType, Category, Style, AssessmentTypeSort, CategorySort, Format
-
-**Goals CSV Fields:**
-
-- AssessmentType, Unit, AgeRange, MaleGoal, MaleMinGoal, MaleMaxGoal, FemaleGoal, FemaleMinGoal, FemaleMaxGoal, LowIsGood
+- **Players**: Name, Gender, DOB (Excel serial format), with automatic age calculation
+- **Assessment Types**: Assessment categories with sorting and formatting
+- **Goals**: Age and gender-based performance targets
+- **Assessment Results**: Player performance data with timestamps
+- **Coaches**: Authentication and user management
 
 ### 🎨 UI/UX Design Implemented
 
 **Player List Page:**
 
 - Card-based layout with player information
-- Age badges and gender indicators
+- Age and gender indicators
 - Responsive grid (4 columns on large screens)
 - Search functionality ready for implementation
 
@@ -190,6 +188,8 @@ We've successfully implemented a simplified version focusing on core functionali
 
 ## 🚀 How to Run
 
+**Prerequisites**: Ensure the backend server is running first (see `stat-tracker-backend/README.md`)
+
 1. **Install Dependencies**:
 
    ```bash
@@ -205,14 +205,13 @@ We've successfully implemented a simplified version focusing on core functionali
 
 3. **Access App**: Open http://localhost:5173/
 
+   **Note**: The app requires the backend server to be running on http://localhost:3001/
+
 ## 📁 Project Structure
 
 ```
 stat-tracker-react/
 ├── public/
-│   ├── assessment-types.csv
-│   ├── goals.csv
-│   └── players.csv
 ├── src/
 │   ├── components/
 │   │   ├── AssessmentTable.jsx
@@ -226,22 +225,12 @@ stat-tracker-react/
 │   │   └── AppLayout.jsx         # Header & Sidebar layout
 │   ├── context/
 │   │   └── DataContext.jsx
+│   ├── services/
+│   │   └── apiService.js         # Backend API integration
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx
 └── package.json
-```
-
-│ │ ├── ExportButton.jsx
-│ │ ├── PlayerDetailPage.jsx
-│ │ └── PlayerListPage.jsx
-│ ├── context/
-│ │ └── DataContext.jsx
-│ ├── App.jsx
-│ ├── index.css
-│ └── main.jsx
-└── package.json
-
 ```
 
 ## 🎯 Future Enhancements (From Original Plan)
@@ -432,4 +421,7 @@ src/
 ---
 
 **Reference**: Original requirements and conversation can be found at: https://grok.com/share/bGVnYWN5_6ae7cebd-2898-4cec-aa5d-3e11ff8695dc
+
+```
+
 ```

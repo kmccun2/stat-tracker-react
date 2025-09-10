@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Card, Button, Alert, Badge, Table, Spinner } from 'react-bootstrap';
-import { FaPlay, FaCheckCircle, FaTimesCircle, FaDatabase, FaFileCsv } from 'react-icons/fa';
+import { FaPlay, FaCheckCircle, FaTimesCircle, FaDatabase } from 'react-icons/fa';
 import { useData } from '../context/DataContext';
 
 const IntegrationTest = () => {
-  const { apiService, backendAvailable, useBackend, players, assessmentTypes, goals } = useData();
+  const { apiService, players, assessmentTypes, goals } = useData();
   const [testResults, setTestResults] = useState([]);
   const [testing, setTesting] = useState(false);
 
@@ -154,14 +154,11 @@ const IntegrationTest = () => {
       </Card.Header>
       <Card.Body>
         <div className="mb-3">
-          <Alert variant={backendAvailable ? 'success' : 'warning'} className="py-2 mb-0">
+          <Alert variant="info" className="py-2 mb-0">
             <div className="d-flex align-items-center gap-2">
-              {useBackend ? <FaDatabase /> : <FaFileCsv />}
-              <strong>Current Mode:</strong>
-              {useBackend ? 'Database Backend' : 'CSV Files'}
-              <span className="ms-2">
-                Backend: {backendAvailable ? 'Available' : 'Unavailable'}
-              </span>
+              <FaDatabase />
+              <strong>Mode:</strong>
+              Database Backend
             </div>
           </Alert>
         </div>

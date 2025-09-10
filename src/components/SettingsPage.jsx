@@ -1,9 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Alert, Card } from 'react-bootstrap';
 import { FaCog, FaUser, FaLock, FaDatabase, FaPalette, FaFileImport } from 'react-icons/fa';
-import BackendToggle from './BackendToggle';
-import IntegrationTest from './IntegrationTest';
-import AuthenticationStatus from './AuthenticationStatus';
 
 const SettingsPage = () => {
   return (
@@ -18,27 +15,6 @@ const SettingsPage = () => {
               <p className="text-muted mb-0">Configure application preferences and data sources</p>
             </div>
           </div>
-        </Col>
-      </Row>
-
-      {/* Authentication Status */}
-      <Row>
-        <Col>
-          <AuthenticationStatus />
-        </Col>
-      </Row>
-
-      {/* Backend Toggle */}
-      <Row>
-        <Col>
-          <BackendToggle />
-        </Col>
-      </Row>
-
-      {/* Integration Test */}
-      <Row>
-        <Col>
-          <IntegrationTest />
         </Col>
       </Row>
 

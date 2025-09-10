@@ -121,11 +121,6 @@ const AssessmentTable = ({ player }) => {
                           <td>
                             <div>
                               <strong>{assessment.AssessmentType}</strong>
-                              {assessment.Style && (
-                                <div>
-                                  <small className="text-muted">({assessment.Style})</small>
-                                </div>
-                              )}
                             </div>
                           </td>
                           <td>
