@@ -1,4 +1,41 @@
-# ⚾ Baseball Stat Tracker - Player Development Web App
+# ⚾ Baseball Stat Tracker - Full Stack Application
+
+A comprehensive baseball statistics tracking application with React frontend and Node.js backend.
+
+## 🏗️ **Project Structure**
+
+```
+stat-tracker-react/                 # Main frontend repository
+├── src/                            # React application source
+├── public/                         # Static assets and sample CSV data
+├── docs/                          # Project-wide documentation
+│   ├── AUTH0_SETUP.md            # Auth0 configuration guide
+│   └── INTEGRATION_GUIDE.md      # Backend integration guide
+├── shared-data/                   # Master CSV data files
+│   ├── assessment-types.csv      # Assessment type definitions
+│   ├── goals.csv                 # Sample goal data
+│   └── players.csv               # Sample player data
+└── README.md                     # This file
+```
+
+## 🚀 **Quick Start**
+
+### Full Stack Development
+```bash
+# In the parent directory (test-stat-tracker/)
+npm run install:all  # Install all dependencies
+npm run dev          # Run both backend and frontend
+```
+
+### Frontend Only
+```bash
+npm install
+npm run dev          # Frontend only on port 5173
+```
+
+## 📚 **Documentation**
+- [Auth0 Setup Guide](docs/AUTH0_SETUP.md) - Complete authentication setup
+- [Integration Guide](docs/INTEGRATION_GUIDE.md) - Backend integration instructions
 
 ## � **HIGH PRIORITY DEVELOPMENT PRINCIPLES**
 

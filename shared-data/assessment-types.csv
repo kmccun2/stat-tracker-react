@@ -1,0 +1,34 @@
+﻿AssessmentType,Category,Style,AssessmentTypeSort,Category Sort,Format
+Height,General,,1,1,",0"
+Weight,General,,2,1,0.0
+Exit Velo (Tee),Hitting,Tee,3,1,0.0
+Exit Velo (Front Toss),Hitting,Front Toss,4,1,0.0
+Exit Velo (BP),Hitting,Batting Practice,5,1,0.0
+Exit Velo (Live),Hitting,Live,6,1,0.0
+Attack Angle (Tee),Hitting,Tee,7,1,",0"
+Attack Angle (Front Toss),Hitting,Front Toss,8,1,",0"
+Attack Angle (BP),Hitting,Batting Practice,9,1,",0"
+Attack Angle (Live),Hitting,Live,10,1,",0"
+Infield Velocity,Throwing,,11,2,0.0
+Outfield Velocity,Throwing,,12,2,0.0
+Fastball Speed,Throwing,,13,2,0.0
+Long Toss,Throwing,,14,2,",0"
+Pop Time (Catcher),Throwing,,15,2,0.00
+Reverse Lunge,Strength,,16,3,",0"
+Back Squat,Strength,,17,3,",0"
+Front Squat,Strength,,18,3,",0"
+Deadlift,Strength,,19,3,",0"
+Bench Press,Strength,,20,3,",0"
+Chin-Up,Strength,,21,3,",0"
+Hang,Strength,,22,3,",0"
+Iso Lunge,Strength,,23,3,",0"
+Plank,Strength,,24,3,",0"
+10 Yard-Split,Speed,,25,4,0.00
+40 Yard-Sprint,Speed,,26,4,0.00
+60 Yard-Sprint,Speed,,27,4,0.00
+Home-to-First Time,Speed,,28,4,0.00
+First-to-Second (Steal),Speed,,29,4,0.00
+Vertical Jump,Power,,30,5,",0"
+Broad Jump,Power,,31,5,",0"
+Rocket Toss (8 lb),Power,,32,5,",0"
+Kneeling Chest Pass (8 lb),Power,,33,5,",0"
