@@ -299,27 +299,27 @@ function App() {
             <AppLayout>
               <Routes>
                 <Route path="/" element={
-                  <ProtectedRoute requireAuth={false}>
+                  <ProtectedRoute requireAuth={true}>
                     <PlayerListPage />
                   </ProtectedRoute>
                 } />
                 <Route path="/player/:id" element={
-                  <ProtectedRoute requireAuth={false}>
+                  <ProtectedRoute requireAuth={true}>
                     <PlayerDetailPage />
                   </ProtectedRoute>
                 } />
                 <Route path="/reports" element={
-                  <ProtectedRoute requireAuth={false}>
+                  <ProtectedRoute requireAuth={true}>
                     <ReportsPage />
                   </ProtectedRoute>
                 } />
                 <Route path="/goals" element={
-                  <ProtectedRoute requireAuth={false}>
+                  <ProtectedRoute requireAuth={true}>
                     <GoalsPage />
                   </ProtectedRoute>
                 } />
                 <Route path="/settings" element={
-                  <ProtectedRoute requireAuth={false}>
+                  <ProtectedRoute requireAuth={true}>
                     <SettingsPage />
                   </ProtectedRoute>
                 } />

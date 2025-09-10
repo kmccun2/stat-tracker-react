@@ -21,6 +21,7 @@ stat-tracker-react/                 # Main frontend repository
 ## 🚀 **Quick Start**
 
 ### Full Stack Development (Recommended)
+
 ```bash
 # From this directory (stat-tracker-react/)
 npm run install:all       # Install all dependencies
@@ -28,13 +29,15 @@ npm run dev:fullstack     # Run both backend and frontend
 ```
 
 ### Individual Services
+
 ```bash
 npm run dev              # Frontend only (port 5173)
-npm run dev:backend      # Backend only (port 3001)  
+npm run dev:backend      # Backend only (port 3001)
 npm run dev:frontend     # Frontend only (explicit)
 ```
 
 ### Production
+
 ```bash
 npm run build            # Build frontend
 npm run start:fullstack  # Run both in production mode

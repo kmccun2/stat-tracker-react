@@ -5,7 +5,7 @@
 const auth0Config = {
   domain: import.meta.env.VITE_AUTH0_DOMAIN || "your-domain.us.auth0.com",
   clientId: import.meta.env.VITE_AUTH0_CLIENT_ID || "your-client-id",
-  audience: import.meta.env.VITE_AUTH0_AUDIENCE || "https://stat-tracker-api",
+  audience: import.meta.env.VITE_AUTH0_AUDIENCE, // Optional - will be undefined if not set
   redirectUri: window.location.origin,
   scope: "openid profile email",
   useRefreshTokens: true,
@@ -15,6 +15,6 @@ const auth0Config = {
 export default auth0Config;
 
 // Environment variables to add to your .env file:
-// REACT_APP_AUTH0_DOMAIN=your-domain.us.auth0.com
-// REACT_APP_AUTH0_CLIENT_ID=your-client-id
-// REACT_APP_AUTH0_AUDIENCE=https://stat-tracker-api
+// VITE_AUTH0_DOMAIN=your-domain.us.auth0.com
+// VITE_AUTH0_CLIENT_ID=your-client-id
+// VITE_AUTH0_AUDIENCE=https://stat-tracker-api

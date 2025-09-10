@@ -1,8 +1,13 @@
-const API_BASE_URL = 'http://localhost:3001/api';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
 class ApiService {
   constructor() {
-    this.token = localStorage.getItem('authToken');
+    this.getAccessToken = null; // Will be set by Auth0 context
+  }
+
+  // Set the Auth0 token getter function
+  setTokenGetter(getAccessTokenFn) {
+    this.getAccessToken = getAccessTokenFn;
   }
 
   async request(endpoint, options = {}) {
@@ -15,8 +20,16 @@ class ApiService {
       ...options,
     };
 
-    if (this.token) {
-      config.headers.Authorization = `Bearer ${this.token}`;
+    // Get Auth0 token if available
+    if (this.getAccessToken) {
+      try {
+        const token = await this.getAccessToken();
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      } catch (error) {
+        console.warn('Failed to get Auth0 token:', error);
+      }
     }
 
     try {
@@ -34,7 +47,7 @@ class ApiService {
     }
   }
 
-  // Authentication methods (for Auth0 integration)
+  // Authentication methods (Auth0 integration)
   async getCoachProfile() {
     return await this.request('/auth/profile');
   }
@@ -51,33 +64,6 @@ class ApiService {
       method: 'PUT',
       body: JSON.stringify(profileData),
     });
-  }
-
-  // Legacy authentication methods (for local auth)
-  async login(credentials) {
-    const response = await this.request('/auth/login', {
-      method: 'POST',
-      body: JSON.stringify(credentials),
-    });
-    
-    if (response.success && response.data.token) {
-      this.token = response.data.token;
-      localStorage.setItem('authToken', this.token);
-    }
-    
-    return response;
-  }
-
-  async register(userData) {
-    return await this.request('/auth/register', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-    });
-  }
-
-  logout() {
-    this.token = null;
-    localStorage.removeItem('authToken');
   }
 
   // Player methods

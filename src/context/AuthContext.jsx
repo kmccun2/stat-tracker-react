@@ -18,20 +18,15 @@ export const AuthProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  // Update API service with token when user is authenticated
+  // Update API service with Auth0 token getter when user is authenticated
   useEffect(() => {
     const updateApiToken = async () => {
       if (isAuthenticated) {
-        try {
-          const token = await getAccessTokenSilently();
-          apiService.token = token;
-          localStorage.setItem('authToken', token);
-        } catch (error) {
-          console.error('Error getting access token:', error);
-        }
+        // Set the Auth0 token getter function in apiService
+        apiService.setTokenGetter(getAccessTokenSilently);
       } else {
-        apiService.token = null;
-        localStorage.removeItem('authToken');
+        // Clear the token getter when not authenticated
+        apiService.setTokenGetter(null);
       }
       setAuthLoading(false);
     };
@@ -44,7 +39,7 @@ export const AuthProvider = ({ children }) => {
   // Load user profile from our backend when authenticated
   useEffect(() => {
     const loadUserProfile = async () => {
-      if (isAuthenticated && user && apiService.token) {
+      if (isAuthenticated && user && !authLoading) {
         try {
           // Check if user exists in our backend
           const profile = await apiService.getCoachProfile();
