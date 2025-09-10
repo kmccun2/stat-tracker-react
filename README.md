@@ -20,20 +20,28 @@ stat-tracker-react/                 # Main frontend repository
 
 ## 🚀 **Quick Start**
 
-### Full Stack Development
+### Full Stack Development (Recommended)
 ```bash
-# In the parent directory (test-stat-tracker/)
-npm run install:all  # Install all dependencies
-npm run dev          # Run both backend and frontend
+# From this directory (stat-tracker-react/)
+npm run install:all       # Install all dependencies
+npm run dev:fullstack     # Run both backend and frontend
 ```
 
-### Frontend Only
+### Individual Services
 ```bash
-npm install
-npm run dev          # Frontend only on port 5173
+npm run dev              # Frontend only (port 5173)
+npm run dev:backend      # Backend only (port 3001)  
+npm run dev:frontend     # Frontend only (explicit)
+```
+
+### Production
+```bash
+npm run build            # Build frontend
+npm run start:fullstack  # Run both in production mode
 ```
 
 ## 📚 **Documentation**
+
 - [Auth0 Setup Guide](docs/AUTH0_SETUP.md) - Complete authentication setup
 - [Integration Guide](docs/INTEGRATION_GUIDE.md) - Backend integration instructions
 
