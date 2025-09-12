@@ -1,4 +1,15 @@
 :root {
+  --color-primary-dark: #1e3a8a;
+  --color-primary-dark-hover: #17327b;
+  --color-primary-blue: #3b82f6;
+  --color-secondary-dark: #1e293b;
+  --color-secondary-darker: #0f172a;
+  --color-white: #ffffff;
+  --color-light-gray: #f8fafc;
+  --color-medium-gray: #94a3b8;
+  --color-active-bg: rgba(59, 130, 246, 0.15);
+  --color-active-border: #3b82f6;
+  --color-hover-light: rgba(255, 255, 255, 0.1);
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;

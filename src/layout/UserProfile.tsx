@@ -1,7 +1,7 @@
 import React from "react";
 import { Dropdown, Badge, Spinner } from "react-bootstrap";
 import { FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
 const UserProfile: React.FC = () => {
@@ -26,12 +26,18 @@ const UserProfile: React.FC = () => {
   const profilePicture = user?.picture;
 
   return (
-    <Dropdown align="end">
+    <Dropdown align="end" className="me-2">
       <Dropdown.Toggle
         variant="link"
         className="d-flex align-items-center gap-2 text-decoration-none p-0 border-0"
         style={{ boxShadow: "none" }}
       >
+        <div className="d-none d-md-block text-end">
+          <div className="small fw-bold text-light">{displayName}</div>
+          <div className="text-light" style={{ fontSize: "0.75rem" }}>
+            Coach
+          </div>
+        </div>
         {profilePicture ? (
           <img
             src={profilePicture}
@@ -48,18 +54,12 @@ const UserProfile: React.FC = () => {
             <FaUser />
           </div>
         )}
-        <div className="d-none d-md-block text-start">
-          <div className="small fw-bold text-dark">{displayName}</div>
-          <div className="text-muted" style={{ fontSize: "0.75rem" }}>
-            Coach
-          </div>
-        </div>
       </Dropdown.Toggle>
 
       <Dropdown.Menu>
         <Dropdown.Header>
           <div className="fw-bold">{displayName}</div>
-          <div className="text-muted small">{displayEmail}</div>
+          <div className="text-light small">{displayEmail}</div>
         </Dropdown.Header>
 
         <Dropdown.Divider />

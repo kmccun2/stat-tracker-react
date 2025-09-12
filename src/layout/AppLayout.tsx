@@ -1,13 +1,5 @@
 import "./AppLayout.scss";
-import {
-  Container,
-  Row,
-  Col,
-  Navbar,
-  Nav,
-  Offcanvas,
-  Button,
-} from "react-bootstrap";
+import { Navbar, Nav, Offcanvas, Button } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import {
   FaUsers,
@@ -20,7 +12,7 @@ import {
   FaTachometerAlt,
 } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import UserProfile from "../components/auth/UserProfile";
+import UserProfile from "./UserProfile";
 import LoginButton from "../components/auth/LoginButton";
 import { ReactNode, useState, useEffect } from "react";
 
@@ -33,28 +25,32 @@ interface SidebarItem {
   label: string;
   icon: ReactNode;
   description: string;
-  comingSoon?: boolean;
 }
 
 interface SidebarContentProps {
   isMobile?: boolean;
+  isCollapsed?: boolean;
   onItemClick?: () => void;
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
-  const [showSidebar, setShowSidebar] = useState<boolean>(false);
+  const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false); // For mobile
+  const [isDesktopSidebarCollapsed, setIsDesktopSidebarCollapsed] =
+    useState<boolean>(false); // For desktop
   const [isSidebarHovered, setIsSidebarHovered] = useState<boolean>(false);
   const location = useLocation();
   const { isAuthenticated } = useAuth();
 
-  const handleCloseSidebar = (): void => setShowSidebar(false);
-  const handleShowSidebar = (): void => setShowSidebar(true);
+  const handleCloseMobileSidebar = (): void => setShowMobileSidebar(false);
+  const handleShowMobileSidebar = (): void => setShowMobileSidebar(true);
+  const handleToggleDesktopSidebar = (): void =>
+    setIsDesktopSidebarCollapsed(!isDesktopSidebarCollapsed);
   const handleSidebarMouseEnter = (): void => setIsSidebarHovered(true);
   const handleSidebarMouseLeave = (): void => setIsSidebarHovered(false);
 
   // Close mobile sidebar when route changes
   useEffect(() => {
-    setShowSidebar(false);
+    setShowMobileSidebar(false);
   }, [location.pathname]);
 
   const sidebarItems: SidebarItem[] = [
@@ -69,7 +65,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       label: "Analytics",
       icon: <FaChartLine />,
       description: "View progress reports",
-      comingSoon: true,
     },
     {
       path: "/players",
@@ -88,51 +83,44 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       label: "Goals",
       icon: <FaBullseye />,
       description: "Manage assessment goals",
-      comingSoon: true,
     },
     {
       path: "/settings",
       label: "Settings",
       icon: <FaCog />,
       description: "App configuration",
-      comingSoon: true,
     },
   ];
 
   const SidebarContent: React.FC<SidebarContentProps> = ({
     isMobile = false,
+    isCollapsed = false,
     onItemClick,
   }) => (
-    <div className="sidebar-content h-100">
+    <div className={`sidebar-content h-100 ${isCollapsed ? "collapsed" : ""}`}>
       <Nav
         className="flex-column"
         style={{ padding: isMobile ? "10px 0" : "0" }}
       >
         {sidebarItems.map((item) => (
-          <Nav.Item key={item.path} className="mb-2">
+          <Nav.Item key={item.path}>
             <Nav.Link
               as={Link}
               to={item.path}
               className={`sidebar-nav-link ${
                 location.pathname === item.path ? "active" : ""
-              } ${item.comingSoon ? "coming-soon" : ""}`}
+              } ${isCollapsed ? "collapsed" : ""}`}
               onClick={onItemClick}
+              title={isCollapsed ? item.label : undefined}
             >
               <span className="sidebar-icon">{item.icon}</span>
-              <div className="sidebar-text">
-                <div className="d-flex align-items-center gap-2">
-                  <span>{item.label}</span>
-                  {item.comingSoon && (
-                    <span
-                      className="badge bg-warning text-dark"
-                      style={{ fontSize: "0.6rem" }}
-                    >
-                      Soon
-                    </span>
-                  )}
+              {!isCollapsed && (
+                <div className="sidebar-text">
+                  <div className="d-flex align-items-center">
+                    <span>{item.label}</span>
+                  </div>
                 </div>
-                <small className="text-muted">{item.description}</small>
-              </div>
+              )}
             </Nav.Link>
           </Nav.Item>
         ))}
@@ -144,56 +132,61 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     <div className="app-layout">
       {/* Header */}
       <Navbar bg="primary" variant="dark" className="navbar-custom shadow-sm">
-        <Container fluid>
-          <div className="d-flex align-items-center">
-            <Button
-              variant="outline-light"
-              className="d-lg-none me-3"
-              onClick={handleShowSidebar}
-            >
-              <FaBars />
-            </Button>
-            <Navbar.Brand className="mb-0 d-flex align-items-center gap-2">
-              <FaBaseballBall />
-              Baseball Stat Tracker
-            </Navbar.Brand>
+        <div className="d-flex align-items-center">
+          {/* Mobile toggle button */}
+          <div
+            className="d-lg-none hamburger-icon"
+            onClick={handleShowMobileSidebar}
+          >
+            <FaBars />
           </div>
+          {/* Desktop toggle button */}
+          <div
+            className="d-none d-lg-flex hamburger-icon"
+            onClick={handleToggleDesktopSidebar}
+            title={isDesktopSidebarCollapsed ? "Show sidebar" : "Hide sidebar"}
+          >
+            <FaBars />
+          </div>
+          <div className="logo">
+            Clip<div>bordz</div>
+          </div>
+        </div>
 
-          <Nav className="ms-auto d-flex align-items-center">
-            {isAuthenticated ? (
-              <UserProfile />
-            ) : (
-              <LoginButton variant="outline-light" />
-            )}
-          </Nav>
-        </Container>
+        <Nav className="ms-auto d-flex align-items-center">
+          {isAuthenticated ? (
+            <UserProfile />
+          ) : (
+            <LoginButton variant="outline-light" />
+          )}
+        </Nav>
       </Navbar>
 
       <div className="app-body">
-        <Container fluid className="h-100">
-          <Row className="h-100">
-            {/* Desktop Sidebar */}
-            <Col lg={3} xl={2} className="d-none d-lg-block sidebar-col">
-              <div
-                className="sidebar-desktop"
-                onMouseEnter={handleSidebarMouseEnter}
-                onMouseLeave={handleSidebarMouseLeave}
-              >
-                <SidebarContent />
-              </div>
-            </Col>
+        <div className="d-flex w-100">
+          {/* Desktop Sidebar */}
+          <div
+            className={`d-none d-lg-flex sidebar-desktop ${
+              isDesktopSidebarCollapsed ? "collapsed" : ""
+            } ${
+              isDesktopSidebarCollapsed && isSidebarHovered ? "hovered" : ""
+            }`}
+            onMouseEnter={handleSidebarMouseEnter}
+            onMouseLeave={handleSidebarMouseLeave}
+          >
+            <SidebarContent
+              isCollapsed={isDesktopSidebarCollapsed && !isSidebarHovered}
+            />
+          </div>
 
-            {/* Main Content */}
-            <Col lg={9} xl={10} className="main-content-col">
-              <div className="main-content">{children}</div>
-            </Col>
-          </Row>
-        </Container>
+          {/* Main Content */}
+          <div className="main-content">{children}</div>
+        </div>
 
         {/* Mobile Sidebar */}
         <Offcanvas
-          show={showSidebar}
-          onHide={handleCloseSidebar}
+          show={showMobileSidebar}
+          onHide={handleCloseMobileSidebar}
           placement="start"
           className="d-lg-none"
         >
@@ -201,7 +194,10 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <Offcanvas.Title>Navigation</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body className="p-0">
-            <SidebarContent isMobile={true} onItemClick={handleCloseSidebar} />
+            <SidebarContent
+              isMobile={true}
+              onItemClick={handleCloseMobileSidebar}
+            />
           </Offcanvas.Body>
         </Offcanvas>
       </div>
