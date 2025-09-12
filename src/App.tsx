@@ -1,8 +1,17 @@
+// React core imports
 import React from "react";
+
+// Third-party library imports
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import { Auth0Provider } from "@auth0/auth0-react";
+
+// Layout and shared components
 import AppLayout from "./layout/AppLayout";
+import ErrorBoundary from "./components/ErrorBoundary";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+
+// Page components
 import DashboardPage from "./components/pages/dashboard/DashboardPage";
 import PlayerListPage from "./components/pages/players/PlayerListPage";
 import PlayerDetailPage from "./components/pages/players/PlayerDetailPage";
@@ -11,17 +20,25 @@ import AnalyticsPage from "./components/pages/analytics/AnalyticsPage";
 import GoalsPage from "./components/pages/goals/GoalsPage";
 import SettingsPage from "./components/pages/settings/SettingsPage";
 import AssessmentSelectionPage from "./components/pages/assessments/AssessmentSelectionPage";
-import ErrorBoundary from "./components/ErrorBoundary";
+
+// Context providers
 import { DataProvider } from "./context/DataContext";
 import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./components/auth/ProtectedRoute";
+
+// Configuration
 import auth0Config from "./config/auth0Config";
-import { findGoal, isGoalMet } from "./utils/goalResolution";
+
+// Hooks
 import { useAppData } from "./hooks/useAppData";
+
+// Utilities
+import { findGoal, isGoalMet } from "./utils/goalResolution";
+
+// Type definitions
 import type { Player, AssessmentType, DataContextType } from "./types";
 
 function App(): JSX.Element {
-  // Use custom hook for data management
+  // Initialize data and state management using custom hook
   const {
     players,
     assessmentTypes,
@@ -40,7 +57,7 @@ function App(): JSX.Element {
     apiService,
   } = useAppData();
 
-  // Function to find goal for player/assessment
+  // Helper functions for goal management
   const findGoalForPlayer = (
     player: Player,
     assessmentType: AssessmentType
@@ -57,6 +74,7 @@ function App(): JSX.Element {
     return isGoalMet(player, assessmentType, result, goals);
   };
 
+  // Loading state UI
   if (loading) {
     return (
       <Container
@@ -73,6 +91,7 @@ function App(): JSX.Element {
     );
   }
 
+  // Error state UI
   if (error) {
     return (
       <Container
@@ -89,6 +108,7 @@ function App(): JSX.Element {
     );
   }
 
+  // Prepare context value for data provider
   const contextValue: DataContextType = {
     players,
     assessmentTypes,
@@ -108,6 +128,7 @@ function App(): JSX.Element {
     apiService,
   };
 
+  // Main application render with provider hierarchy and routing
   return (
     <ErrorBoundary>
       <Auth0Provider
@@ -126,6 +147,7 @@ function App(): JSX.Element {
             <Router>
               <AppLayout>
                 <Routes>
+                  {/* Dashboard - Main entry point */}
                   <Route
                     path="/"
                     element={
@@ -134,6 +156,7 @@ function App(): JSX.Element {
                       </ProtectedRoute>
                     }
                   />
+                  {/* Assessment workflow */}
                   <Route
                     path="/assessment-selection"
                     element={
@@ -142,6 +165,7 @@ function App(): JSX.Element {
                       </ProtectedRoute>
                     }
                   />
+                  {/* Player management */}
                   <Route
                     path="/players"
                     element={
@@ -158,6 +182,7 @@ function App(): JSX.Element {
                       </ProtectedRoute>
                     }
                   />
+                  {/* Analytics and reporting */}
                   <Route
                     path="/analytics"
                     element={
@@ -166,6 +191,7 @@ function App(): JSX.Element {
                       </ProtectedRoute>
                     }
                   />
+                  {/* Configuration and management */}
                   <Route
                     path="/metrics"
                     element={

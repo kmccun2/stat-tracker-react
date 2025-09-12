@@ -1,0 +1,294 @@
+// Layout styles
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+// Header styles
+.app-header {
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(
+    to right,
+    var(--color-primary-dark),
+    var(--color-primary-blue)
+  );
+  border-bottom: 1px solid #284365;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  box-shadow: var(--shadow-header);
+  position: relative;
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .menu-button {
+      display: flex;
+      height: 58px;
+      width: 60px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+      color: var(--color-white);
+
+      &:hover {
+        background-color: var(--color-hover-light);
+      }
+    }
+  }
+
+  .app-title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-white);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    .logout-button {
+      cursor: pointer;
+      background-color: transparent;
+      height: 58px;
+      width: 60px;
+      margin-right: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s ease;
+      color: var(--color-white);
+
+      &:hover {
+        background-color: var(--color-hover-light);
+      }
+    }
+  }
+}
+
+// Sidebar styles
+.sidebar {
+  position: fixed;
+  top: 60px; // Below the header
+  left: 0;
+  height: calc(100vh - 60px);
+  background: linear-gradient(
+    to bottom,
+    var(--color-primary-dark),
+    var(--color-secondary-dark)
+  );
+  color: var(--color-white);
+  z-index: 900;
+  transition: width 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+
+  &--closed {
+    width: 60px;
+  }
+
+  &--open {
+    width: 250px;
+  }
+
+  .sidebar-nav {
+    height: 100%;
+    padding: 20px 0;
+    -webkit-user-select: none; // Safari
+    -ms-user-select: none; // IE 10 and IE 11
+    user-select: none; // Standard syntax
+
+    .nav-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      .nav-item {
+        .nav-link {
+          display: flex;
+          align-items: center;
+          padding: 18px 20px;
+          color: var(--color-medium-gray);
+          text-decoration: none;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
+
+          &:hover {
+            background-color: var(--color-secondary-dark);
+            color: var(--color-white);
+
+            .nav-icon {
+              transform: scale(1.1);
+            }
+          }
+
+          &--active {
+            background-color: var(--color-active-bg);
+            color: var(--color-white);
+
+            &::before {
+              content: "";
+              position: absolute;
+              left: 0;
+              top: 0;
+              bottom: 0;
+              width: 4px;
+              background-color: var(--color-active-border);
+            }
+          }
+
+          .nav-icon {
+            font-size: 1.2rem;
+            min-width: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+          }
+
+          .nav-label {
+            margin-left: 25px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transform: translateX(-10px);
+            transition: all 0.3s ease;
+            color: var(--color-white);
+            flex: 1;
+          }
+
+          .nav-chevron {
+            margin-left: auto;
+            margin-right: 5px;
+            transition: transform 0.3s ease;
+            opacity: 0;
+          }
+        }
+
+        // Submenu styles
+        .submenu {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          background-color: var(--color-secondary-darker);
+          border-left: 2px solid var(--color-active-border);
+          margin-left: 20px;
+
+          .submenu-item {
+            .submenu-link {
+              display: flex;
+              align-items: center;
+              padding: 12px 20px 12px 40px;
+              color: var(--color-medium-gray);
+              text-decoration: none;
+              transition: all 0.3s ease;
+              font-size: 0.9rem;
+
+              &:hover {
+                background-color: var(--color-hover-light);
+                color: var(--color-white);
+              }
+
+              &--active {
+                background-color: var(--color-active-bg);
+                color: var(--color-white);
+              }
+
+              .submenu-label {
+                white-space: nowrap;
+                transition: all 0.3s ease;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Sidebar state modifiers for nav labels
+.sidebar--open .nav-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.sidebar--closed .nav-label {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+// Show chevron when sidebar is open
+.sidebar--open .nav-chevron {
+  opacity: 1;
+}
+
+.sidebar--closed .nav-chevron {
+  opacity: 0;
+}
+
+// Hide submenu labels when sidebar is closed
+.sidebar--closed .submenu {
+  display: none;
+}
+
+// Main content styles
+.main-content {
+  flex: 1;
+  flex-direction: column;
+  display: flex;
+  background-color: var(--color-light-gray);
+  height: calc(100vh - 60px);
+  transition: margin-left 0.3s ease;
+  overflow: hidden; /* Prevent children from extending beyond container */
+
+  &--with-sidebar {
+    // Sidebar is present - margin handled by inline styles
+    position: relative;
+  }
+}
+
+// Smooth scrolling for content
+.main-content {
+  scroll-behavior: smooth;
+}
+
+// Custom scrollbar styling
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: var(--color-scrollbar-track);
+  border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: 4px;
+
+  &:hover {
+    background: var(--color-scrollbar-thumb-hover);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .app-header {
+    .header-left .app-title {
+      font-size: 1.2rem;
+    }
+  }
+}

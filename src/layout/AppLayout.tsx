@@ -1,4 +1,4 @@
-import React, { useState, ReactNode } from "react";
+import "./AppLayout.scss";
 import {
   Container,
   Row,
@@ -22,6 +22,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import UserProfile from "../components/auth/UserProfile";
 import LoginButton from "../components/auth/LoginButton";
+import { ReactNode, useState, useEffect } from "react";
 
 interface AppLayoutProps {
   children: ReactNode;
@@ -37,15 +38,24 @@ interface SidebarItem {
 
 interface SidebarContentProps {
   isMobile?: boolean;
+  onItemClick?: () => void;
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const [showSidebar, setShowSidebar] = useState<boolean>(false);
+  const [isSidebarHovered, setIsSidebarHovered] = useState<boolean>(false);
   const location = useLocation();
   const { isAuthenticated } = useAuth();
 
   const handleCloseSidebar = (): void => setShowSidebar(false);
   const handleShowSidebar = (): void => setShowSidebar(true);
+  const handleSidebarMouseEnter = (): void => setIsSidebarHovered(true);
+  const handleSidebarMouseLeave = (): void => setIsSidebarHovered(false);
+
+  // Close mobile sidebar when route changes
+  useEffect(() => {
+    setShowSidebar(false);
+  }, [location.pathname]);
 
   const sidebarItems: SidebarItem[] = [
     {
@@ -91,17 +101,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
   const SidebarContent: React.FC<SidebarContentProps> = ({
     isMobile = false,
+    onItemClick,
   }) => (
     <div className="sidebar-content h-100">
-      <div className="sidebar-header p-3 border-bottom">
-        <h5 className="mb-0 text-primary d-flex align-items-center gap-2">
-          <FaBaseballBall />
-          Stat Tracker
-        </h5>
-        <small className="text-muted">Player Development</small>
-      </div>
-
-      <Nav className="flex-column p-2">
+      <Nav
+        className="flex-column"
+        style={{ padding: isMobile ? "10px 0" : "0" }}
+      >
         {sidebarItems.map((item) => (
           <Nav.Item key={item.path} className="mb-2">
             <Nav.Link
@@ -110,7 +116,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
               className={`sidebar-nav-link ${
                 location.pathname === item.path ? "active" : ""
               } ${item.comingSoon ? "coming-soon" : ""}`}
-              onClick={isMobile ? handleCloseSidebar : undefined}
+              onClick={onItemClick}
             >
               <span className="sidebar-icon">{item.icon}</span>
               <div className="sidebar-text">
@@ -168,7 +174,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           <Row className="h-100">
             {/* Desktop Sidebar */}
             <Col lg={3} xl={2} className="d-none d-lg-block sidebar-col">
-              <div className="sidebar-desktop">
+              <div
+                className="sidebar-desktop"
+                onMouseEnter={handleSidebarMouseEnter}
+                onMouseLeave={handleSidebarMouseLeave}
+              >
                 <SidebarContent />
               </div>
             </Col>
@@ -191,7 +201,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <Offcanvas.Title>Navigation</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body className="p-0">
-            <SidebarContent isMobile={true} />
+            <SidebarContent isMobile={true} onItemClick={handleCloseSidebar} />
           </Offcanvas.Body>
         </Offcanvas>
       </div>
