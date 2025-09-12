@@ -227,7 +227,7 @@ stat-tracker-react/
 │   │   └── DataContext.jsx
 │   ├── services/
 │   │   └── apiService.js         # Backend API integration
-│   ├── App.jsx
+│   ├── App.tsx
 │   ├── index.css
 │   └── main.jsx
 └── package.json
