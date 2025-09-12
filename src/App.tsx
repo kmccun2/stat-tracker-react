@@ -1,16 +1,20 @@
-// Third-party library imports
+// React Router for client-side routing
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// React Bootstrap UI components
 import { Container } from "react-bootstrap";
+
+// Auth0 React SDK for authentication
 import { Auth0Provider } from "@auth0/auth0-react";
 
-// Layout and shared components
+// Layout and error handling components
 import AppLayout from "./layout/AppLayout";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
-// Page components
+// Page components - organized by feature area
 import DashboardPage from "./components/pages/dashboard/DashboardPage";
-import PlayerListPage from "./components/pages/players/PlayerListPage";
+import PlayersPage from "./components/pages/players/PlayersPage";
 import PlayerDetailPage from "./components/pages/players/PlayerDetailPage";
 import MetricsPage from "./components/pages/metrics/MetricsPage";
 import AnalyticsPage from "./components/pages/analytics/AnalyticsPage";
@@ -18,20 +22,20 @@ import GoalsPage from "./components/pages/goals/GoalsPage";
 import SettingsPage from "./components/pages/settings/SettingsPage";
 import AssessmentSelectionPage from "./components/pages/assessments/AssessmentSelectionPage";
 
-// Context providers
+// React Context providers for state management
 import { DataProvider } from "./context/DataContext";
 import { AuthProvider } from "./context/AuthContext";
 
-// Configuration
+// Configuration files
 import auth0Config from "./config/auth0Config";
 
-// Hooks
+// Custom hooks for data management
 import { useAppData } from "./hooks/useAppData";
 
-// Utilities
+// Utility functions for goal calculations
 import { findGoal, isGoalMet } from "./utils/goalResolution";
 
-// Type definitions
+// TypeScript type definitions
 import type { Player, AssessmentType, DataContextType } from "./types";
 
 function App(): JSX.Element {
@@ -167,7 +171,7 @@ function App(): JSX.Element {
                     path="/players"
                     element={
                       <ProtectedRoute requireAuth={true}>
-                        <PlayerListPage />
+                        <PlayersPage />
                       </ProtectedRoute>
                     }
                   />

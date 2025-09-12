@@ -1,6 +1,7 @@
-// Styles
-import "./DashboardPage.scss";
+// React hooks for component logic and state management
 import React, { useState, useEffect } from "react";
+
+// React Bootstrap UI components for layout and interaction
 import {
   Container,
   Card,
@@ -11,6 +12,8 @@ import {
   Button,
   Dropdown,
 } from "react-bootstrap";
+
+// Font Awesome React icons for visual elements
 import {
   FaTachometerAlt,
   FaCalendarAlt,
@@ -21,11 +24,20 @@ import {
   FaPlus,
   FaClipboardList,
 } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { useData } from "../../../context/DataContext";
-import PageHeader from "@/components/common/PageHeader";
 
-// Type definitions
+// React Router for navigation
+import { useNavigate } from "react-router-dom";
+
+// Data context for accessing application state
+import { useData } from "../../../context/DataContext";
+
+// Shared page header component
+import PageHeader from "../../common/PageHeader";
+
+/**
+ * Assessment interface for individual assessment records
+ * Used for displaying recent assessment data on the dashboard
+ */
 interface Assessment {
   id: number;
   player_id: number;
@@ -36,17 +48,29 @@ interface Assessment {
   player_name?: string;
 }
 
+/**
+ * Assessment type interface for categorizing assessments
+ * Note: This should ideally be imported from a shared types file
+ */
 interface AssessmentType {
   assessment_type: string;
   category: string;
   format?: string;
 }
 
+/**
+ * Timeframe option interface for filtering dashboard data
+ * Provides options for viewing data over different time periods
+ */
 interface TimeframeOption {
   value: string;
   label: string;
 }
 
+/**
+ * Summary statistics interface for dashboard metrics
+ * Aggregates key performance indicators for quick overview
+ */
 interface SummaryStats {
   totalAssessments: number;
   uniquePlayers: number;

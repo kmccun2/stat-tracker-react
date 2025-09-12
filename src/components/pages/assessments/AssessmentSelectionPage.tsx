@@ -12,6 +12,7 @@ import {
 import { FaClipboardList, FaArrowLeft, FaPlay, FaFilter } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useData } from "../../../context/DataContext";
+import PageHeader from "../../common/PageHeader";
 
 // Type definitions
 interface AssessmentType {
@@ -112,30 +113,7 @@ const AssessmentSelectionPage: React.FC = () => {
   }
 
   return (
-    <Container fluid className="mt-4">
-      {/* Header */}
-      <Row className="mb-4">
-        <Col>
-          <div className="d-flex align-items-center gap-3 mb-3">
-            <Button
-              variant="outline-secondary"
-              onClick={handleGoBack}
-              className="d-flex align-items-center gap-2"
-            >
-              <FaArrowLeft />
-              Back
-            </Button>
-            <div className="d-flex align-items-center gap-2">
-              <FaClipboardList className="text-primary" size={24} />
-              <h2 className="mb-0">Select Assessment Type</h2>
-            </div>
-          </div>
-          <p className="text-muted">
-            Choose the type of assessment you want to perform
-          </p>
-        </Col>
-      </Row>
-
+    <div className="page-main-content">
       {error && (
         <Row className="mb-4">
           <Col>
@@ -277,7 +255,7 @@ const AssessmentSelectionPage: React.FC = () => {
           </Col>
         </Row>
       )}
-    </Container>
+    </div>
   );
 };
 

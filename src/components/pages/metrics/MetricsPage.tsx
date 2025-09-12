@@ -1,8 +1,9 @@
+// React Core
 import React, { useState } from "react";
+
+// React Bootstrap Components
 import {
   Container,
-  Row,
-  Col,
   Card,
   Table,
   Button,
@@ -10,11 +11,27 @@ import {
   ButtonGroup,
   ToggleButton,
   Alert,
+  Row,
+  Col,
 } from "react-bootstrap";
-import { FaPlus, FaEdit, FaTrash, FaTable, FaTh } from "react-icons/fa";
+
+// React Icons
+import {
+  FaPlus,
+  FaEdit,
+  FaTrash,
+  FaTable,
+  FaTh,
+  FaRuler,
+} from "react-icons/fa";
+
+// Context and Hooks
 import { useData } from "../../../context/DataContext";
+
+// Local Components
 import AddMetricModal from "./AddMetricModal";
 import EditMetricModal from "./EditMetricModal";
+import PageHeader from "../../common/PageHeader";
 
 // Type definitions
 interface Metric {
@@ -210,96 +227,94 @@ const MetricsPage: React.FC = () => {
   };
 
   return (
-    <Container>
-      <Row>
-        <Col>
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h2 className="mb-1">Assessment Metrics</h2>
-              <p className="text-muted mb-0">
-                Manage the metrics used for player assessments
-              </p>
-            </div>
-            <div className="d-flex align-items-center gap-3">
-              <Badge bg="primary" pill className="fs-6">
-                {assessmentTypes.length}{" "}
-                {assessmentTypes.length === 1 ? "Metric" : "Metrics"}
-              </Badge>
+    <>
+      <PageHeader
+        title="Assessment Metrics"
+        subtitle="Manage the metrics used for player assessments"
+        icon={<FaRuler />}
+        actions={
+          <div className="d-flex align-items-center gap-3">
+            <Badge bg="primary" pill className="fs-6">
+              {assessmentTypes.length}{" "}
+              {assessmentTypes.length === 1 ? "Metric" : "Metrics"}
+            </Badge>
 
-              {/* View Toggle */}
-              <ButtonGroup className="view-toggle-group">
-                <ToggleButton
-                  id="table-view"
-                  type="radio"
-                  variant={viewMode === "table" ? "primary" : "outline-primary"}
-                  name="viewMode"
-                  value="table"
-                  checked={viewMode === "table"}
-                  onChange={handleViewModeChange}
-                  className="d-flex align-items-center gap-1"
-                >
-                  <FaTable />
-                  Table
-                </ToggleButton>
-                <ToggleButton
-                  id="card-view"
-                  type="radio"
-                  variant={viewMode === "cards" ? "primary" : "outline-primary"}
-                  name="viewMode"
-                  value="cards"
-                  checked={viewMode === "cards"}
-                  onChange={handleViewModeChange}
-                  className="d-flex align-items-center gap-1"
-                >
-                  <FaTh />
-                  Cards
-                </ToggleButton>
-              </ButtonGroup>
-
-              <Button
-                variant="primary"
-                onClick={() => setShowAddModal(true)}
-                className="d-flex align-items-center gap-2"
+            {/* View Toggle */}
+            <ButtonGroup className="view-toggle-group">
+              <ToggleButton
+                id="table-view"
+                type="radio"
+                variant={viewMode === "table" ? "primary" : "outline-primary"}
+                name="viewMode"
+                value="table"
+                checked={viewMode === "table"}
+                onChange={handleViewModeChange}
+                className="d-flex align-items-center gap-1"
               >
-                <FaPlus />
-                Add Metric
-              </Button>
-            </div>
-          </div>
-        </Col>
-      </Row>
+                <FaTable />
+                Table
+              </ToggleButton>
+              <ToggleButton
+                id="card-view"
+                type="radio"
+                variant={viewMode === "cards" ? "primary" : "outline-primary"}
+                name="viewMode"
+                value="cards"
+                checked={viewMode === "cards"}
+                onChange={handleViewModeChange}
+                className="d-flex align-items-center gap-1"
+              >
+                <FaTh />
+                Cards
+              </ToggleButton>
+            </ButtonGroup>
 
-      {deleteError && (
-        <Row className="mb-4">
-          <Col>
-            <Alert
-              variant="danger"
-              dismissible
-              onClose={() => setDeleteError("")}
+            <Button
+              variant="primary"
+              onClick={() => setShowAddModal(true)}
+              className="d-flex align-items-center gap-2"
             >
-              <Alert.Heading>Delete Error</Alert.Heading>
-              {deleteError}
-            </Alert>
-          </Col>
-        </Row>
-      )}
+              <FaPlus />
+              Add Metric
+            </Button>
+          </div>
+        }
+      />
 
-      {assessmentTypes.length === 0 ? (
-        <Row>
-          <Col>
-            <div className="alert alert-info text-center" role="alert">
-              <h4 className="alert-heading">No Metrics Found</h4>
-              <p className="mb-0">
-                Start by adding your first assessment metric.
-              </p>
-            </div>
-          </Col>
-        </Row>
-      ) : viewMode === "table" ? (
-        renderTableView()
-      ) : (
-        renderCardView()
-      )}
+      {/* Main Content */}
+      <div className="page-main-content">
+        {deleteError && (
+          <Row className="mb-4">
+            <Col>
+              <Alert
+                variant="danger"
+                dismissible
+                onClose={() => setDeleteError("")}
+              >
+                <Alert.Heading>Delete Error</Alert.Heading>
+                {deleteError}
+              </Alert>
+            </Col>
+          </Row>
+        )}
+
+        {assessmentTypes.length === 0 ? (
+          <Row>
+            <Col>
+              <div className="alert alert-info text-center" role="alert">
+                <h4 className="alert-heading">No Metrics Found</h4>
+                <p className="mb-0">
+                  Start by adding your first assessment metric.
+                </p>
+              </div>
+            </Col>
+          </Row>
+        ) : viewMode === "table" ? (
+          renderTableView()
+        ) : (
+          renderCardView()
+        )}
+      </div>
 
       <AddMetricModal
         show={showAddModal}
@@ -333,7 +348,7 @@ const MetricsPage: React.FC = () => {
           ] as string[]
         }
       />
-    </Container>
+    </>
   );
 };
 

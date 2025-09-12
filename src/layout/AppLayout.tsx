@@ -1,6 +1,13 @@
+// Component-specific styling
 import "./AppLayout.scss";
+
+// React Bootstrap UI components for layout and navigation
 import { Navbar, Nav, Offcanvas, Button } from "react-bootstrap";
+
+// React Router for navigation and location tracking
 import { Link, useLocation } from "react-router-dom";
+
+// Font Awesome React icons for navigation and visual elements
 import {
   FaUsers,
   FaChartLine,
@@ -11,15 +18,26 @@ import {
   FaRuler,
   FaTachometerAlt,
 } from "react-icons/fa";
+
+// React hooks for component logic
+import { ReactNode, useState, useEffect } from "react";
+
+// Authentication context and components
 import { useAuth } from "../context/AuthContext";
 import UserProfile from "./UserProfile";
 import LoginButton from "../components/auth/LoginButton";
-import { ReactNode, useState, useEffect } from "react";
 
+/**
+ * Props interface for the main application layout
+ */
 interface AppLayoutProps {
   children: ReactNode;
 }
 
+/**
+ * Navigation sidebar item interface
+ * Defines structure for navigation menu items
+ */
 interface SidebarItem {
   path: string;
   label: string;
@@ -27,6 +45,9 @@ interface SidebarItem {
   description: string;
 }
 
+/**
+ * Props interface for sidebar content component
+ */
 interface SidebarContentProps {
   isMobile?: boolean;
   isCollapsed?: boolean;

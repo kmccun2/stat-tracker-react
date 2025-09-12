@@ -1,4 +1,7 @@
+// React library for component creation
 import React from "react";
+
+// Chart.js components and configuration for data visualization
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,9 +12,14 @@ import {
   Legend,
   ArcElement,
 } from "chart.js";
+
+// React Chart.js 2 chart components
 import { Bar, Doughnut } from "react-chartjs-2";
+
+// React Bootstrap UI components for layout
 import { Card, Row, Col } from "react-bootstrap";
 
+// Register Chart.js components for use in charts
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -22,7 +30,10 @@ ChartJS.register(
   Legend
 );
 
-// Type definitions
+/**
+ * Player interface for chart data processing
+ * Note: This should ideally be imported from a shared types file
+ */
 interface Player {
   id: number;
   Name: string;

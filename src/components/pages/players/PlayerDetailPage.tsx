@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import {
   Container,
-  Row,
-  Col,
   Card,
   Button,
   Badge,
@@ -99,8 +97,8 @@ const PlayerDetailPage: React.FC = () => {
   if (!player) {
     return (
       <Container>
-        <Row className="justify-content-center">
-          <Col md={8}>
+        <div className="d-flex justify-content-center">
+          <div style={{ maxWidth: "800px", width: "100%" }}>
             <Breadcrumb>
               <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
                 Players
@@ -121,8 +119,8 @@ const PlayerDetailPage: React.FC = () => {
                 <FaArrowLeft /> Back to Players
               </Button>
             </div>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Container>
     );
   }
@@ -138,134 +136,126 @@ const PlayerDetailPage: React.FC = () => {
 
   return (
     <Container>
-      <Row>
-        <Col>
-          <Breadcrumb>
-            <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
-              Players
-            </Breadcrumb.Item>
-            <Breadcrumb.Item active>{player.Name}</Breadcrumb.Item>
-          </Breadcrumb>
-        </Col>
-      </Row>
+      <div>
+        <Breadcrumb>
+          <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
+            Players
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>{player.Name}</Breadcrumb.Item>
+        </Breadcrumb>
+      </div>
 
-      <Row className="mb-4">
-        <Col>
-          <Card className="player-info-card">
-            <Card.Body>
-              <Row className="align-items-center">
-                <Col md={8}>
-                  <div className="d-flex align-items-center justify-content-between mb-3">
-                    <h1 className="mb-0 text-primary d-flex align-items-center gap-2">
-                      <FaBaseballBall /> {player.Name}
-                    </h1>
-                    <Dropdown>
-                      <Dropdown.Toggle
-                        variant="outline-secondary"
-                        size="sm"
+      <div className="mb-4">
+        <Card className="player-info-card">
+          <Card.Body>
+            <div className="d-flex align-items-center justify-content-between flex-wrap gap-3">
+              <div className="flex-fill">
+                <div className="d-flex align-items-center justify-content-between mb-3">
+                  <h1 className="mb-0 text-primary d-flex align-items-center gap-2">
+                    <FaBaseballBall /> {player.Name}
+                  </h1>
+                  <Dropdown>
+                    <Dropdown.Toggle
+                      variant="outline-secondary"
+                      size="sm"
+                      className="d-flex align-items-center gap-2"
+                    >
+                      ⚙️ Settings
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu align="end">
+                      <Dropdown.Item
+                        onClick={handleEditPlayer}
                         className="d-flex align-items-center gap-2"
                       >
-                        ⚙️ Settings
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu align="end">
-                        <Dropdown.Item
-                          onClick={handleEditPlayer}
-                          className="d-flex align-items-center gap-2"
-                        >
-                          <span>✏️</span>
-                          Edit Player
-                        </Dropdown.Item>
-                        <Dropdown.Divider />
-                        <Dropdown.Item
-                          onClick={handleDeleteClick}
-                          className="d-flex align-items-center gap-2 text-danger"
-                        >
-                          <span>🗑️</span>
-                          Delete Player
-                        </Dropdown.Item>
-                      </Dropdown.Menu>
-                    </Dropdown>
+                        <span>✏️</span>
+                        Edit Player
+                      </Dropdown.Item>
+                      <Dropdown.Divider />
+                      <Dropdown.Item
+                        onClick={handleDeleteClick}
+                        className="d-flex align-items-center gap-2 text-danger"
+                      >
+                        <span>🗑️</span>
+                        Delete Player
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+                <div className="d-flex gap-3 flex-wrap">
+                  <div>
+                    <strong>Age:</strong>
+                    <Badge bg="info" className="ms-2">
+                      {player.age} years old
+                    </Badge>
                   </div>
-                  <div className="d-flex gap-3 flex-wrap">
-                    <div>
-                      <strong>Age:</strong>
-                      <Badge bg="info" className="ms-2">
-                        {player.age} years old
-                      </Badge>
-                    </div>
-                    <div>
-                      <strong>Gender:</strong>
-                      <Badge bg="secondary" className="ms-2">
-                        {player.Gender}
-                      </Badge>
-                    </div>
+                  <div>
+                    <strong>Gender:</strong>
+                    <Badge bg="secondary" className="ms-2">
+                      {player.Gender}
+                    </Badge>
                   </div>
-                </Col>
-                <Col md={4} className="text-md-end">
-                  <div className="export-section">
-                    <h6 className="text-muted mb-2">Export Options</h6>
-                    <ExportButton player={player} />
-                  </div>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+                </div>
+              </div>
+              <div className="text-md-end" style={{ minWidth: "200px" }}>
+                <div className="export-section">
+                  <h6 className="text-muted mb-2">Export Options</h6>
+                  <ExportButton player={player} />
+                </div>
+              </div>
+            </div>
+          </Card.Body>
+        </Card>
+      </div>
 
-      <Row className="mb-3">
-        <Col>
-          <Button
-            as={Link as any}
-            to="/"
-            variant="outline-secondary"
-            size="sm"
-            className="d-flex align-items-center gap-2"
-          >
-            <FaArrowLeft /> Back to Players
-          </Button>
-        </Col>
-      </Row>
+      <div className="mb-3">
+        <Button
+          as={Link as any}
+          to="/"
+          variant="outline-secondary"
+          size="sm"
+          className="d-flex align-items-center gap-2"
+        >
+          <FaArrowLeft /> Back to Players
+        </Button>
+      </div>
 
       {/* Navigation Tabs */}
-      <Row className="mb-4">
-        <Col>
-          <Nav variant="tabs" activeKey={activeTab} onSelect={handleTabSelect}>
-            <Nav.Item>
-              <Nav.Link
-                eventKey="assessments"
-                className="d-flex align-items-center gap-2"
-              >
-                <FaTable /> Assessment Data
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                eventKey="progress"
-                className="d-flex align-items-center gap-2"
-              >
-                <FaChartLine /> Progress Chart
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                eventKey="goals"
-                className="d-flex align-items-center gap-2"
-              >
-                <FaBullseye /> Goal Comparison
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                eventKey="radar"
-                className="d-flex align-items-center gap-2"
-              >
-                <FaChartArea /> Category Overview
-              </Nav.Link>
-            </Nav.Item>
-          </Nav>
-        </Col>
-      </Row>
+      <div className="mb-4">
+        <Nav variant="tabs" activeKey={activeTab} onSelect={handleTabSelect}>
+          <Nav.Item>
+            <Nav.Link
+              eventKey="assessments"
+              className="d-flex align-items-center gap-2"
+            >
+              <FaTable /> Assessment Data
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link
+              eventKey="progress"
+              className="d-flex align-items-center gap-2"
+            >
+              <FaChartLine /> Progress Chart
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link
+              eventKey="goals"
+              className="d-flex align-items-center gap-2"
+            >
+              <FaBullseye /> Goal Comparison
+            </Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link
+              eventKey="radar"
+              className="d-flex align-items-center gap-2"
+            >
+              <FaChartArea /> Category Overview
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+      </div>
 
       {/* Tab Content */}
       <Tab.Container activeKey={activeTab}>
@@ -275,44 +265,38 @@ const PlayerDetailPage: React.FC = () => {
           </Tab.Pane>
 
           <Tab.Pane eventKey="progress">
-            <Row>
-              <Col>
-                <PlayerProgressChart
-                  player={player}
-                  assessmentResults={assessmentResults}
-                  assessmentTypes={assessmentTypes}
-                  goals={goals}
-                  type="line"
-                />
-              </Col>
-            </Row>
+            <div>
+              <PlayerProgressChart
+                player={player}
+                assessmentResults={assessmentResults}
+                assessmentTypes={assessmentTypes}
+                goals={goals}
+                type="line"
+              />
+            </div>
           </Tab.Pane>
 
           <Tab.Pane eventKey="goals">
-            <Row>
-              <Col>
-                <GoalComparisonChart
-                  player={player}
-                  assessmentResults={assessmentResults}
-                  assessmentTypes={assessmentTypes}
-                  findGoal={findGoal}
-                />
-              </Col>
-            </Row>
+            <div>
+              <GoalComparisonChart
+                player={player}
+                assessmentResults={assessmentResults}
+                assessmentTypes={assessmentTypes}
+                findGoal={findGoal}
+              />
+            </div>
           </Tab.Pane>
 
           <Tab.Pane eventKey="radar">
-            <Row>
-              <Col>
-                <CategoryRadarChart
-                  player={player}
-                  assessmentResults={assessmentResults}
-                  assessmentTypes={assessmentTypes}
-                  findGoal={findGoal}
-                  isGoalMet={isGoalMet}
-                />
-              </Col>
-            </Row>
+            <div>
+              <CategoryRadarChart
+                player={player}
+                assessmentResults={assessmentResults}
+                assessmentTypes={assessmentTypes}
+                findGoal={findGoal}
+                isGoalMet={isGoalMet}
+              />
+            </div>
           </Tab.Pane>
         </Tab.Content>
       </Tab.Container>

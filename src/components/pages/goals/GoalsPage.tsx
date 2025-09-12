@@ -27,6 +27,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import apiService from "../../../services/apiService";
+import PageHeader from "../../common/PageHeader";
 
 // Type definitions
 interface Goal {
@@ -324,233 +325,229 @@ const GoalsPage: React.FC = () => {
   }
 
   return (
-    <Container>
-      {/* Header */}
-      <Row className="mb-4">
-        <Col>
-          <div className="d-flex justify-content-between align-items-center">
-            <div>
-              <h2 className="mb-1 d-flex align-items-center gap-2">
-                <FaBullseye className="text-primary" />
-                Goals Management
-              </h2>
-              <p className="text-muted mb-0">
-                Configure performance goals and scoring criteria
-              </p>
-            </div>
-            <Button variant="primary" onClick={() => handleShowModal()}>
-              <FaPlus className="me-2" />
-              Add Goal
-            </Button>
-          </div>
-        </Col>
-      </Row>
+    <>
+      <PageHeader
+        title="Goals Management"
+        subtitle="Configure performance goals and scoring criteria"
+        icon={<FaBullseye />}
+        actions={
+          <Button variant="primary" onClick={() => handleShowModal()}>
+            <FaPlus className="me-2" />
+            Add Goal
+          </Button>
+        }
+      />
 
-      {error && (
-        <Row className="mb-3">
+      {/* Main Content  */}
+      <div className="page-main-content">
+        {error && (
+          <Row className="mb-3">
+            <Col>
+              <Alert variant="danger" onClose={() => setError("")} dismissible>
+                {error}
+              </Alert>
+            </Col>
+          </Row>
+        )}
+
+        {/* Filters */}
+        <Row className="mb-4">
           <Col>
-            <Alert variant="danger" onClose={() => setError("")} dismissible>
-              {error}
-            </Alert>
+            <Card>
+              <Card.Body>
+                <div className="d-flex align-items-center gap-3 flex-wrap">
+                  <div className="d-flex align-items-center gap-2">
+                    <FaFilter className="text-muted" />
+                    <span className="fw-bold">Filters:</span>
+                  </div>
+
+                  <Form.Group className="mb-0">
+                    <Form.Select
+                      size="sm"
+                      name="assessmentType"
+                      value={filters.assessmentType}
+                      onChange={handleFilterChange}
+                      style={{ width: "200px" }}
+                    >
+                      <option value="">All Assessment Types</option>
+                      {assessmentTypes.map((type) => (
+                        <option
+                          key={type.assessment_type}
+                          value={type.assessment_type}
+                        >
+                          {type.assessment_type}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+
+                  <Form.Group className="mb-0">
+                    <Form.Select
+                      size="sm"
+                      name="ageRange"
+                      value={filters.ageRange}
+                      onChange={handleFilterChange}
+                      style={{ width: "150px" }}
+                    >
+                      <option value="">All Age Ranges</option>
+                      {availableAgeRanges.map((range) => (
+                        <option key={range} value={range}>
+                          {range}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+
+                  <Form.Group className="mb-0">
+                    <Form.Select
+                      size="sm"
+                      name="gender"
+                      value={filters.gender}
+                      onChange={handleFilterChange}
+                      style={{ width: "120px" }}
+                    >
+                      <option value="">All Genders</option>
+                      <option value="M">Male</option>
+                      <option value="F">Female</option>
+                    </Form.Select>
+                  </Form.Group>
+
+                  {(filters.assessmentType ||
+                    filters.ageRange ||
+                    filters.gender) && (
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      onClick={() =>
+                        setFilters({
+                          assessmentType: "",
+                          ageRange: "",
+                          gender: "",
+                        })
+                      }
+                    >
+                      Clear Filters
+                    </Button>
+                  )}
+                </div>
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
-      )}
 
-      {/* Filters */}
-      <Row className="mb-4">
-        <Col>
-          <Card>
-            <Card.Body>
-              <div className="d-flex align-items-center gap-3 flex-wrap">
-                <div className="d-flex align-items-center gap-2">
-                  <FaFilter className="text-muted" />
-                  <span className="fw-bold">Filters:</span>
+        {/* Goals Table */}
+        <Row>
+          <Col>
+            <Card>
+              <Card.Header>
+                <div className="d-flex justify-content-between align-items-center">
+                  <span>
+                    Goals Configuration ({filteredGoals.length} records)
+                  </span>
+                  <div>
+                    <Button
+                      variant="outline-secondary"
+                      size="sm"
+                      className="me-2"
+                    >
+                      <FaDownload className="me-1" /> Export
+                    </Button>
+                    <Button variant="outline-secondary" size="sm">
+                      <FaUpload className="me-1" /> Import
+                    </Button>
+                  </div>
                 </div>
-
-                <Form.Group className="mb-0">
-                  <Form.Select
-                    size="sm"
-                    name="assessmentType"
-                    value={filters.assessmentType}
-                    onChange={handleFilterChange}
-                    style={{ width: "200px" }}
-                  >
-                    <option value="">All Assessment Types</option>
-                    {assessmentTypes.map((type) => (
-                      <option
-                        key={type.assessment_type}
-                        value={type.assessment_type}
-                      >
-                        {type.assessment_type}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
-
-                <Form.Group className="mb-0">
-                  <Form.Select
-                    size="sm"
-                    name="ageRange"
-                    value={filters.ageRange}
-                    onChange={handleFilterChange}
-                    style={{ width: "150px" }}
-                  >
-                    <option value="">All Age Ranges</option>
-                    {availableAgeRanges.map((range) => (
-                      <option key={range} value={range}>
-                        {range}
-                      </option>
-                    ))}
-                  </Form.Select>
-                </Form.Group>
-
-                <Form.Group className="mb-0">
-                  <Form.Select
-                    size="sm"
-                    name="gender"
-                    value={filters.gender}
-                    onChange={handleFilterChange}
-                    style={{ width: "120px" }}
-                  >
-                    <option value="">All Genders</option>
-                    <option value="M">Male</option>
-                    <option value="F">Female</option>
-                  </Form.Select>
-                </Form.Group>
-
-                {(filters.assessmentType ||
-                  filters.ageRange ||
-                  filters.gender) && (
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    onClick={() =>
-                      setFilters({
-                        assessmentType: "",
-                        ageRange: "",
-                        gender: "",
-                      })
-                    }
-                  >
-                    Clear Filters
-                  </Button>
-                )}
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      {/* Goals Table */}
-      <Row>
-        <Col>
-          <Card>
-            <Card.Header>
-              <div className="d-flex justify-content-between align-items-center">
-                <span>
-                  Goals Configuration ({filteredGoals.length} records)
-                </span>
-                <div>
-                  <Button
-                    variant="outline-secondary"
-                    size="sm"
-                    className="me-2"
-                  >
-                    <FaDownload className="me-1" /> Export
-                  </Button>
-                  <Button variant="outline-secondary" size="sm">
-                    <FaUpload className="me-1" /> Import
-                  </Button>
-                </div>
-              </div>
-            </Card.Header>
-            <Card.Body className="p-0">
-              <div style={{ maxHeight: "600px", overflowY: "auto" }}>
-                <Table striped hover responsive>
-                  <thead className="bg-light sticky-top">
-                    <tr>
-                      <th>Assessment Type</th>
-                      <th>Age Range</th>
-                      <th>Gender</th>
-                      <th>Goal Type</th>
-                      <th>Score Range</th>
-                      <th>Status</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredGoals.map((goal) => (
-                      <tr key={goal.id}>
-                        <td>
-                          <strong>{goal.assessment_type}</strong>
-                          <br />
-                          <small className="text-muted">{goal.unit}</small>
-                        </td>
-                        <td>
-                          <Badge bg="secondary">{goal.age_range}</Badge>
-                        </td>
-                        <td>
-                          <Badge bg={goal.gender === "M" ? "primary" : "info"}>
-                            {goal.gender === "M" ? "Male" : "Female"}
-                          </Badge>
-                        </td>
-                        <td>
-                          <small>{getGoalTypeDescription(goal)}</small>
-                        </td>
-                        <td>
-                          {goal.score_low_end !== null &&
-                          goal.score_high_end !== null &&
-                          goal.score_average !== null ? (
-                            <div>
-                              <small>
-                                Low (0): {goal.score_low_end}
-                                <br />
-                                Avg (75): {goal.score_average}
-                                <br />
-                                High (100): {goal.score_high_end}
-                              </small>
-                            </div>
-                          ) : (
-                            <span className="text-muted">Not configured</span>
-                          )}
-                        </td>
-                        <td>{getGoalStatusBadge(goal)}</td>
-                        <td>
-                          <ButtonGroup size="sm">
-                            <Button
-                              variant="outline-primary"
-                              onClick={() => handleShowModal(goal)}
-                              title="Edit Goal"
-                            >
-                              <FaEdit />
-                            </Button>
-                            <Button
-                              variant="outline-danger"
-                              onClick={() => handleDelete(goal.id)}
-                              title="Delete Goal"
-                            >
-                              <FaTrash />
-                            </Button>
-                          </ButtonGroup>
-                        </td>
+              </Card.Header>
+              <Card.Body className="p-0">
+                <div style={{ maxHeight: "600px", overflowY: "auto" }}>
+                  <Table striped hover responsive>
+                    <thead className="bg-light sticky-top">
+                      <tr>
+                        <th>Assessment Type</th>
+                        <th>Age Range</th>
+                        <th>Gender</th>
+                        <th>Goal Type</th>
+                        <th>Score Range</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-
-              {filteredGoals.length === 0 && (
-                <div className="text-center py-4">
-                  <p className="text-muted mb-0">No goals found</p>
-                  <small className="text-muted">
-                    Add some goals to get started
-                  </small>
+                    </thead>
+                    <tbody>
+                      {filteredGoals.map((goal) => (
+                        <tr key={goal.id}>
+                          <td>
+                            <strong>{goal.assessment_type}</strong>
+                            <br />
+                            <small className="text-muted">{goal.unit}</small>
+                          </td>
+                          <td>
+                            <Badge bg="secondary">{goal.age_range}</Badge>
+                          </td>
+                          <td>
+                            <Badge
+                              bg={goal.gender === "M" ? "primary" : "info"}
+                            >
+                              {goal.gender === "M" ? "Male" : "Female"}
+                            </Badge>
+                          </td>
+                          <td>
+                            <small>{getGoalTypeDescription(goal)}</small>
+                          </td>
+                          <td>
+                            {goal.score_low_end !== null &&
+                            goal.score_high_end !== null &&
+                            goal.score_average !== null ? (
+                              <div>
+                                <small>
+                                  Low (0): {goal.score_low_end}
+                                  <br />
+                                  Avg (75): {goal.score_average}
+                                  <br />
+                                  High (100): {goal.score_high_end}
+                                </small>
+                              </div>
+                            ) : (
+                              <span className="text-muted">Not configured</span>
+                            )}
+                          </td>
+                          <td>{getGoalStatusBadge(goal)}</td>
+                          <td>
+                            <ButtonGroup size="sm">
+                              <Button
+                                variant="outline-primary"
+                                onClick={() => handleShowModal(goal)}
+                                title="Edit Goal"
+                              >
+                                <FaEdit />
+                              </Button>
+                              <Button
+                                variant="outline-danger"
+                                onClick={() => handleDelete(goal.id)}
+                                title="Delete Goal"
+                              >
+                                <FaTrash />
+                              </Button>
+                            </ButtonGroup>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
                 </div>
-              )}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+
+                {filteredGoals.length === 0 && (
+                  <div className="text-center py-4">
+                    <p className="text-muted mb-0">No goals found</p>
+                    <small className="text-muted">
+                      Add some goals to get started
+                    </small>
+                  </div>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+      </div>
 
       {/* Add/Edit Goal Modal */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
@@ -724,7 +721,7 @@ const GoalsPage: React.FC = () => {
           </Form>
         </Modal.Body>
       </Modal>
-    </Container>
+    </>
   );
 };
 

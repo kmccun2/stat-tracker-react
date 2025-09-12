@@ -1,18 +1,30 @@
 /**
  * Goal resolution utilities for baseball stat tracker
+ * 
+ * This module provides utilities for finding appropriate goals for players
+ * based on their demographics and assessment types, as well as determining
+ * whether a player has met their performance goals.
+ * 
+ * Key features:
+ * - Age-based goal matching
+ * - Gender-specific goal criteria
+ * - Support for both target and range-based goals
+ * - Flexible goal evaluation (higher/lower is better)
  */
 
+// TypeScript type imports for type safety
 import type { Player, AssessmentType, Goal } from '../types';
 
 /**
- * Goal information returned by findGoal
+ * Goal information interface returned by findGoal function
+ * Provides complete goal criteria for a specific player/assessment combination
  */
 export interface GoalInfo {
-  goal?: number;
-  minGoal?: number;
-  maxGoal?: number;
-  lowIsGood: boolean;
-  unit?: string;
+  goal?: number; // Target goal value for simple goals
+  minGoal?: number; // Minimum acceptable value for range goals
+  maxGoal?: number; // Maximum acceptable value for range goals
+  lowIsGood: boolean; // Whether lower values indicate better performance
+  unit?: string; // Unit of measurement for the goal
 }
 
 /**

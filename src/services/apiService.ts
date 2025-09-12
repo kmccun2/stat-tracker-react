@@ -1,9 +1,18 @@
+// API base URL configuration from environment variables
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
 
+/**
+ * Extended request options interface
+ * Extends the standard RequestInit with typed headers
+ */
 interface RequestOptions extends RequestInit {
   headers?: Record<string, string>;
 }
 
+/**
+ * Standardized API response interface
+ * Provides consistent structure for all API responses
+ */
 interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
@@ -12,12 +21,20 @@ interface ApiResponse<T = any> {
   count?: number;
 }
 
+/**
+ * Player data interface for API operations
+ * Used for creating and updating player records
+ */
 interface PlayerData {
   name: string;
   gender: 'M' | 'F';
-  dob: number;
+  dob: number; // Excel serial date number
 }
 
+/**
+ * Assessment result data interface
+ * Used for recording player assessment scores
+ */
 interface AssessmentResultData {
   playerId: number;
   metric: string;
@@ -26,6 +43,10 @@ interface AssessmentResultData {
   notes?: string;
 }
 
+/**
+ * Goal data interface for creating performance goals
+ * Supports both target and range-based goals with age/gender filtering
+ */
 interface GoalData {
   metric: string;
   unit: string;
@@ -39,6 +60,10 @@ interface GoalData {
   scoreAverage?: number;
 }
 
+/**
+ * User profile data interface
+ * Used for updating coach/user profile information
+ */
 interface ProfileData {
   auth0Id?: string;
   email?: string;
@@ -47,6 +72,10 @@ interface ProfileData {
   picture?: string;
 }
 
+/**
+ * Token getter function type
+ * Function that returns an authentication token for API requests
+ */
 type TokenGetter = () => Promise<string | undefined>;
 
 class ApiService {

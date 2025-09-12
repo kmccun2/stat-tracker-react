@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Card, Badge } from "react-bootstrap";
+import { Card, Badge } from "react-bootstrap";
 import PlayerActionsDropdown from "./PlayerActionsDropdown";
 
 // Type definitions
@@ -31,9 +31,12 @@ const PlayerCardView: React.FC<PlayerCardViewProps> = ({
   apiService,
 }) => {
   return (
-    <Row className="g-4">
+    <div className="d-flex flex-wrap gap-4">
       {players.map((player: Player) => (
-        <Col key={player.id} xs={12} sm={6} md={4} lg={3}>
+        <div
+          key={player.id}
+          style={{ minWidth: "250px", maxWidth: "300px", flex: "1 1 250px" }}
+        >
           <div className="position-relative">
             <Link
               to={`/player/${player.id}`}
@@ -58,9 +61,9 @@ const PlayerCardView: React.FC<PlayerCardViewProps> = ({
               apiService={apiService}
             />
           </div>
-        </Col>
+        </div>
       ))}
-    </Row>
+    </div>
   );
 };
 

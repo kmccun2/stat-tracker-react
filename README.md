@@ -188,8 +188,6 @@ We've successfully implemented a simplified version focusing on core functionali
 
 ## 🚀 How to Run
 
-**Prerequisites**: Ensure the backend server is running first (see `stat-tracker-backend/README.md`)
-
 1. **Install Dependencies**:
 
    ```bash
@@ -197,11 +195,13 @@ We've successfully implemented a simplified version focusing on core functionali
    npm install
    ```
 
-2. **Start Development Server**:
+2. **Start the Full Stack Application**:
 
    ```bash
-   npm run dev
+   npm run dev:fullstack
    ```
+
+   This command will start both the frontend and backend servers concurrently.
 
 3. **Access App**: Open http://localhost:5173/
 

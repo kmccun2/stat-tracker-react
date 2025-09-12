@@ -1,10 +1,21 @@
+// React hooks for state management and side effects
 import { useState, useEffect } from 'react';
+
+// API service for backend communication
 import apiService from '../services/apiService';
+
+// Utility functions for age calculations
 import { calculateAge, getAgeRange } from '../utils/ageCalculation';
+
+// TypeScript type definitions
 import type { Player, AssessmentType, Goal, AssessmentResult } from '../types';
 
+/**
+ * Return type interface for the useAppData hook
+ * Defines all state and functions exposed by this hook
+ */
 interface UseAppDataReturn {
-  // State
+  // Application state
   players: Player[];
   assessmentTypes: AssessmentType[];
   goals: Goal[];
@@ -13,7 +24,7 @@ interface UseAppDataReturn {
   error: string | null;
   useBackend: boolean;
   
-  // Actions
+  // CRUD operations for players and assessments
   updateAssessmentResult: (playerId: string, assessmentType: string, value: string | number) => Promise<void>;
   getAssessmentResult: (playerId: string, assessmentType: string) => string | number;
   addPlayer: (newPlayer: any) => void;
@@ -23,15 +34,27 @@ interface UseAppDataReturn {
   updateAssessmentType: (updatedType: any) => void;
   deleteAssessmentType: (typeId: any) => void;
   
-  // Utility
+  // Utility services
   apiService: typeof apiService;
 }
 
 /**
- * Custom hook for managing application data loading and state
- * Extracts complex data loading logic from App.tsx
+ * useAppData Hook
+ * 
+ * Custom hook that manages all application data loading and state management.
+ * Provides a centralized way to handle:
+ * - Initial data loading from the backend API
+ * - Player, assessment type, and goal CRUD operations
+ * - Assessment result management
+ * - Loading and error states
+ * 
+ * This hook abstracts complex data management logic from components,
+ * making it easier to maintain and test the application state.
+ * 
+ * @returns UseAppDataReturn - Complete application state and operations
  */
 export const useAppData = (): UseAppDataReturn => {
+  // Core application state
   const [players, setPlayers] = useState<Player[]>([]);
   const [metrics, setMetrics] = useState<AssessmentType[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
@@ -39,7 +62,11 @@ export const useAppData = (): UseAppDataReturn => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Load data from backend API
+  /**
+   * Load data from backend API
+   * Fetches all necessary data for the application including players,
+   * metrics, goals, and assessment results
+   */
   const loadAPIData = async (): Promise<void> => {
     try {
       // Load players
@@ -106,13 +133,16 @@ export const useAppData = (): UseAppDataReturn => {
     loadData();
   }, []);
 
-  // Function to update assessment result
+  /**
+   * Update assessment result for a player
+   * Saves the result to the backend and updates local state
+   */
   const updateAssessmentResult = async (playerId: string, assessmentType: string, value: string | number): Promise<void> => {
     try {
       // Save to backend
       await apiService.saveAssessmentResult({
         playerId: parseInt(playerId),
-        assessmentType,
+        metric: assessmentType, // Use 'metric' as expected by the API
         resultValue: parseFloat(value.toString())
       });
       

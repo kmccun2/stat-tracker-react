@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Form, Badge, Row, Col } from "react-bootstrap";
+import { Table, Form, Badge } from "react-bootstrap";
 import {
   FaRulerVertical,
   FaWeight,
@@ -135,103 +135,101 @@ const AssessmentTable: React.FC<AssessmentTableProps> = ({ player }) => {
   };
 
   return (
-    <Row>
-      <Col>
-        {sortedCategories.map((category) => {
-          const categoryAssessments = assessmentsByCategory[category];
-          // Sort assessments within category by AssessmentTypeSort
-          const sortedAssessments = categoryAssessments.sort((a, b) => {
-            const aSort = parseInt(a.AssessmentTypeSort?.toString() || "999");
-            const bSort = parseInt(b.AssessmentTypeSort?.toString() || "999");
-            return aSort - bSort;
-          });
+    <div>
+      {sortedCategories.map((category) => {
+        const categoryAssessments = assessmentsByCategory[category];
+        // Sort assessments within category by AssessmentTypeSort
+        const sortedAssessments = categoryAssessments.sort((a, b) => {
+          const aSort = parseInt(a.AssessmentTypeSort?.toString() || "999");
+          const bSort = parseInt(b.AssessmentTypeSort?.toString() || "999");
+          return aSort - bSort;
+        });
 
-          return (
-            <div key={category} className="mb-4">
-              <h3 className="category-header d-flex align-items-center gap-2">
-                {getCategoryIcon(category)}
-                {category}
-              </h3>
+        return (
+          <div key={category} className="mb-4">
+            <h3 className="category-header d-flex align-items-center gap-2">
+              {getCategoryIcon(category)}
+              {category}
+            </h3>
 
-              <div className="assessment-table-container">
-                <Table responsive striped hover className="mb-0">
-                  <thead className="table-primary">
-                    <tr>
-                      <th>Assessment</th>
-                      <th>Goal</th>
-                      <th>Your Result</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {sortedAssessments.map((assessment: AssessmentType) => {
-                      const goalInfo = findGoal(
-                        player,
-                        assessment.AssessmentType
-                      ) as GoalInfo | null;
-                      const currentResult = getAssessmentResult(
-                        player.id,
-                        assessment.AssessmentType
-                      );
+            <div className="assessment-table-container">
+              <Table responsive striped hover className="mb-0">
+                <thead className="table-primary">
+                  <tr>
+                    <th>Assessment</th>
+                    <th>Goal</th>
+                    <th>Your Result</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedAssessments.map((assessment: AssessmentType) => {
+                    const goalInfo = findGoal(
+                      player,
+                      assessment.AssessmentType
+                    ) as GoalInfo | null;
+                    const currentResult = getAssessmentResult(
+                      player.id,
+                      assessment.AssessmentType
+                    );
 
-                      return (
-                        <tr
-                          key={assessment.AssessmentType}
-                          className="assessment-row"
-                        >
-                          <td>
-                            <div>
-                              <strong>{assessment.AssessmentType}</strong>
-                            </div>
-                          </td>
-                          <td>
-                            <Badge
-                              bg="outline-secondary"
-                              className="font-monospace"
-                            >
-                              {formatGoal(goalInfo)}
-                            </Badge>
-                          </td>
-                          <td>
-                            <div className="d-flex align-items-center gap-2">
-                              <Form.Control
-                                type="number"
-                                step="0.01"
-                                className="result-input"
-                                value={currentResult}
-                                onChange={(e) =>
-                                  handleResultChange(
-                                    assessment.AssessmentType,
-                                    e.target.value
-                                  )
-                                }
-                                placeholder="Enter result"
-                                size="sm"
-                              />
-                              {goalInfo?.unit && (
-                                <small className="text-muted">
-                                  {goalInfo.unit}
-                                </small>
-                              )}
-                            </div>
-                          </td>
-                          <td>
-                            {getGoalStatus(
-                              assessment.AssessmentType,
-                              currentResult
+                    return (
+                      <tr
+                        key={assessment.AssessmentType}
+                        className="assessment-row"
+                      >
+                        <td>
+                          <div>
+                            <strong>{assessment.AssessmentType}</strong>
+                          </div>
+                        </td>
+                        <td>
+                          <Badge
+                            bg="outline-secondary"
+                            className="font-monospace"
+                          >
+                            {formatGoal(goalInfo)}
+                          </Badge>
+                        </td>
+                        <td>
+                          <div className="d-flex align-items-center gap-2">
+                            <Form.Control
+                              type="number"
+                              step="0.01"
+                              className="result-input"
+                              value={currentResult}
+                              onChange={(e) =>
+                                handleResultChange(
+                                  assessment.AssessmentType,
+                                  e.target.value
+                                )
+                              }
+                              placeholder="Enter result"
+                              size="sm"
+                            />
+                            {goalInfo?.unit && (
+                              <small className="text-muted">
+                                {goalInfo.unit}
+                              </small>
                             )}
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </Table>
-              </div>
+                          </div>
+                        </td>
+                        <td>
+                          {getGoalStatus(
+                            assessment.AssessmentType,
+                            currentResult
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
             </div>
-          );
-        })}
-      </Col>
-    </Row>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 
