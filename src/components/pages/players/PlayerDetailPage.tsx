@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import {
   Container,
   Card,
@@ -11,7 +11,7 @@ import {
   Dropdown,
   Modal,
   Alert,
-} from "react-bootstrap";
+} from 'react-bootstrap';
 import {
   FaArrowLeft,
   FaBaseballBall,
@@ -19,16 +19,16 @@ import {
   FaChartLine,
   FaBullseye,
   FaChartArea,
-} from "react-icons/fa";
-import { useData } from "../../../context/DataContext";
-import AssessmentTable from "../assessments/AssessmentTable";
-import ExportButton from "../ExportButton";
-import PlayerProgressChart from "../../charts/PlayerProgressChart";
-import GoalComparisonChart from "../../charts/GoalComparisonChart";
-import CategoryRadarChart from "../../charts/CategoryRadarChart";
-import EditPlayerModal from "./EditPlayerModal";
+} from 'react-icons/fa';
+import { useData } from '../../../context/DataContext';
+import AssessmentTable from '../assessments/AssessmentTable';
+import ExportButton from '../../common/ExportButton';
+import PlayerProgressChart from '../../charts/PlayerProgressChart';
+import GoalComparisonChart from '../../charts/GoalComparisonChart';
+import CategoryRadarChart from '../../charts/CategoryRadarChart';
+import EditPlayerModal from '../../forms/EditPlayerModal';
 
-type TabKey = "assessments" | "progress" | "goals" | "radar";
+type TabKey = 'assessments' | 'progress' | 'goals' | 'radar';
 
 const PlayerDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -44,13 +44,13 @@ const PlayerDetailPage: React.FC = () => {
     deletePlayer,
     apiService,
   } = useData();
-  const [activeTab, setActiveTab] = useState<TabKey>("assessments");
+  const [activeTab, setActiveTab] = useState<TabKey>('assessments');
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [deleteError, setDeleteError] = useState<string>("");
+  const [deleteError, setDeleteError] = useState<string>('');
 
-  const player = players.find((p: any) => p.id === parseInt(id || "0"));
+  const player = players.find((p: any) => p.id === parseInt(id || '0'));
 
   const handlePlayerUpdated = (updatedPlayer: any): void => {
     updatePlayer(updatedPlayer);
@@ -62,23 +62,21 @@ const PlayerDetailPage: React.FC = () => {
 
   const handleConfirmDelete = async (): Promise<void> => {
     setIsDeleting(true);
-    setDeleteError("");
+    setDeleteError('');
 
     try {
       if (apiService) {
         const response = await apiService.deletePlayer(player.id);
         if (!response.success) {
-          throw new Error(response.message || "Failed to delete player");
+          throw new Error(response.message || 'Failed to delete player');
         }
       }
       deletePlayer(player.id);
       // Navigate back to players list after deletion
-      navigate("/");
+      navigate('/');
     } catch (error: any) {
-      console.error("Error deleting player:", error);
-      setDeleteError(
-        error.message || "Failed to delete player. Please try again."
-      );
+      console.error('Error deleting player:', error);
+      setDeleteError(error.message || 'Failed to delete player. Please try again.');
     } finally {
       setIsDeleting(false);
     }
@@ -98,9 +96,9 @@ const PlayerDetailPage: React.FC = () => {
     return (
       <Container>
         <div className="d-flex justify-content-center">
-          <div style={{ maxWidth: "800px", width: "100%" }}>
+          <div style={{ maxWidth: '800px', width: '100%' }}>
             <Breadcrumb>
-              <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
+              <Breadcrumb.Item linkAs={Link} linkProps={{ to: '/' }}>
                 Players
               </Breadcrumb.Item>
               <Breadcrumb.Item active>Player Not Found</Breadcrumb.Item>
@@ -138,7 +136,7 @@ const PlayerDetailPage: React.FC = () => {
     <Container>
       <div>
         <Breadcrumb>
-          <Breadcrumb.Item linkAs={Link} linkProps={{ to: "/" }}>
+          <Breadcrumb.Item linkAs={Link} linkProps={{ to: '/' }}>
             Players
           </Breadcrumb.Item>
           <Breadcrumb.Item active>{player.Name}</Breadcrumb.Item>
@@ -196,7 +194,7 @@ const PlayerDetailPage: React.FC = () => {
                   </div>
                 </div>
               </div>
-              <div className="text-md-end" style={{ minWidth: "200px" }}>
+              <div className="text-md-end" style={{ minWidth: '200px' }}>
                 <div className="export-section">
                   <h6 className="text-muted mb-2">Export Options</h6>
                   <ExportButton player={player} />
@@ -223,34 +221,22 @@ const PlayerDetailPage: React.FC = () => {
       <div className="mb-4">
         <Nav variant="tabs" activeKey={activeTab} onSelect={handleTabSelect}>
           <Nav.Item>
-            <Nav.Link
-              eventKey="assessments"
-              className="d-flex align-items-center gap-2"
-            >
+            <Nav.Link eventKey="assessments" className="d-flex align-items-center gap-2">
               <FaTable /> Assessment Data
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link
-              eventKey="progress"
-              className="d-flex align-items-center gap-2"
-            >
+            <Nav.Link eventKey="progress" className="d-flex align-items-center gap-2">
               <FaChartLine /> Progress Chart
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link
-              eventKey="goals"
-              className="d-flex align-items-center gap-2"
-            >
+            <Nav.Link eventKey="goals" className="d-flex align-items-center gap-2">
               <FaBullseye /> Goal Comparison
             </Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link
-              eventKey="radar"
-              className="d-flex align-items-center gap-2"
-            >
+            <Nav.Link eventKey="radar" className="d-flex align-items-center gap-2">
               <FaChartArea /> Category Overview
             </Nav.Link>
           </Nav.Item>
@@ -310,11 +296,7 @@ const PlayerDetailPage: React.FC = () => {
       />
 
       {/* Delete Confirmation Modal */}
-      <Modal
-        show={showDeleteModal}
-        onHide={() => setShowDeleteModal(false)}
-        centered
-      >
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Delete</Modal.Title>
         </Modal.Header>
@@ -328,8 +310,7 @@ const PlayerDetailPage: React.FC = () => {
             Are you sure you want to delete <strong>{player.Name}</strong>?
           </p>
           <p className="text-muted small">
-            This action cannot be undone. All assessment data for this player
-            will also be deleted.
+            This action cannot be undone. All assessment data for this player will also be deleted.
           </p>
         </Modal.Body>
         <Modal.Footer>
@@ -340,12 +321,8 @@ const PlayerDetailPage: React.FC = () => {
           >
             Cancel
           </Button>
-          <Button
-            variant="danger"
-            onClick={handleConfirmDelete}
-            disabled={isDeleting}
-          >
-            {isDeleting ? "Deleting..." : "Delete Player"}
+          <Button variant="danger" onClick={handleConfirmDelete} disabled={isDeleting}>
+            {isDeleting ? 'Deleting...' : 'Delete Player'}
           </Button>
         </Modal.Footer>
       </Modal>

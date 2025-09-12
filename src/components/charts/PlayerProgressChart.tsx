@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,9 +9,9 @@ import {
   Tooltip,
   Legend,
   BarElement,
-} from "chart.js";
-import { Line, Bar } from "react-chartjs-2";
-import { Card } from "react-bootstrap";
+} from 'chart.js';
+import { Line, Bar } from 'react-chartjs-2';
+import { Card } from 'react-bootstrap';
 
 ChartJS.register(
   CategoryScale,
@@ -48,29 +48,27 @@ interface PlayerProgressChartProps {
   assessmentResults: Record<string, any>;
   assessmentTypes: AssessmentType[];
   goals: any[];
-  type?: "line" | "bar";
+  type?: 'line' | 'bar';
 }
 
 const PlayerProgressChart: React.FC<PlayerProgressChartProps> = ({
   player,
   assessmentResults,
   assessmentTypes,
-  goals,
-  type = "line",
+  type = 'line',
 }) => {
   // Get assessment results for this player
   const playerResults: PlayerResult[] = assessmentTypes
-    .map((assessment) => {
-      const result =
-        assessmentResults[`${player.id}-${assessment.AssessmentType}`];
+    .map(assessment => {
+      const result = assessmentResults[`${player.id}-${assessment.AssessmentType}`];
       return {
         assessmentType: assessment.AssessmentType,
         category: assessment.Category,
         value: result ? parseFloat(result) : null,
-        unit: assessment.Format || "",
+        unit: assessment.Format || '',
       };
     })
-    .filter((result) => result.value !== null);
+    .filter(result => result.value !== null);
 
   if (playerResults.length === 0) {
     return (
@@ -86,33 +84,31 @@ const PlayerProgressChart: React.FC<PlayerProgressChartProps> = ({
   }
 
   // Group by category for better visualization
-  const categories = [...new Set(playerResults.map((r) => r.category))];
+  const categories = [...new Set(playerResults.map(r => r.category))];
   const categoryColors: Record<string, string> = {
-    General: "#6c757d",
-    Hitting: "#dc3545",
-    Throwing: "#fd7e14",
-    Strength: "#6f42c1",
-    Speed: "#198754",
-    Power: "#0d6efd",
+    General: '#6c757d',
+    Hitting: '#dc3545',
+    Throwing: '#fd7e14',
+    Strength: '#6f42c1',
+    Speed: '#198754',
+    Power: '#0d6efd',
   };
 
   const chartData = {
-    labels: playerResults.map((r) => r.assessmentType),
+    labels: playerResults.map(r => r.assessmentType),
     datasets: categories
-      .map((category) => ({
+      .map(category => ({
         label: category,
-        data: playerResults.map((r) =>
-          r.category === category ? r.value : null
-        ),
-        borderColor: categoryColors[category] || "#6c757d",
-        backgroundColor: (categoryColors[category] || "#6c757d") + "20",
+        data: playerResults.map(r => (r.category === category ? r.value : null)),
+        borderColor: categoryColors[category] || '#6c757d',
+        backgroundColor: (categoryColors[category] || '#6c757d') + '20',
         borderWidth: 2,
         pointRadius: 4,
         pointHoverRadius: 6,
         tension: 0.1,
         spanGaps: false,
       }))
-      .filter((dataset) => dataset.data.some((val) => val !== null)),
+      .filter(dataset => dataset.data.some(val => val !== null)),
   };
 
   const options = {
@@ -120,7 +116,7 @@ const PlayerProgressChart: React.FC<PlayerProgressChartProps> = ({
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: "top" as const,
+        position: 'top' as const,
         labels: {
           boxWidth: 12,
           padding: 15,
@@ -131,20 +127,16 @@ const PlayerProgressChart: React.FC<PlayerProgressChartProps> = ({
         text: `${player.Name}'s Assessment Results`,
         font: {
           size: 16,
-          weight: "bold" as const,
+          weight: 'bold' as const,
         },
       },
       tooltip: {
-        mode: "index" as const,
+        mode: 'index' as const,
         intersect: false,
         callbacks: {
           label: function (context: any) {
-            const result = playerResults.find(
-              (r) => r.assessmentType === context.label
-            );
-            return `${context.dataset.label}: ${context.parsed.y}${
-              result?.unit || ""
-            }`;
+            const result = playerResults.find(r => r.assessmentType === context.label);
+            return `${context.dataset.label}: ${context.parsed.y}${result?.unit || ''}`;
           },
         },
       },
@@ -154,13 +146,13 @@ const PlayerProgressChart: React.FC<PlayerProgressChartProps> = ({
         beginAtZero: true,
         title: {
           display: true,
-          text: "Performance Value",
+          text: 'Performance Value',
         },
       },
       x: {
         title: {
           display: true,
-          text: "Assessment Type",
+          text: 'Assessment Type',
         },
         ticks: {
           maxRotation: 45,
@@ -169,18 +161,18 @@ const PlayerProgressChart: React.FC<PlayerProgressChartProps> = ({
       },
     },
     interaction: {
-      mode: "nearest" as const,
-      axis: "x" as const,
+      mode: 'nearest' as const,
+      axis: 'x' as const,
       intersect: false,
     },
   };
 
-  const ChartComponent = type === "bar" ? Bar : Line;
+  const ChartComponent = type === 'bar' ? Bar : Line;
 
   return (
     <Card className="h-100">
       <Card.Body>
-        <div style={{ height: "400px" }}>
+        <div style={{ height: '400px' }}>
           <ChartComponent data={chartData} options={options} />
         </div>
       </Card.Body>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Container,
   Row,
@@ -11,9 +11,8 @@ import {
   Alert,
   Badge,
   Spinner,
-  Dropdown,
   ButtonGroup,
-} from "react-bootstrap";
+} from 'react-bootstrap';
 import {
   FaBullseye,
   FaPlus,
@@ -22,12 +21,11 @@ import {
   FaFilter,
   FaDownload,
   FaUpload,
-  FaInfoCircle,
   FaSave,
   FaTimes,
-} from "react-icons/fa";
-import apiService from "../../../services/apiService";
-import PageHeader from "../../common/PageHeader";
+} from 'react-icons/fa';
+import apiService from '../../../services/apiService';
+import PageHeader from '../../common/PageHeader';
 
 // Type definitions
 interface Goal {
@@ -48,11 +46,6 @@ interface Goal {
 
 interface AssessmentType {
   assessment_type: string;
-}
-
-interface Metric {
-  id: number;
-  name: string;
 }
 
 interface FormData {
@@ -78,77 +71,60 @@ interface Filters {
 const GoalsPage: React.FC = () => {
   const [goals, setGoals] = useState<Goal[]>([]);
   const [assessmentTypes, setAssessmentTypes] = useState<AssessmentType[]>([]);
-  const [metrics, setMetrics] = useState<Metric[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [showModal, setShowModal] = useState<boolean>(false);
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
   const [filters, setFilters] = useState<Filters>({
-    assessmentType: "",
-    ageRange: "",
-    gender: "",
+    assessmentType: '',
+    ageRange: '',
+    gender: '',
   });
 
   // Form state
   const [formData, setFormData] = useState<FormData>({
-    metric: "",
-    assessmentType: "",
-    unit: "",
-    ageMin: "",
-    ageMax: "",
-    gender: "",
+    metric: '',
+    assessmentType: '',
+    unit: '',
+    ageMin: '',
+    ageMax: '',
+    gender: '',
     lowIsGood: false,
     isRangeGoal: false,
-    scoreLowEnd: "",
-    scoreHighEnd: "",
-    scoreAverage: "",
+    scoreLowEnd: '',
+    scoreHighEnd: '',
+    scoreAverage: '',
   });
-
-  const genders = ["M", "F"];
 
   useEffect(() => {
     loadGoals();
     loadAssessmentTypes();
-    loadMetrics();
   }, []);
 
   const loadGoals = async (): Promise<void> => {
     try {
       setLoading(true);
-      const response = await apiService.request("/goals");
+      const response = await apiService.request('/goals');
       setGoals(response.data);
     } catch (err: any) {
-      setError("Failed to load goals");
-      console.error("Error loading goals:", err);
+      setError('Failed to load goals');
+      console.error('Error loading goals:', err);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const loadMetrics = async (): Promise<void> => {
-    try {
-      const response = await apiService.request("/metrics");
-      setMetrics(response.data);
-    } catch (err: any) {
-      console.error("Error loading metrics:", err);
-      // Fallback to empty array if metrics can't be loaded
-      setMetrics([]);
     }
   };
 
   const loadAssessmentTypes = async (): Promise<void> => {
     try {
       // This endpoint might need to be created or we can extract from goals
-      const response = await apiService.request("/assessment-types");
+      const response = await apiService.request('/assessment-types');
       setAssessmentTypes(response.data);
     } catch (err: any) {
-      console.error("Error loading assessment types:", err);
+      console.error('Error loading assessment types:', err);
       // For now, extract unique assessment types from goals
       if (goals.length > 0) {
-        const uniqueTypes = [...new Set(goals.map((g) => g.assessment_type))];
-        setAssessmentTypes(
-          uniqueTypes.map((type) => ({ assessment_type: type }))
-        );
+        const uniqueTypes = [...new Set(goals.map(g => g.assessment_type))];
+        setAssessmentTypes(uniqueTypes.map(type => ({ assessment_type: type })));
       }
     }
   };
@@ -160,29 +136,29 @@ const GoalsPage: React.FC = () => {
         metric: goal.metric || goal.assessment_type,
         assessmentType: goal.assessment_type,
         unit: goal.unit,
-        ageMin: goal.age_min?.toString() || "",
-        ageMax: goal.age_max?.toString() || "",
+        ageMin: goal.age_min?.toString() || '',
+        ageMax: goal.age_max?.toString() || '',
         gender: goal.gender,
         lowIsGood: goal.low_is_good === 1,
         isRangeGoal: goal.is_range_goal === 1,
-        scoreLowEnd: goal.score_low_end?.toString() || "",
-        scoreHighEnd: goal.score_high_end?.toString() || "",
-        scoreAverage: goal.score_average?.toString() || "",
+        scoreLowEnd: goal.score_low_end?.toString() || '',
+        scoreHighEnd: goal.score_high_end?.toString() || '',
+        scoreAverage: goal.score_average?.toString() || '',
       });
     } else {
       setEditingGoal(null);
       setFormData({
-        metric: "",
-        assessmentType: "",
-        unit: "",
-        ageMin: "",
-        ageMax: "",
-        gender: "",
+        metric: '',
+        assessmentType: '',
+        unit: '',
+        ageMin: '',
+        ageMax: '',
+        gender: '',
         lowIsGood: false,
         isRangeGoal: false,
-        scoreLowEnd: "",
-        scoreHighEnd: "",
-        scoreAverage: "",
+        scoreLowEnd: '',
+        scoreHighEnd: '',
+        scoreAverage: '',
       });
     }
     setShowModal(true);
@@ -191,7 +167,7 @@ const GoalsPage: React.FC = () => {
   const handleCloseModal = (): void => {
     setShowModal(false);
     setEditingGoal(null);
-    setError("");
+    setError('');
   };
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
@@ -202,7 +178,7 @@ const GoalsPage: React.FC = () => {
       const ageMax = parseInt(formData.ageMax);
 
       if (ageMin > ageMax) {
-        setError("Minimum age cannot be greater than maximum age");
+        setError('Minimum age cannot be greater than maximum age');
         return;
       }
 
@@ -214,88 +190,77 @@ const GoalsPage: React.FC = () => {
         gender: formData.gender,
         lowIsGood: formData.lowIsGood,
         isRangeGoal: formData.isRangeGoal,
-        scoreLowEnd: formData.scoreLowEnd
-          ? parseFloat(formData.scoreLowEnd)
-          : null,
-        scoreHighEnd: formData.scoreHighEnd
-          ? parseFloat(formData.scoreHighEnd)
-          : null,
-        scoreAverage: formData.scoreAverage
-          ? parseFloat(formData.scoreAverage)
-          : null,
+        scoreLowEnd: formData.scoreLowEnd ? parseFloat(formData.scoreLowEnd) : null,
+        scoreHighEnd: formData.scoreHighEnd ? parseFloat(formData.scoreHighEnd) : null,
+        scoreAverage: formData.scoreAverage ? parseFloat(formData.scoreAverage) : null,
       };
 
       if (editingGoal) {
         await apiService.request(`/goals/${editingGoal.id}`, {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify(submitData),
-          headers: { "Content-Type": "application/json" },
+          headers: { 'Content-Type': 'application/json' },
         });
       } else {
-        await apiService.request("/goals", {
-          method: "POST",
+        await apiService.request('/goals', {
+          method: 'POST',
           body: JSON.stringify(submitData),
-          headers: { "Content-Type": "application/json" },
+          headers: { 'Content-Type': 'application/json' },
         });
       }
 
       await loadGoals();
       handleCloseModal();
     } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to save goal");
-      console.error("Error saving goal:", err);
+      setError(err.response?.data?.message || 'Failed to save goal');
+      console.error('Error saving goal:', err);
     }
   };
 
   const handleDelete = async (goalId: number): Promise<void> => {
-    if (window.confirm("Are you sure you want to delete this goal?")) {
+    if (window.confirm('Are you sure you want to delete this goal?')) {
       try {
         await apiService.request(`/goals/${goalId}`, {
-          method: "DELETE",
+          method: 'DELETE',
         });
         await loadGoals();
       } catch (err: any) {
-        setError("Failed to delete goal");
-        console.error("Error deleting goal:", err);
+        setError('Failed to delete goal');
+        console.error('Error deleting goal:', err);
       }
     }
   };
 
   const handleInputChange = (e: React.ChangeEvent<any>): void => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
   const handleFilterChange = (e: React.ChangeEvent<any>): void => {
     const { name, value } = e.target;
-    setFilters((prev) => ({
+    setFilters(prev => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const filteredGoals = goals.filter((goal) => {
+  const filteredGoals = goals.filter(goal => {
     return (
-      (!filters.assessmentType ||
-        goal.assessment_type.includes(filters.assessmentType)) &&
+      (!filters.assessmentType || goal.assessment_type.includes(filters.assessmentType)) &&
       (!filters.ageRange || goal.age_range === filters.ageRange) &&
       (!filters.gender || goal.gender === filters.gender)
     );
   });
 
   // Get unique age ranges from the goals data for filter dropdown
-  const availableAgeRanges = [...new Set(goals.map((goal) => goal.age_range))]
-    .filter(Boolean)
-    .sort();
+  const availableAgeRanges = [...new Set(goals.map(goal => goal.age_range))].filter(Boolean).sort();
 
   const getGoalStatusBadge = (goal: Goal): JSX.Element => {
     const hasScoring =
-      goal.score_low_end !== null &&
-      goal.score_high_end !== null &&
-      goal.score_average !== null;
+      goal.score_low_end !== null && goal.score_high_end !== null && goal.score_average !== null;
     if (hasScoring) {
       return <Badge bg="success">Configured</Badge>;
     }
@@ -304,9 +269,9 @@ const GoalsPage: React.FC = () => {
 
   const getGoalTypeDescription = (goal: Goal): string => {
     if (goal.is_range_goal === 1) {
-      return "Range Goal";
+      return 'Range Goal';
     }
-    return goal.low_is_good === 1 ? "Lower is Better" : "Higher is Better";
+    return goal.low_is_good === 1 ? 'Lower is Better' : 'Higher is Better';
   };
 
   if (loading) {
@@ -314,7 +279,7 @@ const GoalsPage: React.FC = () => {
       <Container>
         <div
           className="d-flex justify-content-center align-items-center"
-          style={{ height: "50vh" }}
+          style={{ height: '50vh' }}
         >
           <Spinner animation="border" role="status">
             <span className="visually-hidden">Loading...</span>
@@ -343,7 +308,7 @@ const GoalsPage: React.FC = () => {
         {error && (
           <Row className="mb-3">
             <Col>
-              <Alert variant="danger" onClose={() => setError("")} dismissible>
+              <Alert variant="danger" onClose={() => setError('')} dismissible>
                 {error}
               </Alert>
             </Col>
@@ -367,14 +332,11 @@ const GoalsPage: React.FC = () => {
                       name="assessmentType"
                       value={filters.assessmentType}
                       onChange={handleFilterChange}
-                      style={{ width: "200px" }}
+                      style={{ width: '200px' }}
                     >
                       <option value="">All Assessment Types</option>
-                      {assessmentTypes.map((type) => (
-                        <option
-                          key={type.assessment_type}
-                          value={type.assessment_type}
-                        >
+                      {assessmentTypes.map(type => (
+                        <option key={type.assessment_type} value={type.assessment_type}>
                           {type.assessment_type}
                         </option>
                       ))}
@@ -387,10 +349,10 @@ const GoalsPage: React.FC = () => {
                       name="ageRange"
                       value={filters.ageRange}
                       onChange={handleFilterChange}
-                      style={{ width: "150px" }}
+                      style={{ width: '150px' }}
                     >
                       <option value="">All Age Ranges</option>
-                      {availableAgeRanges.map((range) => (
+                      {availableAgeRanges.map(range => (
                         <option key={range} value={range}>
                           {range}
                         </option>
@@ -404,7 +366,7 @@ const GoalsPage: React.FC = () => {
                       name="gender"
                       value={filters.gender}
                       onChange={handleFilterChange}
-                      style={{ width: "120px" }}
+                      style={{ width: '120px' }}
                     >
                       <option value="">All Genders</option>
                       <option value="M">Male</option>
@@ -412,17 +374,15 @@ const GoalsPage: React.FC = () => {
                     </Form.Select>
                   </Form.Group>
 
-                  {(filters.assessmentType ||
-                    filters.ageRange ||
-                    filters.gender) && (
+                  {(filters.assessmentType || filters.ageRange || filters.gender) && (
                     <Button
                       variant="outline-secondary"
                       size="sm"
                       onClick={() =>
                         setFilters({
-                          assessmentType: "",
-                          ageRange: "",
-                          gender: "",
+                          assessmentType: '',
+                          ageRange: '',
+                          gender: '',
                         })
                       }
                     >
@@ -441,15 +401,9 @@ const GoalsPage: React.FC = () => {
             <Card>
               <Card.Header>
                 <div className="d-flex justify-content-between align-items-center">
-                  <span>
-                    Goals Configuration ({filteredGoals.length} records)
-                  </span>
+                  <span>Goals Configuration ({filteredGoals.length} records)</span>
                   <div>
-                    <Button
-                      variant="outline-secondary"
-                      size="sm"
-                      className="me-2"
-                    >
+                    <Button variant="outline-secondary" size="sm" className="me-2">
                       <FaDownload className="me-1" /> Export
                     </Button>
                     <Button variant="outline-secondary" size="sm">
@@ -459,7 +413,7 @@ const GoalsPage: React.FC = () => {
                 </div>
               </Card.Header>
               <Card.Body className="p-0">
-                <div style={{ maxHeight: "600px", overflowY: "auto" }}>
+                <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
                   <Table striped hover responsive>
                     <thead className="bg-light sticky-top">
                       <tr>
@@ -473,7 +427,7 @@ const GoalsPage: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredGoals.map((goal) => (
+                      {filteredGoals.map(goal => (
                         <tr key={goal.id}>
                           <td>
                             <strong>{goal.assessment_type}</strong>
@@ -484,10 +438,8 @@ const GoalsPage: React.FC = () => {
                             <Badge bg="secondary">{goal.age_range}</Badge>
                           </td>
                           <td>
-                            <Badge
-                              bg={goal.gender === "M" ? "primary" : "info"}
-                            >
-                              {goal.gender === "M" ? "Male" : "Female"}
+                            <Badge bg={goal.gender === 'M' ? 'primary' : 'info'}>
+                              {goal.gender === 'M' ? 'Male' : 'Female'}
                             </Badge>
                           </td>
                           <td>
@@ -538,9 +490,7 @@ const GoalsPage: React.FC = () => {
                 {filteredGoals.length === 0 && (
                   <div className="text-center py-4">
                     <p className="text-muted mb-0">No goals found</p>
-                    <small className="text-muted">
-                      Add some goals to get started
-                    </small>
+                    <small className="text-muted">Add some goals to get started</small>
                   </div>
                 )}
               </Card.Body>
@@ -552,9 +502,7 @@ const GoalsPage: React.FC = () => {
       {/* Add/Edit Goal Modal */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
-          <Modal.Title>
-            {editingGoal ? "Edit Goal" : "Add New Goal"}
-          </Modal.Title>
+          <Modal.Title>{editingGoal ? 'Edit Goal' : 'Add New Goal'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {error && (
@@ -715,7 +663,7 @@ const GoalsPage: React.FC = () => {
               </Button>
               <Button variant="primary" type="submit">
                 <FaSave className="me-1" />
-                {editingGoal ? "Update Goal" : "Create Goal"}
+                {editingGoal ? 'Update Goal' : 'Create Goal'}
               </Button>
             </div>
           </Form>

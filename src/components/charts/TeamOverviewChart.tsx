@@ -1,5 +1,5 @@
 // React library for component creation
-import React from "react";
+import React from 'react';
 
 // Chart.js components and configuration for data visualization
 import {
@@ -11,24 +11,16 @@ import {
   Tooltip,
   Legend,
   ArcElement,
-} from "chart.js";
+} from 'chart.js';
 
 // React Chart.js 2 chart components
-import { Bar, Doughnut } from "react-chartjs-2";
+import { Bar, Doughnut } from 'react-chartjs-2';
 
 // React Bootstrap UI components for layout
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col } from 'react-bootstrap';
 
 // Register Chart.js components for use in charts
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  ArcElement,
-  Title,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
 /**
  * Player interface for chart data processing
@@ -63,8 +55,6 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
   players,
   assessmentResults,
   assessmentTypes,
-  goals,
-  findGoal,
   isGoalMet,
 }) => {
   // Calculate goal achievement rates by category
@@ -75,12 +65,11 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
         acc[category] = { total: 0, met: 0, notEntered: 0 };
       }
 
-      players.forEach((player) => {
-        const result =
-          assessmentResults[`${player.id}-${assessment.AssessmentType}`];
+      players.forEach(player => {
+        const result = assessmentResults[`${player.id}-${assessment.AssessmentType}`];
         acc[category].total++;
 
-        if (!result || result === "") {
+        if (!result || result === '') {
           acc[category].notEntered++;
         } else {
           const goalMet = isGoalMet(player, assessment.AssessmentType, result);
@@ -98,15 +87,14 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
   // Calculate overall team stats
   const totalAssessments = players.length * assessmentTypes.length;
   const totalEntered = Object.values(assessmentResults).filter(
-    (result) => result && result !== ""
+    result => result && result !== ''
   ).length;
   const totalGoalsMet = players.reduce((total, player) => {
     return (
       total +
       assessmentTypes.reduce((playerTotal, assessment) => {
-        const result =
-          assessmentResults[`${player.id}-${assessment.AssessmentType}`];
-        if (result && result !== "") {
+        const result = assessmentResults[`${player.id}-${assessment.AssessmentType}`];
+        if (result && result !== '') {
           const goalMet = isGoalMet(player, assessment.AssessmentType, result);
           return playerTotal + (goalMet ? 1 : 0);
         }
@@ -120,16 +108,14 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
     labels: Object.keys(categoryStats),
     datasets: [
       {
-        label: "Goals Met",
-        data: Object.values(categoryStats).map((stat) =>
+        label: 'Goals Met',
+        data: Object.values(categoryStats).map(stat =>
           stat.total - stat.notEntered > 0
-            ? parseFloat(
-                ((stat.met / (stat.total - stat.notEntered)) * 100).toFixed(1)
-              )
+            ? parseFloat(((stat.met / (stat.total - stat.notEntered)) * 100).toFixed(1))
             : 0
         ),
-        backgroundColor: "#198754",
-        borderColor: "#198754",
+        backgroundColor: '#198754',
+        borderColor: '#198754',
         borderWidth: 1,
       },
     ],
@@ -144,10 +130,10 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
       },
       title: {
         display: true,
-        text: "Goal Achievement Rate by Category (%)",
+        text: 'Goal Achievement Rate by Category (%)',
         font: {
           size: 14,
-          weight: "bold" as const,
+          weight: 'bold' as const,
         },
       },
       tooltip: {
@@ -172,7 +158,7 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
         max: 100,
         title: {
           display: true,
-          text: "Achievement Rate (%)",
+          text: 'Achievement Rate (%)',
         },
       },
     },
@@ -180,17 +166,13 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
 
   // Overall Progress Doughnut Chart
   const progressData = {
-    labels: ["Goals Met", "Goals Not Met", "Not Entered"],
+    labels: ['Goals Met', 'Goals Not Met', 'Not Entered'],
     datasets: [
       {
-        data: [
-          totalGoalsMet,
-          totalEntered - totalGoalsMet,
-          totalAssessments - totalEntered,
-        ],
-        backgroundColor: ["#198754", "#dc3545", "#6c757d"],
+        data: [totalGoalsMet, totalEntered - totalGoalsMet, totalAssessments - totalEntered],
+        backgroundColor: ['#198754', '#dc3545', '#6c757d'],
         borderWidth: 2,
-        borderColor: "#fff",
+        borderColor: '#fff',
       },
     ],
   };
@@ -200,7 +182,7 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: "bottom" as const,
+        position: 'bottom' as const,
         labels: {
           padding: 20,
           usePointStyle: true,
@@ -208,10 +190,10 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
       },
       title: {
         display: true,
-        text: "Overall Team Progress",
+        text: 'Overall Team Progress',
         font: {
           size: 14,
-          weight: "bold" as const,
+          weight: 'bold' as const,
         },
       },
       tooltip: {
@@ -228,19 +210,18 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
 
   // Player Completion Stats
   const playerCompletionData = {
-    labels: players.map((p) => p.Name),
+    labels: players.map(p => p.Name),
     datasets: [
       {
-        label: "Assessments Completed",
-        data: players.map((player) => {
-          return assessmentTypes.filter((assessment) => {
-            const result =
-              assessmentResults[`${player.id}-${assessment.AssessmentType}`];
-            return result && result !== "";
+        label: 'Assessments Completed',
+        data: players.map(player => {
+          return assessmentTypes.filter(assessment => {
+            const result = assessmentResults[`${player.id}-${assessment.AssessmentType}`];
+            return result && result !== '';
           }).length;
         }),
-        backgroundColor: "#0d6efd",
-        borderColor: "#0d6efd",
+        backgroundColor: '#0d6efd',
+        borderColor: '#0d6efd',
         borderWidth: 1,
       },
     ],
@@ -255,10 +236,10 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
       },
       title: {
         display: true,
-        text: "Assessment Completion by Player",
+        text: 'Assessment Completion by Player',
         font: {
           size: 14,
-          weight: "bold" as const,
+          weight: 'bold' as const,
         },
       },
     },
@@ -268,7 +249,7 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
         max: assessmentTypes.length,
         title: {
           display: true,
-          text: "Assessments Completed",
+          text: 'Assessments Completed',
         },
       },
       x: {
@@ -285,7 +266,7 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
       <Col lg={6} className="mb-4">
         <Card className="h-100">
           <Card.Body>
-            <div style={{ height: "300px" }}>
+            <div style={{ height: '300px' }}>
               <Bar data={categoryChartData} options={categoryChartOptions} />
             </div>
           </Card.Body>
@@ -295,7 +276,7 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
       <Col lg={6} className="mb-4">
         <Card className="h-100">
           <Card.Body>
-            <div style={{ height: "300px" }}>
+            <div style={{ height: '300px' }}>
               <Doughnut data={progressData} options={progressOptions} />
             </div>
           </Card.Body>
@@ -305,11 +286,8 @@ const TeamOverviewChart: React.FC<TeamOverviewChartProps> = ({
       <Col lg={12} className="mb-4">
         <Card className="h-100">
           <Card.Body>
-            <div style={{ height: "350px" }}>
-              <Bar
-                data={playerCompletionData}
-                options={playerCompletionOptions}
-              />
+            <div style={{ height: '350px' }}>
+              <Bar data={playerCompletionData} options={playerCompletionOptions} />
             </div>
           </Card.Body>
         </Card>

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,9 +11,9 @@ import {
   PointElement,
   LineElement,
   Filler,
-} from "chart.js";
-import { Radar } from "react-chartjs-2";
-import { Card } from "react-bootstrap";
+} from 'chart.js';
+import { Radar } from 'react-chartjs-2';
+import { Card } from 'react-bootstrap';
 
 ChartJS.register(
   CategoryScale,
@@ -44,43 +44,35 @@ interface CategoryRadarChartProps {
   assessmentResults: Record<string, any>;
   assessmentTypes: AssessmentType[];
   findGoal: (player: Player, assessmentType: string) => any;
-  isGoalMet: (
-    player: Player,
-    assessmentType: string,
-    result: any
-  ) => boolean | null;
+  isGoalMet: (player: Player, assessmentType: string, result: any) => boolean | null;
 }
 
 const CategoryRadarChart: React.FC<CategoryRadarChartProps> = ({
   player,
   assessmentResults,
   assessmentTypes,
-  findGoal,
   isGoalMet,
 }) => {
   // Group assessments by category and calculate average performance
-  const categories = [...new Set(assessmentTypes.map((a) => a.Category))];
+  const categories = [...new Set(assessmentTypes.map(a => a.Category))];
 
-  const categoryData = categories.map((category) => {
-    const categoryAssessments = assessmentTypes.filter(
-      (a) => a.Category === category
-    );
+  const categoryData = categories.map(category => {
+    const categoryAssessments = assessmentTypes.filter(a => a.Category === category);
     const results = categoryAssessments
-      .map((assessment) => {
-        const result =
-          assessmentResults[`${player.id}-${assessment.AssessmentType}`];
+      .map(assessment => {
+        const result = assessmentResults[`${player.id}-${assessment.AssessmentType}`];
         if (!result) return null;
 
         const goalMet = isGoalMet(player, assessment.AssessmentType, result);
         return goalMet !== null ? (goalMet ? 100 : 50) : null; // 100 for met, 50 for not met, null for no goal
       })
-      .filter((r) => r !== null) as number[];
+      .filter(r => r !== null) as number[];
 
     if (results.length === 0) return 0;
     return results.reduce((sum, r) => sum + r, 0) / results.length;
   });
 
-  const hasData = categoryData.some((value) => value > 0);
+  const hasData = categoryData.some(value => value > 0);
 
   if (!hasData) {
     return (
@@ -101,13 +93,13 @@ const CategoryRadarChart: React.FC<CategoryRadarChartProps> = ({
       {
         label: `${player.Name}'s Performance`,
         data: categoryData,
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        borderColor: "rgba(54, 162, 235, 1)",
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        borderColor: 'rgba(54, 162, 235, 1)',
         borderWidth: 2,
-        pointBackgroundColor: "rgba(54, 162, 235, 1)",
-        pointBorderColor: "#fff",
-        pointHoverBackgroundColor: "#fff",
-        pointHoverBorderColor: "rgba(54, 162, 235, 1)",
+        pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+        pointBorderColor: '#fff',
+        pointHoverBackgroundColor: '#fff',
+        pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
       },
     ],
   };
@@ -117,7 +109,7 @@ const CategoryRadarChart: React.FC<CategoryRadarChartProps> = ({
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: "top" as const,
+        position: 'top' as const,
         labels: {
           boxWidth: 12,
           padding: 15,
@@ -128,15 +120,13 @@ const CategoryRadarChart: React.FC<CategoryRadarChartProps> = ({
         text: `${player.Name}'s Category Performance Radar`,
         font: {
           size: 16,
-          weight: "bold" as const,
+          weight: 'bold' as const,
         },
       },
       tooltip: {
         callbacks: {
           label: function (context: any) {
-            return `${context.label}: ${context.parsed.r.toFixed(
-              1
-            )}% goal achievement`;
+            return `${context.label}: ${context.parsed.r.toFixed(1)}% goal achievement`;
           },
         },
       },
@@ -149,7 +139,7 @@ const CategoryRadarChart: React.FC<CategoryRadarChartProps> = ({
         ticks: {
           stepSize: 20,
           callback: function (value: any) {
-            return value + "%";
+            return value + '%';
           },
         },
         pointLabels: {
@@ -158,10 +148,10 @@ const CategoryRadarChart: React.FC<CategoryRadarChartProps> = ({
           },
         },
         grid: {
-          color: "rgba(0, 0, 0, 0.1)",
+          color: 'rgba(0, 0, 0, 0.1)',
         },
         angleLines: {
-          color: "rgba(0, 0, 0, 0.1)",
+          color: 'rgba(0, 0, 0, 0.1)',
         },
       },
     },
@@ -170,7 +160,7 @@ const CategoryRadarChart: React.FC<CategoryRadarChartProps> = ({
   return (
     <Card className="h-100">
       <Card.Body>
-        <div style={{ height: "400px" }}>
+        <div style={{ height: '400px' }}>
           <Radar data={chartData} options={options} />
         </div>
         <div className="mt-3 text-center">

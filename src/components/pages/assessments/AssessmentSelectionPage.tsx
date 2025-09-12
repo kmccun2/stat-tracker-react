@@ -1,18 +1,7 @@
-import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Badge,
-  Alert,
-  Form,
-} from "react-bootstrap";
-import { FaClipboardList, FaArrowLeft, FaPlay, FaFilter } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
-import { useData } from "../../../context/DataContext";
-import PageHeader from "../../common/PageHeader";
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Button, Badge, Alert, Form } from 'react-bootstrap';
+import { FaClipboardList, FaPlay, FaFilter } from 'react-icons/fa';
+import { useData } from '../../../context/DataContext';
 
 // Type definitions
 interface AssessmentType {
@@ -22,17 +11,15 @@ interface AssessmentType {
   style?: string;
 }
 
-type CategoryFilterType = "all" | string;
+type CategoryFilterType = 'all' | string;
 
 const AssessmentSelectionPage: React.FC = () => {
   const { apiService } = useData();
-  const navigate = useNavigate();
   const [assessmentTypes, setAssessmentTypes] = useState<AssessmentType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<string>('');
   const [selectedType, setSelectedType] = useState<AssessmentType | null>(null);
-  const [categoryFilter, setCategoryFilter] =
-    useState<CategoryFilterType>("all");
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilterType>('all');
 
   useEffect(() => {
     fetchAssessmentTypes();
@@ -41,45 +28,43 @@ const AssessmentSelectionPage: React.FC = () => {
   const fetchAssessmentTypes = async (): Promise<void> => {
     try {
       setLoading(true);
-      setError("");
+      setError('');
       const response = await apiService.getMetrics();
       if (response.success) {
         setAssessmentTypes(response.data);
       } else {
-        throw new Error("Failed to fetch assessment types");
+        throw new Error('Failed to fetch assessment types');
       }
     } catch (err) {
-      console.error("Error fetching assessment types:", err);
-      setError("Failed to load assessment types. Please try again.");
+      console.error('Error fetching assessment types:', err);
+      setError('Failed to load assessment types. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   const getUniqueCategories = (): string[] => {
-    const categories = [
-      ...new Set(assessmentTypes.map((type) => type.category)),
-    ];
-    return categories.filter((category) => category).sort();
+    const categories = [...new Set(assessmentTypes.map(type => type.category))];
+    return categories.filter(category => category).sort();
   };
 
   const getFilteredAssessmentTypes = (): AssessmentType[] => {
-    if (categoryFilter === "all") {
+    if (categoryFilter === 'all') {
       return assessmentTypes;
     }
-    return assessmentTypes.filter((type) => type.category === categoryFilter);
+    return assessmentTypes.filter(type => type.category === categoryFilter);
   };
 
   const getCategoryBadgeColor = (category: string): string => {
     const colors: { [key: string]: string } = {
-      Hitting: "primary",
-      Pitching: "success",
-      Fielding: "info",
-      Speed: "warning",
-      Strength: "danger",
-      Mental: "secondary",
+      Hitting: 'primary',
+      Pitching: 'success',
+      Fielding: 'info',
+      Speed: 'warning',
+      Strength: 'danger',
+      Mental: 'secondary',
     };
-    return colors[category] || "light";
+    return colors[category] || 'light';
   };
 
   const handleSelectAssessmentType = (assessmentType: AssessmentType): void => {
@@ -93,10 +78,6 @@ const AssessmentSelectionPage: React.FC = () => {
       alert(`Starting assessment: ${selectedType.assessment_type}`);
       // Example: navigate(`/assessment/new?type=${selectedType.assessment_type}`);
     }
-  };
-
-  const handleGoBack = (): void => {
-    navigate(-1);
   };
 
   if (loading) {
@@ -129,12 +110,9 @@ const AssessmentSelectionPage: React.FC = () => {
             <FaFilter className="text-muted" />
             <label className="form-label mb-0">Filter by Category</label>
           </div>
-          <Form.Select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-          >
+          <Form.Select value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)}>
             <option value="all">All Categories</option>
-            {getUniqueCategories().map((category) => (
+            {getUniqueCategories().map(category => (
               <option key={category} value={category}>
                 {category}
               </option>
@@ -152,63 +130,47 @@ const AssessmentSelectionPage: React.FC = () => {
                 <FaClipboardList className="text-muted mb-3" size={48} />
                 <h5 className="text-muted">No assessment types found</h5>
                 <p className="text-muted">
-                  {categoryFilter !== "all"
+                  {categoryFilter !== 'all'
                     ? `No assessment types available in the ${categoryFilter} category.`
-                    : "No assessment types have been configured."}
+                    : 'No assessment types have been configured.'}
                 </p>
               </Card.Body>
             </Card>
           </Col>
         ) : (
-          getFilteredAssessmentTypes().map(
-            (type: AssessmentType, index: number) => (
-              <Col
-                key={type.assessment_type}
-                xs={12}
-                sm={6}
-                lg={4}
-                xl={3}
-                className="mb-3"
+          getFilteredAssessmentTypes().map((type: AssessmentType, _index: number) => (
+            <Col key={type.assessment_type} xs={12} sm={6} lg={4} xl={3} className="mb-3">
+              <Card
+                className={`h-100 ${
+                  selectedType?.assessment_type === type.assessment_type
+                    ? 'border-primary shadow'
+                    : 'border-0'
+                }`}
+                style={{ cursor: 'pointer', transition: 'all 0.2s' }}
+                onClick={() => handleSelectAssessmentType(type)}
               >
-                <Card
-                  className={`h-100 ${
-                    selectedType?.assessment_type === type.assessment_type
-                      ? "border-primary shadow"
-                      : "border-0"
-                  }`}
-                  style={{ cursor: "pointer", transition: "all 0.2s" }}
-                  onClick={() => handleSelectAssessmentType(type)}
-                >
-                  <Card.Body className="d-flex flex-column">
-                    <div className="d-flex justify-content-between align-items-start mb-3">
-                      <Badge bg={getCategoryBadgeColor(type.category)}>
-                        {type.category}
-                      </Badge>
-                      {selectedType?.assessment_type ===
-                        type.assessment_type && (
-                        <Badge bg="primary">Selected</Badge>
-                      )}
-                    </div>
+                <Card.Body className="d-flex flex-column">
+                  <div className="d-flex justify-content-between align-items-start mb-3">
+                    <Badge bg={getCategoryBadgeColor(type.category)}>{type.category}</Badge>
+                    {selectedType?.assessment_type === type.assessment_type && (
+                      <Badge bg="primary">Selected</Badge>
+                    )}
+                  </div>
 
-                    <h6 className="card-title">{type.assessment_type}</h6>
+                  <h6 className="card-title">{type.assessment_type}</h6>
 
-                    <div className="mt-auto">
-                      <small className="text-muted">
-                        Format: {type.format || "Standard"}
-                      </small>
-                      {type.style && (
-                        <div>
-                          <small className="text-muted">
-                            Style: {type.style}
-                          </small>
-                        </div>
-                      )}
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            )
-          )
+                  <div className="mt-auto">
+                    <small className="text-muted">Format: {type.format || 'Standard'}</small>
+                    {type.style && (
+                      <div>
+                        <small className="text-muted">Style: {type.style}</small>
+                      </div>
+                    )}
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          ))
         )}
       </Row>
 
@@ -229,12 +191,10 @@ const AssessmentSelectionPage: React.FC = () => {
                         {selectedType.category}
                       </Badge>
                       <span className="text-muted">
-                        Format: {selectedType.format || "Standard"}
+                        Format: {selectedType.format || 'Standard'}
                       </span>
                       {selectedType.style && (
-                        <span className="text-muted">
-                          Style: {selectedType.style}
-                        </span>
+                        <span className="text-muted">Style: {selectedType.style}</span>
                       )}
                     </div>
                   </Col>

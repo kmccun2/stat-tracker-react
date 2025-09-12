@@ -1,14 +1,7 @@
-import React from "react";
-import { Container, Alert, Card } from "react-bootstrap";
-import {
-  FaCog,
-  FaUser,
-  FaLock,
-  FaDatabase,
-  FaPalette,
-  FaFileImport,
-} from "react-icons/fa";
-import PageHeader from "../../common/PageHeader";
+import React from 'react';
+import { Alert, Card } from 'react-bootstrap';
+import { FaCog, FaUser, FaLock, FaDatabase, FaPalette, FaFileImport } from 'react-icons/fa';
+import PageHeader from '../../common/PageHeader';
 
 const SettingsPage: React.FC = () => {
   return (
@@ -62,8 +55,7 @@ const SettingsPage: React.FC = () => {
                   <FaDatabase /> Data Management
                 </Card.Title>
                 <Card.Text className="text-muted">
-                  Import/export data, backup settings, and configure data
-                  sources.
+                  Import/export data, backup settings, and configure data sources.
                 </Card.Text>
               </Card.Body>
             </Card>

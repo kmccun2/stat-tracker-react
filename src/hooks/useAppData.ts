@@ -8,7 +8,7 @@ import apiService from '../services/apiService';
 import { calculateAge, getAgeRange } from '../utils/ageCalculation';
 
 // TypeScript type definitions
-import type { Player, AssessmentType, Goal, AssessmentResult } from '../types';
+import type { Player, AssessmentType, Goal } from '../types';
 
 /**
  * Return type interface for the useAppData hook

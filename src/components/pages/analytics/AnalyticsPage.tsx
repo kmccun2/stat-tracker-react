@@ -1,27 +1,20 @@
 // React library for component creation
-import React from "react";
+import React from 'react';
 
 // React Bootstrap UI components for layout and feedback
-import { Container, Alert, Card, Badge } from "react-bootstrap";
+import { Alert, Card, Badge } from 'react-bootstrap';
 
 // Font Awesome React icons for visual indicators
-import {
-  FaChartLine,
-  FaChartBar,
-  FaBullseye,
-  FaTrophy,
-  FaUsers,
-  FaClipboardList,
-} from "react-icons/fa";
+import { FaChartLine, FaBullseye, FaTrophy, FaUsers, FaClipboardList } from 'react-icons/fa';
 
 // Data context hook for accessing application state
-import { useData } from "../../../context/DataContext";
+import { useData } from '../../../context/DataContext';
 
 // Chart components for data visualization
-import TeamOverviewChart from "../../charts/TeamOverviewChart";
+import TeamOverviewChart from '../../charts/TeamOverviewChart';
 
 // Shared UI components
-import PageHeader from "../../common/PageHeader";
+import PageHeader from '../../common/PageHeader';
 
 /**
  * Player interface for type safety in analytics calculations
@@ -31,7 +24,7 @@ interface Player {
   id: number;
   Name: string;
   age: number;
-  Gender: "M" | "F";
+  Gender: 'M' | 'F';
 }
 
 /**
@@ -64,14 +57,7 @@ interface AssessmentResults {
  * coaches with insights into team performance and progress.
  */
 const ReportsPage: React.FC = () => {
-  const {
-    players,
-    assessmentTypes,
-    goals,
-    getAssessmentResult,
-    findGoal,
-    isGoalMet,
-  } = useData();
+  const { players, assessmentTypes, goals, getAssessmentResult, findGoal, isGoalMet } = useData();
 
   // Calculate summary statistics
   const totalPlayers: number = players.length;
@@ -90,40 +76,25 @@ const ReportsPage: React.FC = () => {
 
   const totalEntered: number = Object.keys(assessmentResults).length;
   const completionRate: string =
-    totalAssessments > 0
-      ? ((totalEntered / totalAssessments) * 100).toFixed(1)
-      : "0";
+    totalAssessments > 0 ? ((totalEntered / totalAssessments) * 100).toFixed(1) : '0';
 
   // Calculate goals met
-  const totalGoalsMet: number = players.reduce(
-    (total: number, player: Player) => {
-      return (
-        total +
-        assessmentTypes.reduce(
-          (playerTotal: number, assessment: AssessmentType) => {
-            const result = getAssessmentResult(
-              player.id,
-              assessment.AssessmentType
-            );
-            if (result && result !== "") {
-              const goalMet = isGoalMet(
-                player,
-                assessment.AssessmentType,
-                result
-              );
-              return playerTotal + (goalMet ? 1 : 0);
-            }
-            return playerTotal;
-          },
-          0
-        )
-      );
-    },
-    0
-  );
+  const totalGoalsMet: number = players.reduce((total: number, player: Player) => {
+    return (
+      total +
+      assessmentTypes.reduce((playerTotal: number, assessment: AssessmentType) => {
+        const result = getAssessmentResult(player.id, assessment.AssessmentType);
+        if (result && result !== '') {
+          const goalMet = isGoalMet(player, assessment.AssessmentType, result);
+          return playerTotal + (goalMet ? 1 : 0);
+        }
+        return playerTotal;
+      }, 0)
+    );
+  }, 0);
 
   const achievementRate: string =
-    totalEntered > 0 ? ((totalGoalsMet / totalEntered) * 100).toFixed(1) : "0";
+    totalEntered > 0 ? ((totalGoalsMet / totalEntered) * 100).toFixed(1) : '0';
 
   return (
     <>
@@ -137,7 +108,7 @@ const ReportsPage: React.FC = () => {
       <div className="page-main-content">
         {/* Summary Statistics */}
         <div className="d-flex flex-wrap gap-3 mb-4">
-          <div className="flex-fill" style={{ minWidth: "250px" }}>
+          <div className="flex-fill" style={{ minWidth: '250px' }}>
             <Card className="border-0 h-100">
               <Card.Body className="text-center">
                 <FaUsers className="text-primary mb-2" size={32} />
@@ -146,7 +117,7 @@ const ReportsPage: React.FC = () => {
               </Card.Body>
             </Card>
           </div>
-          <div className="flex-fill" style={{ minWidth: "250px" }}>
+          <div className="flex-fill" style={{ minWidth: '250px' }}>
             <Card className="border-0 h-100">
               <Card.Body className="text-center">
                 <FaClipboardList className="text-info mb-2" size={32} />
@@ -156,7 +127,7 @@ const ReportsPage: React.FC = () => {
               </Card.Body>
             </Card>
           </div>
-          <div className="flex-fill" style={{ minWidth: "250px" }}>
+          <div className="flex-fill" style={{ minWidth: '250px' }}>
             <Card className="border-0 h-100">
               <Card.Body className="text-center">
                 <FaTrophy className="text-success mb-2" size={32} />
@@ -166,20 +137,14 @@ const ReportsPage: React.FC = () => {
               </Card.Body>
             </Card>
           </div>
-          <div className="flex-fill" style={{ minWidth: "250px" }}>
+          <div className="flex-fill" style={{ minWidth: '250px' }}>
             <Card className="border-0 h-100">
               <Card.Body className="text-center">
                 <FaBullseye className="text-warning mb-2" size={32} />
                 <h3 className="mb-1">{assessmentTypes.length}</h3>
                 <p className="text-muted mb-0">Assessment Types</p>
                 <Badge bg="warning">
-                  {
-                    [
-                      ...new Set(
-                        assessmentTypes.map((a: AssessmentType) => a.Category)
-                      ),
-                    ].length
-                  }{" "}
+                  {[...new Set(assessmentTypes.map((a: AssessmentType) => a.Category))].length}{' '}
                   Categories
                 </Badge>
               </Card.Body>
@@ -202,13 +167,13 @@ const ReportsPage: React.FC = () => {
             <Alert variant="info" className="text-center">
               <Alert.Heading>No Data Available</Alert.Heading>
               <p>
-                Start entering assessment results for your players to see
-                detailed analytics and charts.
+                Start entering assessment results for your players to see detailed analytics and
+                charts.
               </p>
               <hr />
               <p className="mb-0">
-                Visit individual player pages to input assessment data, then
-                return here to view comprehensive reports.
+                Visit individual player pages to input assessment data, then return here to view
+                comprehensive reports.
               </p>
             </Alert>
           </div>

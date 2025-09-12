@@ -15,8 +15,3 @@ const auth0Config: Auth0Config = {
 };
 
 export default auth0Config;
-
-// Environment variables to add to your .env file:
-// VITE_AUTH0_DOMAIN=your-domain.us.auth0.com
-// VITE_AUTH0_CLIENT_ID=your-client-id
-// VITE_AUTH0_AUDIENCE=https://stat-tracker-api

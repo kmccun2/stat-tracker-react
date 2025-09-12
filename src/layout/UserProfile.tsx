@@ -1,8 +1,8 @@
-import React from "react";
-import { Dropdown, Badge, Spinner } from "react-bootstrap";
-import { FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
-import { useAuth } from "../context/AuthContext";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Dropdown, Spinner } from 'react-bootstrap';
+import { FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 const UserProfile: React.FC = () => {
   const { user, userProfile, isAuthenticated, isLoading, logout } = useAuth();
@@ -20,8 +20,7 @@ const UserProfile: React.FC = () => {
     return null;
   }
 
-  const displayName =
-    userProfile?.firstName || user?.given_name || user?.name || "Coach";
+  const displayName = userProfile?.firstName || user?.given_name || user?.name || 'Coach';
   const displayEmail = user?.email;
   const profilePicture = user?.picture;
 
@@ -30,11 +29,11 @@ const UserProfile: React.FC = () => {
       <Dropdown.Toggle
         variant="link"
         className="d-flex align-items-center gap-2 text-decoration-none p-0 border-0"
-        style={{ boxShadow: "none" }}
+        style={{ boxShadow: 'none' }}
       >
         <div className="d-none d-md-block text-end">
           <div className="small fw-bold text-white">{displayName}</div>
-          <div className="text-white" style={{ fontSize: "0.75rem" }}>
+          <div className="text-white" style={{ fontSize: '0.75rem' }}>
             Coach
           </div>
         </div>
@@ -49,7 +48,7 @@ const UserProfile: React.FC = () => {
         ) : (
           <div
             className="rounded-circle bg-primary d-flex align-items-center justify-content-center text-white"
-            style={{ width: "32px", height: "32px" }}
+            style={{ width: '32px', height: '32px' }}
           >
             <FaUser />
           </div>
@@ -64,21 +63,14 @@ const UserProfile: React.FC = () => {
 
         <Dropdown.Divider />
 
-        <Dropdown.Item
-          as={Link}
-          to="/settings"
-          className="d-flex align-items-center gap-2"
-        >
+        <Dropdown.Item as={Link} to="/settings" className="d-flex align-items-center gap-2">
           <FaCog />
           Settings
         </Dropdown.Item>
 
         <Dropdown.Divider />
 
-        <Dropdown.Item
-          onClick={logout}
-          className="d-flex align-items-center gap-2 text-danger"
-        >
+        <Dropdown.Item onClick={logout} className="d-flex align-items-center gap-2 text-danger">
           <FaSignOutAlt />
           Logout
         </Dropdown.Item>

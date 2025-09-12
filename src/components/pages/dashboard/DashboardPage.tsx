@@ -1,17 +1,8 @@
 // React hooks for component logic and state management
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 // React Bootstrap UI components for layout and interaction
-import {
-  Container,
-  Card,
-  Table,
-  Form,
-  Badge,
-  Alert,
-  Button,
-  Dropdown,
-} from "react-bootstrap";
+import { Container, Card, Table, Form, Badge, Alert, Button } from 'react-bootstrap';
 
 // Font Awesome React icons for visual elements
 import {
@@ -23,16 +14,16 @@ import {
   FaTimes,
   FaPlus,
   FaClipboardList,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 
 // React Router for navigation
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 // Data context for accessing application state
-import { useData } from "../../../context/DataContext";
+import { useData } from '../../../context/DataContext';
 
 // Shared page header component
-import PageHeader from "../../common/PageHeader";
+import PageHeader from '../../common/PageHeader';
 
 /**
  * Assessment interface for individual assessment records
@@ -84,23 +75,19 @@ const DashboardPage: React.FC = () => {
   const [assessments, setAssessments] = useState<Assessment[]>([]);
   const [assessmentTypes, setAssessmentTypes] = useState<AssessmentType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string>("");
-  const [selectedTimeframe, setSelectedTimeframe] = useState<string>("1m");
-  const [selectedAssessmentTypes, setSelectedAssessmentTypes] = useState<
-    string[]
-  >([]);
-  const [filteredAssessments, setFilteredAssessments] = useState<Assessment[]>(
-    []
-  );
+  const [error, setError] = useState<string>('');
+  const [selectedTimeframe, setSelectedTimeframe] = useState<string>('1m');
+  const [selectedAssessmentTypes, setSelectedAssessmentTypes] = useState<string[]>([]);
+  const [filteredAssessments, setFilteredAssessments] = useState<Assessment[]>([]);
 
   const timeframeOptions: TimeframeOption[] = [
-    { value: "1d", label: "1 Day" },
-    { value: "1w", label: "1 Week" },
-    { value: "1m", label: "1 Month" },
-    { value: "3m", label: "3 Months" },
-    { value: "6m", label: "6 Months" },
-    { value: "1y", label: "1 Year" },
-    { value: "all", label: "All Time" },
+    { value: '1d', label: '1 Day' },
+    { value: '1w', label: '1 Week' },
+    { value: '1m', label: '1 Month' },
+    { value: '3m', label: '3 Months' },
+    { value: '6m', label: '6 Months' },
+    { value: '1y', label: '1 Year' },
+    { value: 'all', label: 'All Time' },
   ];
 
   useEffect(() => {
@@ -114,7 +101,7 @@ const DashboardPage: React.FC = () => {
   const fetchData = async (): Promise<void> => {
     try {
       setLoading(true);
-      setError("");
+      setError('');
 
       // Fetch assessments and assessment types in parallel
       const [assessmentsResponse, typesResponse] = await Promise.all([
@@ -125,17 +112,17 @@ const DashboardPage: React.FC = () => {
       if (assessmentsResponse.success) {
         setAssessments(assessmentsResponse.data);
       } else {
-        throw new Error("Failed to fetch assessments");
+        throw new Error('Failed to fetch assessments');
       }
 
       if (typesResponse.success) {
         setAssessmentTypes(typesResponse.data);
       } else {
-        throw new Error("Failed to fetch assessment types");
+        throw new Error('Failed to fetch assessment types');
       }
     } catch (err) {
-      console.error("Error fetching data:", err);
-      setError("Failed to load data. Please try again.");
+      console.error('Error fetching data:', err);
+      setError('Failed to load data. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -152,34 +139,14 @@ const DashboardPage: React.FC = () => {
     }
   };
 
-  const fetchAssessments = async (): Promise<void> => {
-    try {
-      setLoading(true);
-      setError("");
-      const response = await apiService.getAssessments(selectedTimeframe);
-      if (response.success) {
-        setAssessments(response.data);
-      } else {
-        throw new Error("Failed to fetch assessments");
-      }
-    } catch (err) {
-      console.error("Error fetching assessments:", err);
-      setError("Failed to load assessments. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleTimeframeChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ): void => {
+  const handleTimeframeChange = (e: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedTimeframe(e.target.value);
   };
 
   const handleAssessmentTypeToggle = (assessmentType: string): void => {
-    setSelectedAssessmentTypes((prev) => {
+    setSelectedAssessmentTypes(prev => {
       if (prev.includes(assessmentType)) {
-        return prev.filter((type) => type !== assessmentType);
+        return prev.filter(type => type !== assessmentType);
       } else {
         return [...prev, assessmentType];
       }
@@ -191,45 +158,40 @@ const DashboardPage: React.FC = () => {
   };
 
   const getUniqueCategories = (): string[] => {
-    const categories = [
-      ...new Set(assessmentTypes.map((type) => type.category)),
-    ];
-    return categories.filter((category) => category); // Remove any null/undefined categories
+    const categories = [...new Set(assessmentTypes.map(type => type.category))];
+    return categories.filter(category => category); // Remove any null/undefined categories
   };
 
   const handleNewAssessment = (): void => {
-    navigate("/assessment-selection");
+    navigate('/assessment-selection');
   };
 
   const formatDate = (dateString: string): string => {
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
       });
     } catch (error) {
       return dateString;
     }
   };
 
-  const formatResultValue = (
-    value: number | null | undefined,
-    formatType?: string
-  ): string => {
-    if (value === null || value === undefined) return "N/A";
+  const formatResultValue = (value: number | null | undefined, formatType?: string): string => {
+    if (value === null || value === undefined) return 'N/A';
 
     switch (formatType) {
-      case "time":
+      case 'time':
         return `${value}s`;
-      case "distance":
+      case 'distance':
         return `${value}"`;
-      case "velocity":
+      case 'velocity':
         return `${value} mph`;
-      case "percentage":
+      case 'percentage':
         return `${value}%`;
-      case "count":
+      case 'count':
         return value.toString();
       default:
         return value.toString();
@@ -239,21 +201,19 @@ const DashboardPage: React.FC = () => {
   // Calculate summary statistics
   const summaryStats: SummaryStats = {
     totalAssessments: filteredAssessments.length,
-    uniquePlayers: [...new Set(filteredAssessments.map((a) => a.player_id))]
-      .length,
+    uniquePlayers: [...new Set(filteredAssessments.map(a => a.player_id))].length,
     avgPerPlayer:
       filteredAssessments.length > 0
         ? parseFloat(
             (
               filteredAssessments.length /
-              [...new Set(filteredAssessments.map((a) => a.player_id))].length
+              [...new Set(filteredAssessments.map(a => a.player_id))].length
             ).toFixed(1)
           )
         : 0,
-    recentActivity: filteredAssessments.filter((a) => {
+    recentActivity: filteredAssessments.filter(a => {
       const assessmentDate = new Date(a.recorded_at);
-      const daysSince =
-        (Date.now() - assessmentDate.getTime()) / (1000 * 60 * 60 * 24);
+      const daysSince = (Date.now() - assessmentDate.getTime()) / (1000 * 60 * 60 * 24);
       return daysSince <= 7;
     }).length,
   };
@@ -292,9 +252,9 @@ const DashboardPage: React.FC = () => {
             <Form.Select
               value={selectedTimeframe}
               onChange={handleTimeframeChange}
-              style={{ maxWidth: "200px" }}
+              style={{ maxWidth: '200px' }}
             >
-              {timeframeOptions.map((option) => (
+              {timeframeOptions.map(option => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>
@@ -325,35 +285,27 @@ const DashboardPage: React.FC = () => {
               </div>
 
               <div className="d-flex flex-wrap gap-2">
-                {getUniqueCategories().map((category) => (
+                {getUniqueCategories().map(category => (
                   <div key={category} className="mb-2">
-                    <small className="text-muted fw-bold d-block mb-1">
-                      {category}
-                    </small>
+                    <small className="text-muted fw-bold d-block mb-1">{category}</small>
                     <div className="d-flex flex-wrap gap-1">
                       {assessmentTypes
-                        .filter((type) => type.category === category)
-                        .map((type) => (
+                        .filter(type => type.category === category)
+                        .map(type => (
                           <Badge
                             key={type.assessment_type}
                             bg={
-                              selectedAssessmentTypes.includes(
-                                type.assessment_type
-                              )
-                                ? "primary"
-                                : "light"
+                              selectedAssessmentTypes.includes(type.assessment_type)
+                                ? 'primary'
+                                : 'light'
                             }
                             text={
-                              selectedAssessmentTypes.includes(
-                                type.assessment_type
-                              )
-                                ? "white"
-                                : "dark"
+                              selectedAssessmentTypes.includes(type.assessment_type)
+                                ? 'white'
+                                : 'dark'
                             }
-                            style={{ cursor: "pointer" }}
-                            onClick={() =>
-                              handleAssessmentTypeToggle(type.assessment_type)
-                            }
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => handleAssessmentTypeToggle(type.assessment_type)}
                             className="user-select-none"
                           >
                             {type.assessment_type}
@@ -367,13 +319,9 @@ const DashboardPage: React.FC = () => {
               {selectedAssessmentTypes.length > 0 && (
                 <div className="mt-3">
                   <small className="text-muted">
-                    Showing {filteredAssessments.length} of {assessments.length}{" "}
-                    assessments
+                    Showing {filteredAssessments.length} of {assessments.length} assessments
                     {selectedAssessmentTypes.length > 0 && (
-                      <span>
-                        {" "}
-                        • Filtered by: {selectedAssessmentTypes.join(", ")}
-                      </span>
+                      <span> • Filtered by: {selectedAssessmentTypes.join(', ')}</span>
                     )}
                   </small>
                 </div>
@@ -393,7 +341,7 @@ const DashboardPage: React.FC = () => {
           <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
             <Card
               className="h-100 border-0"
-              style={{ minWidth: "200px", flex: "1 1 auto", maxWidth: "250px" }}
+              style={{ minWidth: '200px', flex: '1 1 auto', maxWidth: '250px' }}
             >
               <Card.Body className="text-center">
                 <FaChartLine className="text-primary mb-2" size={32} />
@@ -403,7 +351,7 @@ const DashboardPage: React.FC = () => {
             </Card>
             <Card
               className="h-100 border-0"
-              style={{ minWidth: "200px", flex: "1 1 auto", maxWidth: "250px" }}
+              style={{ minWidth: '200px', flex: '1 1 auto', maxWidth: '250px' }}
             >
               <Card.Body className="text-center">
                 <FaUser className="text-success mb-2" size={32} />
@@ -413,7 +361,7 @@ const DashboardPage: React.FC = () => {
             </Card>
             <Card
               className="h-100 border-0"
-              style={{ minWidth: "200px", flex: "1 1 auto", maxWidth: "250px" }}
+              style={{ minWidth: '200px', flex: '1 1 auto', maxWidth: '250px' }}
             >
               <Card.Body className="text-center">
                 <FaTachometerAlt className="text-info mb-2" size={32} />
@@ -423,7 +371,7 @@ const DashboardPage: React.FC = () => {
             </Card>
             <Card
               className="h-100 border-0"
-              style={{ minWidth: "200px", flex: "1 1 auto", maxWidth: "250px" }}
+              style={{ minWidth: '200px', flex: '1 1 auto', maxWidth: '250px' }}
             >
               <Card.Body className="text-center">
                 <FaCalendarAlt className="text-warning mb-2" size={32} />
@@ -450,8 +398,8 @@ const DashboardPage: React.FC = () => {
                   <h5 className="text-muted">No assessments found</h5>
                   <p className="text-muted">
                     {selectedAssessmentTypes.length > 0
-                      ? "No assessments match your current filters."
-                      : "Start by adding your first assessment."}
+                      ? 'No assessments match your current filters.'
+                      : 'Start by adding your first assessment.'}
                   </p>
                   <Button variant="primary" onClick={handleNewAssessment}>
                     <FaPlus className="me-2" />
@@ -471,36 +419,29 @@ const DashboardPage: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {filteredAssessments
-                        .slice(0, 50)
-                        .map((assessment: Assessment) => (
-                          <tr key={assessment.id}>
-                            <td>
-                              <small className="text-muted">
-                                {formatDate(assessment.recorded_at)}
-                              </small>
-                            </td>
-                            <td>
-                              <Badge bg="outline-primary">
-                                {assessment.player_name ||
-                                  `Player ${assessment.player_id}`}
-                              </Badge>
-                            </td>
-                            <td>
-                              <Badge bg="secondary">{assessment.metric}</Badge>
-                            </td>
-                            <td>
-                              <strong>
-                                {formatResultValue(assessment.value)}
-                              </strong>
-                            </td>
-                            <td>
-                              <small className="text-muted">
-                                {assessment.notes || "-"}
-                              </small>
-                            </td>
-                          </tr>
-                        ))}
+                      {filteredAssessments.slice(0, 50).map((assessment: Assessment) => (
+                        <tr key={assessment.id}>
+                          <td>
+                            <small className="text-muted">
+                              {formatDate(assessment.recorded_at)}
+                            </small>
+                          </td>
+                          <td>
+                            <Badge bg="outline-primary">
+                              {assessment.player_name || `Player ${assessment.player_id}`}
+                            </Badge>
+                          </td>
+                          <td>
+                            <Badge bg="secondary">{assessment.metric}</Badge>
+                          </td>
+                          <td>
+                            <strong>{formatResultValue(assessment.value)}</strong>
+                          </td>
+                          <td>
+                            <small className="text-muted">{assessment.notes || '-'}</small>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </Table>
                 </div>
@@ -510,13 +451,13 @@ const DashboardPage: React.FC = () => {
               <Card.Footer className="bg-white border-top text-muted">
                 <small>
                   Showing {filteredAssessments.length} assessment
-                  {filteredAssessments.length !== 1 ? "s" : ""}
-                  {selectedTimeframe !== "all" &&
+                  {filteredAssessments.length !== 1 ? 's' : ''}
+                  {selectedTimeframe !== 'all' &&
                     ` from the last ${timeframeOptions
-                      .find((t) => t.value === selectedTimeframe)
+                      .find(t => t.value === selectedTimeframe)
                       ?.label.toLowerCase()}`}
                   {selectedAssessmentTypes.length > 0 &&
-                    ` • Filtered by: ${selectedAssessmentTypes.join(", ")}`}
+                    ` • Filtered by: ${selectedAssessmentTypes.join(', ')}`}
                 </small>
               </Card.Footer>
             )}

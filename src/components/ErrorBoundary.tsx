@@ -1,6 +1,6 @@
-import React, { Component, ErrorInfo, ReactNode } from "react";
-import { Container, Alert, Button } from "react-bootstrap";
-import { FaExclamationTriangle, FaHome } from "react-icons/fa";
+import { Component, ErrorInfo, ReactNode } from 'react';
+import { Container, Alert, Button } from 'react-bootstrap';
+import { FaExclamationTriangle, FaHome } from 'react-icons/fa';
 
 // Define the props interface
 interface ErrorBoundaryProps {
@@ -20,14 +20,14 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     this.state = { hasError: false, error: null, errorInfo: null };
   }
 
-  static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
+  static getDerivedStateFromError(_error: Error): Partial<ErrorBoundaryState> {
     // Update state so the next render will show the fallback UI
     return { hasError: true };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     // Log error details for debugging
-    console.error("ErrorBoundary caught an error:", error, errorInfo);
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
     this.setState({
       error: error,
       errorInfo: errorInfo,
@@ -48,9 +48,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
       return (
         <Container
           className="d-flex justify-content-center align-items-center"
-          style={{ minHeight: "100vh" }}
+          style={{ minHeight: '100vh' }}
         >
-          <div className="text-center" style={{ maxWidth: "600px" }}>
+          <div className="text-center" style={{ maxWidth: '600px' }}>
             <Alert variant="danger" className="p-4">
               <div className="mb-3">
                 <FaExclamationTriangle size={48} className="text-danger mb-3" />
@@ -58,11 +58,11 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
               </div>
 
               <p className="mb-3">
-                We're sorry, but something unexpected happened. This error has
-                been logged and we'll work to fix it as soon as possible.
+                We're sorry, but something unexpected happened. This error has been logged and we'll
+                work to fix it as soon as possible.
               </p>
 
-              {process.env.NODE_ENV === "development" && this.state.error && (
+              {process.env.NODE_ENV === 'development' && this.state.error && (
                 <div className="mt-3">
                   <details className="text-start">
                     <summary className="btn btn-outline-danger btn-sm mb-2">
@@ -89,10 +89,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
             </Alert>
 
             <div className="mt-3 text-muted small">
-              <p>
-                If this problem persists, please contact support with the error
-                details above.
-              </p>
+              <p>If this problem persists, please contact support with the error details above.</p>
             </div>
           </div>
         </Container>

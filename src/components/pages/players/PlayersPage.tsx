@@ -1,39 +1,38 @@
 // React hooks for component state management
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 // React Bootstrap UI components for layout and interaction
-import { Badge, Button, ButtonGroup, ToggleButton } from "react-bootstrap";
+import { Badge, Button, ButtonGroup, ToggleButton } from 'react-bootstrap';
 
 // Font Awesome React icons for visual elements
-import { FaUsers, FaPlus, FaTh, FaTable } from "react-icons/fa";
+import { FaUsers, FaPlus, FaTh, FaTable } from 'react-icons/fa';
 
 // Data context for accessing player data and operations
-import { useData } from "../../../context/DataContext";
+import { useData } from '../../../context/DataContext';
 
 // Player-related modal components for CRUD operations
-import AddPlayerModal from "./AddPlayerModal";
-import EditPlayerModal from "./EditPlayerModal";
+import AddPlayerModal from '../../forms/AddPlayerModal';
+import EditPlayerModal from '../../forms/EditPlayerModal';
 
 // Different view components for displaying player data
-import PlayerCardView from "./PlayerCardView";
-import PlayerTableView from "./PlayerTableView";
+import PlayerCardView from './PlayerCardView';
+import PlayerTableView from './PlayerTableView';
 
 // Shared page header component
-import PageHeader from "../../common/PageHeader";
+import PageHeader from '../../common/PageHeader';
 
 /**
  * View mode type definition
  * Defines the available display modes for the player list
  */
-type ViewMode = "cards" | "table";
+type ViewMode = 'cards' | 'table';
 
 const PlayersPage: React.FC = () => {
-  const { players, addPlayer, updatePlayer, deletePlayer, apiService } =
-    useData();
+  const { players, addPlayer, updatePlayer, deletePlayer, apiService } = useData();
   const [showAddModal, setShowAddModal] = useState<boolean>(false);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [selectedPlayer, setSelectedPlayer] = useState<any>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>("cards");
+  const [viewMode, setViewMode] = useState<ViewMode>('cards');
 
   const handlePlayerAdded = (newPlayer: any): void => {
     addPlayer(newPlayer);
@@ -52,9 +51,7 @@ const PlayersPage: React.FC = () => {
     setShowEditModal(true);
   };
 
-  const handleViewModeChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const handleViewModeChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setViewMode(e.currentTarget.value as ViewMode);
   };
 
@@ -67,7 +64,7 @@ const PlayersPage: React.FC = () => {
         actions={
           <div className="d-flex align-items-center gap-3">
             <Badge bg="primary" pill className="fs-6">
-              {players.length} {players.length === 1 ? "Player" : "Players"}
+              {players.length} {players.length === 1 ? 'Player' : 'Players'}
             </Badge>
 
             {/* View Toggle */}
@@ -75,10 +72,10 @@ const PlayersPage: React.FC = () => {
               <ToggleButton
                 id="card-view"
                 type="radio"
-                variant={viewMode === "cards" ? "primary" : "outline-primary"}
+                variant={viewMode === 'cards' ? 'primary' : 'outline-primary'}
                 name="viewMode"
                 value="cards"
-                checked={viewMode === "cards"}
+                checked={viewMode === 'cards'}
                 onChange={handleViewModeChange}
                 className="d-flex align-items-center gap-1"
               >
@@ -88,10 +85,10 @@ const PlayersPage: React.FC = () => {
               <ToggleButton
                 id="table-view"
                 type="radio"
-                variant={viewMode === "table" ? "primary" : "outline-primary"}
+                variant={viewMode === 'table' ? 'primary' : 'outline-primary'}
                 name="viewMode"
                 value="table"
-                checked={viewMode === "table"}
+                checked={viewMode === 'table'}
                 onChange={handleViewModeChange}
                 className="d-flex align-items-center gap-1"
               >
@@ -115,7 +112,7 @@ const PlayersPage: React.FC = () => {
       {/* Main Content */}
       <div className="page-main-content">
         {/* Conditional rendering based on view mode */}
-        {viewMode === "cards" ? (
+        {viewMode === 'cards' ? (
           <PlayerCardView
             players={players}
             onEdit={handleEditPlayer}

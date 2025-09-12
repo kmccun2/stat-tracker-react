@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Table, Badge, Button } from "react-bootstrap";
-import PlayerActionsDropdown from "./PlayerActionsDropdown";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Table, Badge } from 'react-bootstrap';
+import PlayerActionsDropdown from './PlayerActionsDropdown';
 
 // Type definitions
 interface Player {
