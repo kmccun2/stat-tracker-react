@@ -131,7 +131,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   return (
     <div className="app-layout">
       {/* Header */}
-      <Navbar bg="primary" variant="dark" className="navbar-custom shadow-sm">
+      <Navbar bg="primary" variant="dark" className="navbar-custom">
         <div className="d-flex align-items-center">
           {/* Mobile toggle button */}
           <div

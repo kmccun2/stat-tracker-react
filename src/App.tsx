@@ -1,6 +1,3 @@
-// React core imports
-import React from "react";
-
 // Third-party library imports
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Container } from "react-bootstrap";

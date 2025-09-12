@@ -110,7 +110,7 @@ const ReportsPage: React.FC = () => {
       {/* Summary Statistics */}
       <Row className="mb-4">
         <Col md={3}>
-          <Card className="border-0 shadow-sm h-100">
+          <Card className="border-0 h-100">
             <Card.Body className="text-center">
               <FaUsers className="text-primary mb-2" size={32} />
               <h3 className="mb-1">{totalPlayers}</h3>
@@ -119,7 +119,7 @@ const ReportsPage: React.FC = () => {
           </Card>
         </Col>
         <Col md={3}>
-          <Card className="border-0 shadow-sm h-100">
+          <Card className="border-0 h-100">
             <Card.Body className="text-center">
               <FaClipboardList className="text-info mb-2" size={32} />
               <h3 className="mb-1">{totalEntered}</h3>
@@ -129,7 +129,7 @@ const ReportsPage: React.FC = () => {
           </Card>
         </Col>
         <Col md={3}>
-          <Card className="border-0 shadow-sm h-100">
+          <Card className="border-0 h-100">
             <Card.Body className="text-center">
               <FaTrophy className="text-success mb-2" size={32} />
               <h3 className="mb-1">{totalGoalsMet}</h3>
@@ -139,7 +139,7 @@ const ReportsPage: React.FC = () => {
           </Card>
         </Col>
         <Col md={3}>
-          <Card className="border-0 shadow-sm h-100">
+          <Card className="border-0 h-100">
             <Card.Body className="text-center">
               <FaBullseye className="text-warning mb-2" size={32} />
               <h3 className="mb-1">{assessmentTypes.length}</h3>

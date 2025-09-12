@@ -1,3 +1,5 @@
+// Styles
+import "./PageHeader.scss";
 import React, { ReactNode } from "react";
 
 interface PageHeaderProps {
@@ -15,12 +17,15 @@ const PageHeader: React.FC<PageHeaderProps> = ({
 }) => {
   return (
     <div className="page-header">
-      <div className="icon-wrapper">{icon}</div>
-      <div className="title-and-subtitle">
-        <h1>{title}</h1>
-        {subtitle && <p>{subtitle}</p>}
+      <div className="d-flex">
+        <div className="icon-wrapper d-flex align-items-center">{icon}</div>
+        <div className="d-flex flex-column title-and-subtitle">
+          <h1>{title}</h1>
+          {subtitle && <p>{subtitle}</p>}
+        </div>
+        <div className="actions-wrapper">{actions}</div>
       </div>
-      <div className="actions-wrapper">{actions}</div>
+      <div></div>
     </div>
   );
 };

@@ -14,15 +14,15 @@
   height: 60px;
   background: linear-gradient(
     to right,
-    var(--color-primary-dark),
-    var(--color-primary-blue)
+    var(--color-primary),
+    var(--color-primary-light)
   );
   border-bottom: 1px solid #284365;
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 1000;
-  box-shadow: var(--shadow-header);
+  box-shadow: var(--box-shadow);
   position: relative;
 
   .header-left {
@@ -86,7 +86,7 @@
   height: calc(100vh - 60px);
   background: linear-gradient(
     to bottom,
-    var(--color-primary-dark),
+    var(--color-primary),
     var(--color-secondary-dark)
   );
   color: var(--color-white);

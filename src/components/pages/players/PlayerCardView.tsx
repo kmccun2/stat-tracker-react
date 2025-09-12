@@ -39,7 +39,7 @@ const PlayerCardView: React.FC<PlayerCardViewProps> = ({
               to={`/player/${player.id}`}
               className="text-decoration-none player-card"
             >
-              <Card className="h-100 border-0 shadow-sm">
+              <Card className="h-100 border-0">
                 <Card.Body className="text-center">
                   <h5 className="card-title text-primary mb-3">
                     {player.Name}

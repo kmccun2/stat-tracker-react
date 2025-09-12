@@ -1,8 +1,8 @@
+// Styles
+import "./DashboardPage.scss";
 import React, { useState, useEffect } from "react";
 import {
   Container,
-  Row,
-  Col,
   Card,
   Table,
   Form,
@@ -23,6 +23,7 @@ import {
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useData } from "../../../context/DataContext";
+import PageHeader from "@/components/common/PageHeader";
 
 // Type definitions
 interface Assessment {
@@ -247,55 +248,40 @@ const DashboardPage: React.FC = () => {
   }
 
   return (
-    <Container fluid className="mt-4">
+    <>
       {/* Header */}
-      <Row className="mb-4">
-        <Col>
-          <div className="d-flex justify-content-between align-items-start mb-3">
-            <div className="d-flex align-items-center gap-2">
-              <FaTachometerAlt className="text-primary" size={24} />
-              <h2 className="mb-0">Dashboard</h2>
+      <PageHeader
+        title="Dashboard"
+        subtitle="Overview of assessment activity and performance tracking"
+        icon={<FaTachometerAlt />}
+      />
+
+      {/* Main Content */}
+      <div className="page-main-content">
+        {/* Timeframe Selector */}
+        <div className="mb-4">
+          <div className="timeframe-selector">
+            <div className="d-flex align-items-center gap-2 mb-2">
+              <FaCalendarAlt className="text-muted" />
+              <label className="form-label mb-0">Time Range</label>
             </div>
-            <Button
-              variant="primary"
-              size="lg"
-              onClick={handleNewAssessment}
-              className="d-flex align-items-center gap-2"
+            <Form.Select
+              value={selectedTimeframe}
+              onChange={handleTimeframeChange}
+              style={{ maxWidth: "200px" }}
             >
-              <FaPlus />
-              New Assessment
-            </Button>
+              {timeframeOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </Form.Select>
           </div>
-          <p className="text-muted">
-            Overview of assessment activity and performance tracking
-          </p>
-        </Col>
-      </Row>
+        </div>
 
-      {/* Timeframe Selector */}
-      <Row className="mb-4">
-        <Col md={4}>
-          <div className="d-flex align-items-center gap-2 mb-2">
-            <FaCalendarAlt className="text-muted" />
-            <label className="form-label mb-0">Time Range</label>
-          </div>
-          <Form.Select
-            value={selectedTimeframe}
-            onChange={handleTimeframeChange}
-          >
-            {timeframeOptions.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </Form.Select>
-        </Col>
-      </Row>
-
-      {/* Assessment Type Filter */}
-      <Row className="mb-4">
-        <Col>
-          <Card className="border-0 shadow-sm">
+        {/* Assessment Type Filter */}
+        <div className="mb-4">
+          <Card className="border-0">
             <Card.Body>
               <div className="d-flex align-items-center justify-content-between mb-3">
                 <div className="d-flex align-items-center gap-2">
@@ -370,61 +356,63 @@ const DashboardPage: React.FC = () => {
               )}
             </Card.Body>
           </Card>
-        </Col>
-      </Row>
+        </div>
 
-      {error && (
-        <Row className="mb-4">
-          <Col>
+        {error && (
+          <div className="mb-4">
             <Alert variant="danger">{error}</Alert>
-          </Col>
-        </Row>
-      )}
+          </div>
+        )}
 
-      {/* Summary Cards */}
-      <Row className="mb-4">
-        <Col md={3}>
-          <Card className="h-100 border-0 shadow-sm">
-            <Card.Body className="text-center">
-              <FaChartLine className="text-primary mb-2" size={32} />
-              <h3 className="mb-1">{summaryStats.totalAssessments}</h3>
-              <p className="text-muted mb-0">Total Assessments</p>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card className="h-100 border-0 shadow-sm">
-            <Card.Body className="text-center">
-              <FaUser className="text-success mb-2" size={32} />
-              <h3 className="mb-1">{summaryStats.uniquePlayers}</h3>
-              <p className="text-muted mb-0">Active Players</p>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card className="h-100 border-0 shadow-sm">
-            <Card.Body className="text-center">
-              <FaTachometerAlt className="text-info mb-2" size={32} />
-              <h3 className="mb-1">{summaryStats.avgPerPlayer}</h3>
-              <p className="text-muted mb-0">Avg per Player</p>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={3}>
-          <Card className="h-100 border-0 shadow-sm">
-            <Card.Body className="text-center">
-              <FaCalendarAlt className="text-warning mb-2" size={32} />
-              <h3 className="mb-1">{summaryStats.recentActivity}</h3>
-              <p className="text-muted mb-0">This Week</p>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+        {/* Summary Cards */}
+        <div className="mb-4">
+          <div className="d-flex flex-wrap gap-3 justify-content-center justify-content-md-start">
+            <Card
+              className="h-100 border-0"
+              style={{ minWidth: "200px", flex: "1 1 auto", maxWidth: "250px" }}
+            >
+              <Card.Body className="text-center">
+                <FaChartLine className="text-primary mb-2" size={32} />
+                <h3 className="mb-1">{summaryStats.totalAssessments}</h3>
+                <p className="text-muted mb-0">Total Assessments</p>
+              </Card.Body>
+            </Card>
+            <Card
+              className="h-100 border-0"
+              style={{ minWidth: "200px", flex: "1 1 auto", maxWidth: "250px" }}
+            >
+              <Card.Body className="text-center">
+                <FaUser className="text-success mb-2" size={32} />
+                <h3 className="mb-1">{summaryStats.uniquePlayers}</h3>
+                <p className="text-muted mb-0">Active Players</p>
+              </Card.Body>
+            </Card>
+            <Card
+              className="h-100 border-0"
+              style={{ minWidth: "200px", flex: "1 1 auto", maxWidth: "250px" }}
+            >
+              <Card.Body className="text-center">
+                <FaTachometerAlt className="text-info mb-2" size={32} />
+                <h3 className="mb-1">{summaryStats.avgPerPlayer}</h3>
+                <p className="text-muted mb-0">Avg per Player</p>
+              </Card.Body>
+            </Card>
+            <Card
+              className="h-100 border-0"
+              style={{ minWidth: "200px", flex: "1 1 auto", maxWidth: "250px" }}
+            >
+              <Card.Body className="text-center">
+                <FaCalendarAlt className="text-warning mb-2" size={32} />
+                <h3 className="mb-1">{summaryStats.recentActivity}</h3>
+                <p className="text-muted mb-0">This Week</p>
+              </Card.Body>
+            </Card>
+          </div>
+        </div>
 
-      {/* Recent Assessments Table */}
-      <Row>
-        <Col>
-          <Card className="border-0 shadow-sm">
+        {/* Recent Assessments Table */}
+        <div>
+          <Card className="border-0">
             <Card.Header className="bg-white border-bottom">
               <div className="d-flex align-items-center gap-2">
                 <FaClipboardList className="text-primary" />
@@ -509,9 +497,9 @@ const DashboardPage: React.FC = () => {
               </Card.Footer>
             )}
           </Card>
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -33,8 +33,8 @@ const UserProfile: React.FC = () => {
         style={{ boxShadow: "none" }}
       >
         <div className="d-none d-md-block text-end">
-          <div className="small fw-bold text-light">{displayName}</div>
-          <div className="text-light" style={{ fontSize: "0.75rem" }}>
+          <div className="small fw-bold text-white">{displayName}</div>
+          <div className="text-white" style={{ fontSize: "0.75rem" }}>
             Coach
           </div>
         </div>
@@ -59,7 +59,7 @@ const UserProfile: React.FC = () => {
       <Dropdown.Menu>
         <Dropdown.Header>
           <div className="fw-bold">{displayName}</div>
-          <div className="text-light small">{displayEmail}</div>
+          <div className="text-dark small">{displayEmail}</div>
         </Dropdown.Header>
 
         <Dropdown.Divider />

@@ -52,7 +52,7 @@ const SettingsPage: React.FC = () => {
 
       <Row className="mt-4">
         <Col md={6}>
-          <Card className="h-100 border-0 shadow-sm">
+          <Card className="h-100 border-0">
             <Card.Body>
               <Card.Title className="d-flex align-items-center gap-2">
                 <FaUser /> User Management
@@ -64,7 +64,7 @@ const SettingsPage: React.FC = () => {
           </Card>
         </Col>
         <Col md={6}>
-          <Card className="h-100 border-0 shadow-sm">
+          <Card className="h-100 border-0">
             <Card.Body>
               <Card.Title className="d-flex align-items-center gap-2">
                 <FaDatabase /> Data Management

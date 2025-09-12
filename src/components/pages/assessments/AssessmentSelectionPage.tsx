@@ -196,7 +196,7 @@ const AssessmentSelectionPage: React.FC = () => {
                   className={`h-100 ${
                     selectedType?.assessment_type === type.assessment_type
                       ? "border-primary shadow"
-                      : "border-0 shadow-sm"
+                      : "border-0"
                   }`}
                   style={{ cursor: "pointer", transition: "all 0.2s" }}
                   onClick={() => handleSelectAssessmentType(type)}

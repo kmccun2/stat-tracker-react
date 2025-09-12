@@ -169,7 +169,7 @@ const MetricsPage: React.FC = () => {
                   md={4}
                   lg={3}
                 >
-                  <Card className="h-100 border-0 shadow-sm">
+                  <Card className="h-100 border-0">
                     <Card.Body className="d-flex flex-column">
                       <div className="flex-grow-1">
                         <h6 className="card-title text-primary mb-2">

@@ -1,15 +1,21 @@
 :root {
-  --color-primary-dark: #1e3a8a;
-  --color-primary-dark-hover: #17327b;
-  --color-primary-blue: #3b82f6;
+  --color-primary: #35446e;
+  --color-primary-hover: #{darken(#35446e, 4%)};
+  --color-primary-light: #{lighten(#35446e, 10%)};
   --color-secondary-dark: #1e293b;
   --color-secondary-darker: #0f172a;
   --color-white: #ffffff;
+  --color-dark: rgb(32, 32, 32);
   --color-light-gray: #f8fafc;
   --color-medium-gray: #94a3b8;
-  --color-active-bg: rgba(59, 130, 246, 0.15);
-  --color-active-border: #3b82f6;
+  --color-active-bg: #{lighten(#35446e, 5%)};
+  --color-active-border: #3a5ab1;
+  --color-gray-border: #e2e8f0;
   --color-hover-light: rgba(255, 255, 255, 0.1);
+  --box-shadow: 1px 1px 3px 1px rgb(0 0 0 / 43%) !important;
+  --color-scrollbar-track: #f1f5f9;
+  --color-scrollbar-thumb: #cbd5e1;
+  --color-scrollbar-thumb-hover: #94a3b8;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -25,6 +31,29 @@ body {
   min-height: 100vh;
   height: 100dvh;
   width: 100dvw;
+}
+
+.page-main-content {
+  padding: 15px 10px;
+  height: calc(100vh - 60px - 70px); /* Full height minus navbar and header */
+  overflow: auto;
+  flex: 1;
+
+  // Style scrollbar
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--color-scrollbar-track);
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--color-scrollbar-thumb);
+    border-radius: 4px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: var(--color-scrollbar-thumb-hover);
+  }
 }
 
 .player-card {
