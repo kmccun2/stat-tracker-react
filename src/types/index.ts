@@ -1,42 +1,8 @@
 // Common types used throughout the application
 
-export interface Player {
-  id: string;
-  name: string;
-  email?: string;
-  dateOfBirth: string;
-  position?: string;
-  team?: string;
-  coach?: string;
-  ageRange?: string;
-  Gender?: 'Male' | 'Female';
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface AssessmentType {
-  id: string;
-  name: string;
-  description?: string;
-  category?: string;
-  unit?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface Goal {
-  id: string;
-  playerId?: string;
-  assessmentTypeId: string;
-  targetValue: number;
-  targetDate?: string;
-  ageRange?: string;
-  position?: string;
-  team?: string;
-  coach?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import { AssessmentType } from "./assessment";
+import { Goal } from "./metric";
+import { Player } from "./player";
 
 export interface AssessmentResult {
   id: string;

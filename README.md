@@ -1,6 +1,7 @@
 # ⚾ Baseball Stat Tracker - Full Stack Application
 
-A comprehensive baseball statistics tracking application with React frontend and Node.js backend using SQLite database.
+A comprehensive baseball statistics tracking application with React frontend and
+Node.js backend using SQLite database.
 
 ## 🏗️ **Project Structure**
 
@@ -42,14 +43,14 @@ npm run start:fullstack  # Run both in production mode
 ## 📚 **Documentation**
 
 - [Auth0 Setup Guide](docs/AUTH0_SETUP.md) - Complete authentication setup
-- [Integration Guide](docs/INTEGRATION_GUIDE.md) - Backend integration instructions
+- [Integration Guide](docs/INTEGRATION_GUIDE.md) - Backend integration
+  instructions
 
 ## � **HIGH PRIORITY DEVELOPMENT PRINCIPLES**
 
 ### 🎯 **Core Tenets - NON-NEGOTIABLE**
 
 1. **ALWAYS Prioritize Code Maintainability & Cleanliness**
-
    - Write self-documenting code with clear variable and function names
    - Maintain consistent code style across all components
    - Keep components small, focused, and single-responsibility
@@ -57,8 +58,8 @@ npm run start:fullstack  # Run both in production mode
    - Follow React best practices (hooks, component composition)
 
 2. **Alignment with Original Requirements - MANDATORY**
-
-   - **BEFORE** implementing any new feature, verify it aligns with the original Grok conversation
+   - **BEFORE** implementing any new feature, verify it aligns with the original
+     Grok conversation
    - **BEFORE** making architectural changes, ask clarifying questions
    - **BEFORE** deviating from the roadmap, discuss the business case
    - Reference the original requirements section for every decision
@@ -91,7 +92,10 @@ npm run start:fullstack  # Run both in production mode
 
 ### Original Vision
 
-A player development tracker for baseball coaches that allows inputting player profiles, assessment data (e.g., exit velocities, sprint times), and custom goals. The app generates visual reports showing progress over time, comparisons to goals, and trends across categories (e.g., Hitting, Strength).
+A player development tracker for baseball coaches that allows inputting player
+profiles, assessment data (e.g., exit velocities, sprint times), and custom
+goals. The app generates visual reports showing progress over time, comparisons
+to goals, and trends across categories (e.g., Hitting, Strength).
 
 ### Key Features from Original Plan
 
@@ -105,7 +109,8 @@ A player development tracker for baseball coaches that allows inputting player p
 
 ### Original Tech Stack Suggestions
 
-- **Frontend**: React.js with Material-UI or Tailwind for styling, Chart.js for visualizations
+- **Frontend**: React.js with Material-UI or Tailwind for styling, Chart.js for
+  visualizations
 - **Backend**: Node.js with Express.js for API, JWT for authentication
 - **Database**: PostgreSQL or MongoDB
 - **Deployment**: Vercel/Netlify for frontend, Heroku/AWS for backend
@@ -114,7 +119,8 @@ A player development tracker for baseball coaches that allows inputting player p
 
 ### ✅ **Phase 1 - MVP Complete**
 
-We've successfully implemented a simplified version focusing on core functionality:
+We've successfully implemented a simplified version focusing on core
+functionality:
 
 **Tech Stack Chosen:**
 
@@ -149,7 +155,8 @@ We've successfully implemented a simplified version focusing on core functionali
 
 **Database Tables:**
 
-- **Players**: Name, Gender, DOB (Excel serial format), with automatic age calculation
+- **Players**: Name, Gender, DOB (Excel serial format), with automatic age
+  calculation
 - **Assessment Types**: Assessment categories with sorting and formatting
 - **Goals**: Age and gender-based performance targets
 - **Assessment Results**: Player performance data with timestamps
@@ -197,15 +204,18 @@ We've successfully implemented a simplified version focusing on core functionali
 
 2. **Start the Full Stack Application**:
 
-   ```bash
-   npm run dev:fullstack
-   ```
+**Note**: npm start can be ran from either the front end or back end folder
 
-   This command will start both the frontend and backend servers concurrently.
+```bash
+npm start will run both the front end and back end
+```
+
+This command will start both the frontend and backend servers concurrently.
 
 3. **Access App**: Open http://localhost:5173/
 
-   **Note**: The app requires the backend server to be running on http://localhost:3001/
+   **Note**: The app requires the backend server to be running on
+   http://localhost:3001/
 
 ## 📁 Project Structure
 
@@ -298,8 +308,10 @@ The current implementation successfully addresses the core requirements:
 
 ## 🔄 Development Workflow
 
-1. **Stay True to Original Vision**: All changes should align with the original Grok conversation requirements
-2. **Incremental Enhancement**: Build upon existing functionality rather than major rewrites
+1. **Stay True to Original Vision**: All changes should align with the original
+   Grok conversation requirements
+2. **Incremental Enhancement**: Build upon existing functionality rather than
+   major rewrites
 3. **Data-Driven**: Maintain compatibility with the CSV data structure
 4. **User-Focused**: Prioritize coach and player usability
 
@@ -420,7 +432,8 @@ src/
 
 ---
 
-**Reference**: Original requirements and conversation can be found at: https://grok.com/share/bGVnYWN5_6ae7cebd-2898-4cec-aa5d-3e11ff8695dc
+**Reference**: Original requirements and conversation can be found at:
+https://grok.com/share/bGVnYWN5_6ae7cebd-2898-4cec-aa5d-3e11ff8695dc
 
 ```
 

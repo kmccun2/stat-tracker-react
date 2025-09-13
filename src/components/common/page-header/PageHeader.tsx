@@ -1,6 +1,6 @@
 // Styles
-import "./PageHeader.scss";
-import React, { ReactNode } from "react";
+import './PageHeader.scss';
+import React, { ReactNode, memo } from 'react';
 
 interface PageHeaderProps {
   title: string;
@@ -9,12 +9,7 @@ interface PageHeaderProps {
   actions?: ReactNode;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({
-  title,
-  subtitle,
-  icon,
-  actions,
-}) => {
+const PageHeader: React.FC<PageHeaderProps> = memo(({ title, subtitle, icon, actions }) => {
   return (
     <div className="page-header">
       <div className="d-flex">
@@ -28,6 +23,9 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       <div></div>
     </div>
   );
-};
+});
+
+// Add display name for debugging
+PageHeader.displayName = 'PageHeader';
 
 export default PageHeader;

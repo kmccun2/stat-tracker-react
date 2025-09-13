@@ -8,18 +8,10 @@ import { Navbar, Nav, Offcanvas } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 
 // Font Awesome React icons for navigation and visual elements
-import {
-  FaUsers,
-  FaChartLine,
-  FaBullseye,
-  FaCog,
-  FaBars,
-  FaRuler,
-  FaTachometerAlt,
-} from 'react-icons/fa';
+import { FaUsers, FaChartLine, FaCog, FaBars, FaRuler, FaTachometerAlt } from 'react-icons/fa';
 
 // React hooks for component logic
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode, useState, useEffect, useMemo } from 'react';
 
 // Authentication context and components
 import { useAuth } from '../context/AuthContext';
@@ -72,44 +64,42 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     setShowMobileSidebar(false);
   }, [location.pathname]);
 
-  const sidebarItems: SidebarItem[] = [
-    {
-      path: '/',
-      label: 'Dashboard',
-      icon: <FaTachometerAlt />,
-      description: 'Assessment overview',
-    },
-    {
-      path: '/analytics',
-      label: 'Analytics',
-      icon: <FaChartLine />,
-      description: 'View progress reports',
-    },
-    {
-      path: '/players',
-      label: 'Players',
-      icon: <FaUsers />,
-      description: 'Manage player profiles',
-    },
-    {
-      path: '/metrics',
-      label: 'Metrics',
-      icon: <FaRuler />,
-      description: 'Manage assessment metrics',
-    },
-    {
-      path: '/goals',
-      label: 'Goals',
-      icon: <FaBullseye />,
-      description: 'Manage assessment goals',
-    },
-    {
-      path: '/settings',
-      label: 'Settings',
-      icon: <FaCog />,
-      description: 'App configuration',
-    },
-  ];
+  // Memoize sidebar items since they're static
+  const sidebarItems: SidebarItem[] = useMemo(
+    () => [
+      {
+        path: '/',
+        label: 'Dashboard',
+        icon: <FaTachometerAlt />,
+        description: 'Assessment overview',
+      },
+      {
+        path: '/analytics',
+        label: 'Analytics',
+        icon: <FaChartLine />,
+        description: 'View progress reports',
+      },
+      {
+        path: '/players',
+        label: 'Players',
+        icon: <FaUsers />,
+        description: 'Manage player profiles',
+      },
+      {
+        path: '/metrics',
+        label: 'Metrics',
+        icon: <FaRuler />,
+        description: 'Manage assessment metrics',
+      },
+      {
+        path: '/settings',
+        label: 'Settings',
+        icon: <FaCog />,
+        description: 'App configuration',
+      },
+    ],
+    []
+  ); // Empty dependency array since items are static
 
   const SidebarContent: React.FC<SidebarContentProps> = ({
     isMobile = false,
