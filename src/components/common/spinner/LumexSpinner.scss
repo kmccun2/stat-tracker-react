@@ -1,0 +1,18 @@
+.spinner-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+}
+.lumex-spinner {
+  border-width: 0.4rem;
+  color: var(--color-primary-blue) !important;
+  left: calc(50% + 3.5rem);
+  z-index: 10;
+}
+.spinner-border {
+  width: 4rem !important;
+  height: 4rem !important;
+}
