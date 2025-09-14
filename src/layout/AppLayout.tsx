@@ -1,22 +1,30 @@
 // Component-specific styling
-import './AppLayout.scss';
+import "./AppLayout.scss";
 
 // React Bootstrap UI components for layout and navigation
-import { Navbar, Nav, Offcanvas } from 'react-bootstrap';
+import { Navbar, Nav, Offcanvas } from "react-bootstrap";
 
 // React Router for navigation and location tracking
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from "react-router-dom";
 
 // Font Awesome React icons for navigation and visual elements
-import { FaUsers, FaChartLine, FaCog, FaBars, FaRuler, FaTachometerAlt } from 'react-icons/fa';
+import {
+  FaUsers,
+  FaChartLine,
+  FaCog,
+  FaBars,
+  FaRuler,
+  FaTachometerAlt,
+} from "react-icons/fa";
 
 // React hooks for component logic
-import { ReactNode, useState, useEffect, useMemo } from 'react';
+import { ReactNode, useState, useEffect, useMemo } from "react";
 
 // Authentication context and components
-import { useAuth } from '../context/AuthContext';
-import UserProfile from './UserProfile';
-import LoginButton from '../components/auth/LoginButton';
+import { useAuth } from "../context/AuthContext";
+import UserProfile from "./UserProfile";
+import LoginButton from "../components/auth/LoginButton";
+import Toast from "@/components/common/toast/Toast";
 
 /**
  * Props interface for the main application layout
@@ -47,7 +55,8 @@ interface SidebarContentProps {
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false); // For mobile
-  const [isDesktopSidebarCollapsed, setIsDesktopSidebarCollapsed] = useState<boolean>(false); // For desktop
+  const [isDesktopSidebarCollapsed, setIsDesktopSidebarCollapsed] =
+    useState<boolean>(false); // For desktop
   const [isSidebarHovered, setIsSidebarHovered] = useState<boolean>(false);
   const location = useLocation();
   const { isAuthenticated } = useAuth();
@@ -68,34 +77,34 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const sidebarItems: SidebarItem[] = useMemo(
     () => [
       {
-        path: '/',
-        label: 'Dashboard',
+        path: "/",
+        label: "Dashboard",
         icon: <FaTachometerAlt />,
-        description: 'Assessment overview',
+        description: "Assessment overview",
       },
       {
-        path: '/analytics',
-        label: 'Analytics',
+        path: "/analytics",
+        label: "Analytics",
         icon: <FaChartLine />,
-        description: 'View progress reports',
+        description: "View progress reports",
       },
       {
-        path: '/players',
-        label: 'Players',
+        path: "/players",
+        label: "Players",
         icon: <FaUsers />,
-        description: 'Manage player profiles',
+        description: "Manage player profiles",
       },
       {
-        path: '/metrics',
-        label: 'Metrics',
+        path: "/metrics",
+        label: "Metrics",
         icon: <FaRuler />,
-        description: 'Manage assessment metrics',
+        description: "Manage assessment metrics",
       },
       {
-        path: '/settings',
-        label: 'Settings',
+        path: "/settings",
+        label: "Settings",
         icon: <FaCog />,
-        description: 'App configuration',
+        description: "App configuration",
       },
     ],
     []
@@ -106,16 +115,19 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     isCollapsed = false,
     onItemClick,
   }) => (
-    <div className={`sidebar-content h-100 ${isCollapsed ? 'collapsed' : ''}`}>
-      <Nav className="flex-column" style={{ padding: isMobile ? '10px 0' : '0' }}>
-        {sidebarItems.map(item => (
+    <div className={`sidebar-content h-100 ${isCollapsed ? "collapsed" : ""}`}>
+      <Nav
+        className="flex-column"
+        style={{ padding: isMobile ? "10px 0" : "0" }}
+      >
+        {sidebarItems.map((item) => (
           <Nav.Item key={item.path}>
             <Nav.Link
               as={Link}
               to={item.path}
               className={`sidebar-nav-link ${
-                location.pathname === item.path ? 'active' : ''
-              } ${isCollapsed ? 'collapsed' : ''}`}
+                location.pathname === item.path ? "active" : ""
+              } ${isCollapsed ? "collapsed" : ""}`}
               onClick={onItemClick}
               title={isCollapsed ? item.label : undefined}
             >
@@ -140,14 +152,17 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       <Navbar bg="primary" variant="dark" className="navbar-custom">
         <div className="d-flex align-items-center">
           {/* Mobile toggle button */}
-          <div className="d-lg-none hamburger-icon" onClick={handleShowMobileSidebar}>
+          <div
+            className="d-lg-none hamburger-icon"
+            onClick={handleShowMobileSidebar}
+          >
             <FaBars />
           </div>
           {/* Desktop toggle button */}
           <div
             className="d-none d-lg-flex hamburger-icon"
             onClick={handleToggleDesktopSidebar}
-            title={isDesktopSidebarCollapsed ? 'Show sidebar' : 'Hide sidebar'}
+            title={isDesktopSidebarCollapsed ? "Show sidebar" : "Hide sidebar"}
           >
             <FaBars />
           </div>
@@ -157,7 +172,11 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </div>
 
         <Nav className="ms-auto d-flex align-items-center">
-          {isAuthenticated ? <UserProfile /> : <LoginButton variant="outline-light" />}
+          {isAuthenticated ? (
+            <UserProfile />
+          ) : (
+            <LoginButton variant="outline-light" />
+          )}
         </Nav>
       </Navbar>
 
@@ -166,12 +185,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           {/* Desktop Sidebar */}
           <div
             className={`d-none d-lg-flex sidebar-desktop ${
-              isDesktopSidebarCollapsed ? 'collapsed' : ''
-            } ${isDesktopSidebarCollapsed && isSidebarHovered ? 'hovered' : ''}`}
+              isDesktopSidebarCollapsed ? "collapsed" : ""
+            } ${isDesktopSidebarCollapsed && isSidebarHovered ? "hovered" : ""}`}
             onMouseEnter={handleSidebarMouseEnter}
             onMouseLeave={handleSidebarMouseLeave}
           >
-            <SidebarContent isCollapsed={isDesktopSidebarCollapsed && !isSidebarHovered} />
+            <SidebarContent
+              isCollapsed={isDesktopSidebarCollapsed && !isSidebarHovered}
+            />
           </div>
 
           {/* Main Content */}
@@ -189,10 +210,15 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             <Offcanvas.Title>Navigation</Offcanvas.Title>
           </Offcanvas.Header>
           <Offcanvas.Body className="p-0">
-            <SidebarContent isMobile={true} onItemClick={handleCloseMobileSidebar} />
+            <SidebarContent
+              isMobile={true}
+              onItemClick={handleCloseMobileSidebar}
+            />
           </Offcanvas.Body>
         </Offcanvas>
       </div>
+
+      <Toast />
     </div>
   );
 };

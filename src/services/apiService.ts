@@ -1,4 +1,5 @@
 import { ProfileData } from "@/types/auth";
+import { Dayjs } from "dayjs";
 
 // API base URL configuration from environment variables
 const API_BASE_URL =
@@ -75,7 +76,6 @@ class ApiService {
     }
 
     try {
-      console.log(url, config);
       const response = await fetch(url, config);
 
       if (!response.ok) {
@@ -115,6 +115,18 @@ class ApiService {
   // #region Player methods
   async getPlayersByCoachId(coachId: number): Promise<ApiResponse> {
     return await this.request(`/players?coachId=${coachId}`);
+  }
+
+  async addPlayer(playerData: {
+    firstName: string;
+    lastName: string;
+    dob: Dayjs | null;
+    coachId: number;
+  }): Promise<ApiResponse> {
+    return await this.request("/players", {
+      method: "POST",
+      body: JSON.stringify(playerData),
+    });
   }
   // #endregion
 

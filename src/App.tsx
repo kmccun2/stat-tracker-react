@@ -1,73 +1,38 @@
 // React Router for client-side routing
 
 // React Bootstrap UI components
-import { Auth0Provider } from '@auth0/auth0-react';
-import { Container } from 'react-bootstrap';
+import { Auth0Provider } from "@auth0/auth0-react";
 
 // Auth0 React SDK for authentication
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Layout and error handling components
-import ProtectedRoute from './components/auth/ProtectedRoute';
-import ErrorBoundary from './components/ErrorBoundary';
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 // Page components - organized by feature area
-import AnalyticsPage from './components/pages/analytics/AnalyticsPage';
-import AssessmentSelectionPage from './components/pages/assessments/AssessmentSelectionPage';
-import DashboardPage from './components/pages/dashboard/DashboardPage';
-import MetricsPage from './components/pages/metrics/MetricsPage';
-import PlayersPage from './components/pages/players/PlayersPage';
-import SettingsPage from './components/pages/settings/SettingsPage';
+import AnalyticsPage from "./components/pages/analytics/AnalyticsPage";
+import AssessmentSelectionPage from "./components/pages/assessments/AssessmentSelectionPage";
+import DashboardPage from "./components/pages/dashboard/DashboardPage";
+import MetricsPage from "./components/pages/metrics/MetricsPage";
+import PlayersPage from "./components/pages/players/PlayersPage";
+import SettingsPage from "./components/pages/settings/SettingsPage";
 
 // React Context providers for state management
-import auth0Config from './config/auth0Config';
-import { AuthProvider } from './context/AuthContext';
+import auth0Config from "./config/auth0Config";
+import { AuthProvider } from "./context/AuthContext";
 
 // Configuration files
-import AppLayout from './layout/AppLayout';
+import AppLayout from "./layout/AppLayout";
 
 // Utility functions for goal calculations
 
 // TypeScript type definitions
-import { ReduxProvider } from './providers/ReduxProvider';
+import { ReduxProvider } from "./providers/ReduxProvider";
 
 // Main application component
 
 function App(): JSX.Element {
-  // Loading state UI
-  // if (loading) {
-  //   return (
-  //     <Container
-  //       className="d-flex justify-content-center align-items-center"
-  //       style={{ minHeight: '100vh' }}
-  //     >
-  //       <div className="text-center">
-  //         <div className="spinner-border text-primary mb-3" role="status">
-  //           <span className="visually-hidden">Loading...</span>
-  //         </div>
-  //         <h3>Loading stat tracker...</h3>
-  //       </div>
-  //     </Container>
-  //   );
-  // }
-
-  // Error state UI
-  // if (error) {
-  //   return (
-  //     <Container
-  //       className="d-flex justify-content-center align-items-center"
-  //       style={{ minHeight: '100vh' }}
-  //     >
-  //       <div className="text-center">
-  //         <div className="alert alert-danger" role="alert">
-  //           <h4 className="alert-heading">Error</h4>
-  //           <p>{error}</p>
-  //         </div>
-  //       </div>
-  //     </Container>
-  //   );
-  // }
-
   // Main application render with provider hierarchy and routing
   return (
     <ReduxProvider>

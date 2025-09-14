@@ -1,3 +1,5 @@
+@import "../../../index.scss";
+
 .page-header {
   display: flex;
   align-items: center;
@@ -11,6 +13,9 @@
     margin-right: 25px;
   }
   .title-and-subtitle {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     h1 {
       margin: 0;
       font-size: 1.75rem;
@@ -22,5 +27,8 @@
       color: var(--color-secondary);
       font-size: 1rem;
     }
+  }
+  .actions-wrapper {
+    align-self: flex-end;
   }
 }
