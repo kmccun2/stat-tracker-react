@@ -1,7 +1,10 @@
-import { ProfileData } from '@/types/auth';
+import { ProfileData } from "@/types/auth";
 
 // API base URL configuration from environment variables
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  import.meta.env.VITE_API_BASE_URL ||
+  "http://localhost:3001/api";
 
 /**
  * Extended request options interface
@@ -46,11 +49,14 @@ class ApiService {
     this.getAccessToken = getAccessTokenFn;
   }
 
-  async request<T = any>(endpoint: string, options: RequestOptions = {}): Promise<ApiResponse<T>> {
+  async request<T = any>(
+    endpoint: string,
+    options: RequestOptions = {}
+  ): Promise<ApiResponse<T>> {
     const url = `${API_BASE_URL}${endpoint}`;
     const config: RequestOptions = {
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         ...options.headers,
       },
       ...options,
@@ -64,7 +70,7 @@ class ApiService {
           config.headers!.Authorization = `Bearer ${token}`;
         }
       } catch (error) {
-        console.warn('Failed to get Auth0 token:', error);
+        console.warn("Failed to get Auth0 token:", error);
       }
     }
 
@@ -79,26 +85,28 @@ class ApiService {
       const data = await response.json();
       return data;
     } catch (error) {
-      console.error('API request failed:', error);
+      console.error("API request failed:", error);
       throw error;
     }
   }
 
   // #region Auth methods
   async getCoachProfile(): Promise<ApiResponse> {
-    return await this.request('/auth/profile');
+    return await this.request("/auth/profile");
   }
 
   async createCoachProfile(profileData: ProfileData): Promise<ApiResponse> {
-    return await this.request('/auth/profile', {
-      method: 'POST',
+    return await this.request("/auth/profile", {
+      method: "POST",
       body: JSON.stringify(profileData),
     });
   }
 
-  async updateCoachProfile(profileData: Partial<ProfileData>): Promise<ApiResponse> {
-    return await this.request('/auth/profile', {
-      method: 'PUT',
+  async updateCoachProfile(
+    profileData: Partial<ProfileData>
+  ): Promise<ApiResponse> {
+    return await this.request("/auth/profile", {
+      method: "PUT",
       body: JSON.stringify(profileData),
     });
   }
@@ -113,7 +121,7 @@ class ApiService {
   // Health check
   async healthCheck(): Promise<boolean> {
     try {
-      const response = await fetch('http://localhost:3001/health');
+      const response = await fetch("http://localhost:3001/health");
       return response.ok;
     } catch (error) {
       return false;
