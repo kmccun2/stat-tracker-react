@@ -2,6 +2,8 @@
  * Age calculation utilities for baseball stat tracker
  */
 
+import { Dayjs } from "dayjs";
+
 /**
  * Convert Excel serial date to JavaScript Date
  * Excel incorrectly treats 1900 as a leap year, so we subtract 2 days
@@ -19,17 +21,21 @@ export const excelSerialToDate = (serial: number): Date => {
  * @param dob - Date of birth (Excel serial or Date object)
  * @returns Age in years
  */
-export const calculateAge = (dob: number | Date): number => {
+export const calculateAge = (dob: Dayjs): number => {
   const today = new Date();
-  const birthDate = typeof dob === 'number' ? excelSerialToDate(dob) : new Date(dob);
-  
+  // Convert dayjs to js Date object
+  const birthDate = new Date(String(dob).split("T")[0]);
+
   let age = today.getFullYear() - birthDate.getFullYear();
   const monthDiff = today.getMonth() - birthDate.getMonth();
-  
-  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
     age--;
   }
-  
+
   return age;
 };
 
@@ -39,11 +45,11 @@ export const calculateAge = (dob: number | Date): number => {
  * @returns Age range category
  */
 export const getAgeRange = (age: number): string => {
-  if (age <= 12) return '12 or less';
-  if (age >= 13 && age <= 14) return '13-14';
-  if (age >= 15 && age <= 16) return '15-16';
-  if (age >= 17 && age <= 18) return '17-18';
-  return '18+';
+  if (age <= 12) return "12 or less";
+  if (age >= 13 && age <= 14) return "13-14";
+  if (age >= 15 && age <= 16) return "15-16";
+  if (age >= 17 && age <= 18) return "17-18";
+  return "18+";
 };
 
 /**
@@ -52,6 +58,6 @@ export const getAgeRange = (age: number): string => {
  * @returns Formatted date string
  */
 export const formatDateOfBirth = (dob: number | Date): string => {
-  const date = typeof dob === 'number' ? excelSerialToDate(dob) : new Date(dob);
+  const date = typeof dob === "number" ? excelSerialToDate(dob) : new Date(dob);
   return date.toLocaleDateString();
 };

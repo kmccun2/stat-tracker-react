@@ -25,6 +25,7 @@ import { useAuth } from "../context/AuthContext";
 import UserProfile from "./UserProfile";
 import LoginButton from "../components/auth/LoginButton";
 import Toast from "@/components/common/toast/Toast";
+import LumexSpinner from "@/components/common/spinner/LumexSpinner";
 
 /**
  * Props interface for the main application layout
@@ -59,7 +60,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     useState<boolean>(false); // For desktop
   const [isSidebarHovered, setIsSidebarHovered] = useState<boolean>(false);
   const location = useLocation();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, userProfile } = useAuth();
 
   const handleCloseMobileSidebar = (): void => setShowMobileSidebar(false);
   const handleShowMobileSidebar = (): void => setShowMobileSidebar(true);
@@ -172,7 +173,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         </div>
 
         <Nav className="ms-auto d-flex align-items-center">
-          {isAuthenticated ? (
+          {isAuthenticated && userProfile && userProfile.id ? (
             <UserProfile />
           ) : (
             <LoginButton variant="outline-light" />
@@ -196,7 +197,13 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           </div>
 
           {/* Main Content */}
-          <div className="main-content">{children}</div>
+          {isAuthenticated ? (
+            <div className="main-content">{children}</div>
+          ) : (
+            <div className="w-100 h-100">
+              <LumexSpinner />
+            </div>
+          )}
         </div>
 
         {/* Mobile Sidebar */}

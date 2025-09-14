@@ -1,3 +1,4 @@
+import "./PlayersPage.scss";
 import React, { memo, useEffect, useState } from "react";
 
 // Icons
@@ -16,9 +17,9 @@ import { useAppDispatch } from "@/hooks/redux";
 // Types & Utils
 import { Player } from "@/types/player";
 import { addToastItem, ToastItemType } from "@/slices/globalSlice";
-
-// Constants
-const EXAMPLE_COACH_ID = 1; // TODO: Replace with actual coach ID from auth context
+import { useAuth } from "../../../context/AuthContext";
+import { calculateAge } from "@/utils/ageCalculation";
+import TableCardToggle from "@/components/common/table-card-toggle/TableCardToggle";
 
 /**
  * Actions component for the Players page header
@@ -45,7 +46,9 @@ const PlayersPage: React.FC = memo(() => {
   // State management
   const [loading, setLoading] = useState(false);
   const [players, setPlayers] = useState<Player[]>([]);
+  const [playerView, setPlayerView] = useState<"cards" | "table">("cards");
   const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
+  const { userProfile } = useAuth();
 
   // Hooks
   const { getPlayersByCoachId } = useAPI();
@@ -75,7 +78,7 @@ const PlayersPage: React.FC = memo(() => {
   const fetchPlayers = async () => {
     setLoading(true);
     try {
-      const fetchedPlayers = await getPlayersByCoachId(EXAMPLE_COACH_ID);
+      const fetchedPlayers = await getPlayersByCoachId(userProfile!.id);
       setPlayers(fetchedPlayers);
       console.log("Players fetched:", fetchedPlayers);
     } catch (error) {
@@ -88,9 +91,10 @@ const PlayersPage: React.FC = memo(() => {
 
   // Effects
   useEffect(() => {
+    if (!userProfile?.id) return;
     fetchPlayers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Empty dependency array - only run once on mount
+  }, [userProfile?.id]); // Empty dependency array - only run once on mount
 
   // Render methods
   const renderContent = () => {
@@ -104,8 +108,37 @@ const PlayersPage: React.FC = memo(() => {
 
     return (
       <div className="page-main-content">
-        <p>Total Players: {players.length}</p>
-        {/* TODO: Add players list/grid component here */}
+        {/* Players actions header  */}
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <input
+            type="text"
+            className="form-control search-input"
+            placeholder="Search players..."
+          />
+          <TableCardToggle />
+        </div>
+
+        {/* Player cards */}
+        {players.length === 0 ? (
+          <div className="alert alert-info" role="alert">
+            No players found. Click "Add Player" to create a new player profile.
+          </div>
+        ) : (
+          <div className="player-list">
+            {players.map((player) => (
+              <div key={player.id} className="player-card">
+                <h5>{player.firstName + " " + player.lastName}</h5>
+                <p>
+                  {player.dob
+                    ? `${calculateAge(player.dob)} years old`
+                    : "Age not available"}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Player table */}
       </div>
     );
   };
