@@ -1,13 +1,6 @@
-// Component-specific styling
-import "./AppLayout.scss";
-
-// React Bootstrap UI components for layout and navigation
-import { Navbar, Nav, Offcanvas } from "react-bootstrap";
-
-// React Router for navigation and location tracking
+import { ReactNode, useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
-
-// Font Awesome React icons for navigation and visual elements
+import { Navbar, Nav, Offcanvas } from "react-bootstrap";
 import {
   FaUsers,
   FaChartLine,
@@ -17,28 +10,17 @@ import {
   FaTachometerAlt,
 } from "react-icons/fa";
 
-// React hooks for component logic
-import { ReactNode, useState, useEffect, useMemo } from "react";
-
-// Authentication context and components
 import { useAuth } from "../context/AuthContext";
 import UserProfile from "./UserProfile";
 import LoginButton from "../components/auth/LoginButton";
 import Toast from "@/components/common/toast/Toast";
 import LumexSpinner from "@/components/common/spinner/LumexSpinner";
-import { useNavigate } from "react-router-dom";
+import "./AppLayout.scss";
 
-/**
- * Props interface for the main application layout
- */
 interface AppLayoutProps {
   children: ReactNode;
 }
 
-/**
- * Navigation sidebar item interface
- * Defines structure for navigation menu items
- */
 interface SidebarItem {
   path: string;
   label: string;
@@ -46,9 +28,6 @@ interface SidebarItem {
   description: string;
 }
 
-/**
- * Props interface for sidebar content component
- */
 interface SidebarContentProps {
   isMobile?: boolean;
   isCollapsed?: boolean;
@@ -56,13 +35,12 @@ interface SidebarContentProps {
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
-  const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false); // For mobile
+  const [showMobileSidebar, setShowMobileSidebar] = useState<boolean>(false);
   const [isDesktopSidebarCollapsed, setIsDesktopSidebarCollapsed] =
-    useState<boolean>(false); // For desktop
+    useState<boolean>(false);
   const [isSidebarHovered, setIsSidebarHovered] = useState<boolean>(false);
   const location = useLocation();
   const { isAuthenticated, userProfile } = useAuth();
-  const navigate = useNavigate();
 
   const handleCloseMobileSidebar = (): void => setShowMobileSidebar(false);
   const handleShowMobileSidebar = (): void => setShowMobileSidebar(true);
@@ -71,12 +49,10 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const handleSidebarMouseEnter = (): void => setIsSidebarHovered(true);
   const handleSidebarMouseLeave = (): void => setIsSidebarHovered(false);
 
-  // Close mobile sidebar when route changes
   useEffect(() => {
     setShowMobileSidebar(false);
   }, [location.pathname]);
 
-  // Memoize sidebar items since they're static
   const sidebarItems: SidebarItem[] = useMemo(
     () => [
       {
@@ -111,7 +87,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
       },
     ],
     []
-  ); // Empty dependency array since items are static
+  );
 
   const SidebarContent: React.FC<SidebarContentProps> = ({
     isMobile = false,
@@ -151,17 +127,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
   return (
     <div className="app-layout">
-      {/* Header */}
       <Navbar bg="primary" variant="dark" className="navbar-custom">
         <div className="d-flex align-items-center">
-          {/* Mobile toggle button */}
           <div
             className="d-lg-none hamburger-icon"
             onClick={handleShowMobileSidebar}
           >
             <FaBars />
           </div>
-          {/* Desktop toggle button */}
           <div
             className="d-none d-lg-flex hamburger-icon"
             onClick={handleToggleDesktopSidebar}
@@ -185,7 +158,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
 
       <div className="app-body">
         <div className="d-flex w-100">
-          {/* Desktop Sidebar */}
           <div
             className={`d-none d-lg-flex sidebar-desktop ${
               isDesktopSidebarCollapsed ? "collapsed" : ""
@@ -198,7 +170,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
             />
           </div>
 
-          {/* Main Content */}
           {isAuthenticated ? (
             <div className="main-content">{children}</div>
           ) : (
@@ -208,7 +179,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
           )}
         </div>
 
-        {/* Mobile Sidebar */}
         <Offcanvas
           show={showMobileSidebar}
           onHide={handleCloseMobileSidebar}
