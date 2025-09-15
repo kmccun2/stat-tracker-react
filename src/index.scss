@@ -4,8 +4,9 @@
   --color-primary: #35446e;
   --color-primary-hover: #{color.adjust(#35446e, $lightness: -4%)};
   --color-primary-light: #{color.adjust(#35446e, $lightness: 10%)};
-  --color-secondary-dark: #1e293b;
-  --color-secondary-darker: #0f172a;
+  --color-primary-lighter: #{color.adjust(#35446e, $lightness: 20%)};
+  --color-primary-dark: #1e293b;
+  --color-primary-darker: #0f172a;
   --color-white: #ffffff;
   --color-dark: rgb(32, 32, 32);
   --color-light-gray: #f8fafc;
@@ -57,11 +58,11 @@ body {
   }
 
   &.secondary {
-    background-color: var(--color-secondary-dark);
+    background-color: var(--color-primary-dark);
     color: var(--color-white);
 
     &:hover {
-      background-color: var(--color-secondary-darker);
+      background-color: var(--color-primary-darker);
     }
   }
 

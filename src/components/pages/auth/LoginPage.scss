@@ -1,5 +1,11 @@
+@import "../../../index.scss";
+
 .login-page {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-dark) 0%,
+    var(--color-primary-light) 100%
+  );
   min-height: 100vh;
 
   .login-container {
@@ -9,6 +15,7 @@
 
   .login-card {
     border: none;
+    max-width: 480px;
     border-radius: 15px;
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
@@ -16,7 +23,7 @@
 
   .login-icon {
     font-size: 3rem;
-    color: #667eea;
+    color: var(--color-primary-lighter);
   }
 
   .login-title {
@@ -48,7 +55,7 @@
   }
 
   .login-button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--color-primary-lighter);
     border: none;
     border-radius: 10px;
     padding: 12px 24px;
@@ -58,7 +65,7 @@
     &:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-      background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+      background: var(--color-primary-light);
     }
 
     &:disabled {
