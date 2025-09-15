@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 import apiService from "../services/apiService";
 import { Player } from "../types/player";
-import { Metric } from "../types/metric";
+import { Metric, Category } from "../types/metric";
 
 export const useAPI = () => {
   const { isAuthenticated } = useAuth();
@@ -42,7 +42,7 @@ export const useAPI = () => {
   }, [ensureAuthenticated]);
 
   const getMetricCategories = useCallback(async (): Promise<
-    { category: string; category_sort: number }[]
+    { category: string; categorySort: number }[]
   > => {
     ensureAuthenticated();
     const response = await apiService.getMetricCategories();
@@ -52,9 +52,9 @@ export const useAPI = () => {
   const addMetric = useCallback(
     async (metricData: {
       metric: string;
-      category: string;
-      metric_sort: number;
-      category_sort: number;
+      description: string;
+      categoryId: number;
+      isActive: boolean;
     }): Promise<Metric> => {
       ensureAuthenticated();
       const response = await apiService.addMetric(metricData);
@@ -62,6 +62,13 @@ export const useAPI = () => {
     },
     [ensureAuthenticated]
   );
+
+  // Cateegory CRUD operation
+  const getCategories = useCallback(async (): Promise<Category[]> => {
+    ensureAuthenticated();
+    const response = await apiService.getCategories();
+    return response.data || [];
+  }, [ensureAuthenticated]);
 
   return {
     // Player methods
@@ -71,5 +78,7 @@ export const useAPI = () => {
     getAllMetrics,
     getMetricCategories,
     addMetric,
+    // Category methods
+    getCategories,
   };
 };

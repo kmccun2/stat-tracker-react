@@ -127,7 +127,6 @@ const MetricsPage: React.FC = memo(() => {
     try {
       const fetchedMetrics = await getAllMetrics();
       setMetrics(fetchedMetrics);
-      console.log("Metrics fetched:", fetchedMetrics);
     } catch (error) {
       console.error("Error fetching metrics:", error);
       showErrorToast("Failed to fetch metrics.");
@@ -158,12 +157,12 @@ const MetricsPage: React.FC = memo(() => {
     let aValue: any;
     let bValue: any;
 
-    if (orderBy === "metric" || orderBy === "category") {
+    if (orderBy === "category") {
       aValue = a[orderBy]?.toLowerCase() || "";
       bValue = b[orderBy]?.toLowerCase() || "";
-    } else if (orderBy === "metricSort") {
-      aValue = a[orderBy] || 0;
-      bValue = b[orderBy] || 0;
+    } else if (orderBy === "description") {
+      aValue = a[orderBy]?.toLowerCase() || "";
+      bValue = b[orderBy]?.toLowerCase() || "";
     } else {
       aValue = a[orderBy];
       bValue = b[orderBy];
@@ -184,14 +183,10 @@ const MetricsPage: React.FC = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
 
-  // Sort metrics for cards view (by categorySort, then metricSort)
+  // Sort metrics for cards view (by categorySort)
   const cardSortedMetrics = filteredMetrics.slice().sort((a, b) => {
     // First compare by categorySort
-    if (a.categorySort !== b.categorySort) {
-      return a.categorySort - b.categorySort;
-    }
-    // If categorySort is the same, compare by metricSort
-    return a.metricSort - b.metricSort;
+    return a.categorySort - b.categorySort;
   });
 
   // Group metrics by category for cards view
@@ -218,10 +213,7 @@ const MetricsPage: React.FC = memo(() => {
           </h4>
           <div className="metric-list">
             {categoryMetrics.map((metric, index) => (
-              <div
-                key={`${metric.category}-${metric.metricSort}-${index}`}
-                className="metric-card"
-              >
+              <div key={`${metric.category}-${index}`} className="metric-card">
                 <h5 className="card-title">{metric.metric}</h5>
                 <p className="card-content">{metric.description}</p>
               </div>
@@ -269,7 +261,7 @@ const MetricsPage: React.FC = memo(() => {
         <TableBody>
           {sortedMetrics.map((metric, index) => (
             <TableRow
-              key={`${metric.category}-${metric.metricSort}-${index}`}
+              key={`${metric.category}-${index}`}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">

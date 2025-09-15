@@ -3,12 +3,18 @@ export interface Metric {
   metric: string;
   description: string;
   category: string;
-  metricSort: number;
   categorySort: number;
   isActive: boolean;
 }
 
-export interface MetricCategory {
+export interface UpsertMetric {
+  metric: string;
+  description: string;
+  categoryId: string;
+  isActive: boolean;
+}
+
+export interface Category {
   category: string;
   categorySort: number;
 }

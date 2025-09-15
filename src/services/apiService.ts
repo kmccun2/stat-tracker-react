@@ -141,13 +141,21 @@ class ApiService {
 
   async addMetric(metricData: {
     metric: string;
-    category: string;
-    metric_sort: number;
-    category_sort: number;
+    description: string;
+    categoryId: number;
+    isActive: boolean;
   }): Promise<ApiResponse> {
     return await this.request("/metrics", {
       method: "POST",
       body: JSON.stringify(metricData),
+    });
+  }
+  // #endregion
+
+  // #region Category methods
+  async getCategories(): Promise<ApiResponse> {
+    return await this.request("/categories", {
+      method: "GET",
     });
   }
   // #endregion
