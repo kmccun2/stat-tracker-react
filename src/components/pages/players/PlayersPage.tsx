@@ -162,10 +162,29 @@ const PlayersPage: React.FC = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile?.id]); // Empty dependency array - only run once on mount
 
+  // Sort players for cards view (always by firstName, then lastName)
+  const cardSortedPlayers = filteredPlayers.slice().sort((a, b) => {
+    const aFirstName = a.firstName?.toLowerCase() || "";
+    const bFirstName = b.firstName?.toLowerCase() || "";
+
+    // First compare by firstName
+    if (aFirstName < bFirstName) return -1;
+    if (aFirstName > bFirstName) return 1;
+
+    // If firstName is the same, compare by lastName
+    const aLastName = a.lastName?.toLowerCase() || "";
+    const bLastName = b.lastName?.toLowerCase() || "";
+
+    if (aLastName < bLastName) return -1;
+    if (aLastName > bLastName) return 1;
+
+    return 0;
+  });
+
   // Render helpers
   const PlayerCards = () => (
     <div className="player-list">
-      {filteredPlayers.map((player) => (
+      {cardSortedPlayers.map((player) => (
         <div key={player.id} className="player-card">
           <h5>{player.firstName + " " + player.lastName}</h5>
           <p>
