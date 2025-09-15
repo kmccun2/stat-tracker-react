@@ -25,9 +25,10 @@ export const useAPI = () => {
   );
 
   const addPlayer = useCallback(
-    async (playerData: Player): Promise<void> => {
+    async (playerData: Player): Promise<Player> => {
       ensureAuthenticated();
-      await apiService.addPlayer(playerData);
+      let response = await apiService.addPlayer(playerData);
+      return response.data;
     },
     [ensureAuthenticated]
   );

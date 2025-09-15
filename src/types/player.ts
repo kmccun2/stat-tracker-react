@@ -4,6 +4,6 @@ export interface Player {
   id?: number;
   firstName: string;
   lastName: string;
-  dob: Dayjs | null;
-  coachId?: number;
+  dob: Dayjs;
+  coachId: number;
 }

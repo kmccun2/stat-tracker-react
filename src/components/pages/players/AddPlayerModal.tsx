@@ -35,6 +35,13 @@ const MONTHS = [
 interface AddPlayerModalProps {
   show: boolean;
   onClose: () => void;
+  setPlayers: React.Dispatch<React.SetStateAction<Player[]>>;
+}
+
+interface PlayerFormData {
+  firstName: string;
+  lastName: string;
+  dob: Dayjs | null;
 }
 
 /**
@@ -42,17 +49,17 @@ interface AddPlayerModalProps {
  * Modal form for adding new players to the team roster
  */
 
-const AddPlayerModal = ({ show, onClose }: AddPlayerModalProps) => {
+const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
   // Hooks
   const { userProfile } = useAuth();
   const { addPlayer } = useAPI();
   const dispatch = useAppDispatch();
 
   // State
-  const [newPlayer, setNewPlayer] = useState<Player>({
+  const [newPlayer, setNewPlayer] = useState<PlayerFormData>({
     firstName: "",
     lastName: "",
-    dob: null as Dayjs | null,
+    dob: null,
   });
 
   // Helper functions
@@ -83,9 +90,9 @@ const AddPlayerModal = ({ show, onClose }: AddPlayerModalProps) => {
     );
   };
 
-  const updatePlayerField = <K extends keyof Player>(
+  const updatePlayerField = <K extends keyof PlayerFormData>(
     field: K,
-    value: Player[K]
+    value: PlayerFormData[K]
   ) => {
     setNewPlayer((prev) => ({ ...prev, [field]: value }));
   };
@@ -160,8 +167,23 @@ const AddPlayerModal = ({ show, onClose }: AddPlayerModalProps) => {
         return;
       }
 
-      await addPlayer({ ...newPlayer, coachId: userProfile?.id });
+      if (!userProfile?.id) {
+        showToast("error", "Authentication Error", "User profile not found.");
+        return;
+      }
+
+      // Convert form data to Player object
+      const playerData: Omit<Player, "id"> = {
+        firstName: newPlayer.firstName,
+        lastName: newPlayer.lastName,
+        dob: newPlayer.dob!, // We know this is not null due to validation
+        coachId: userProfile.id,
+      };
+
+      let _player: Player = await addPlayer(playerData);
       showToast("success", "Player Added", "Player added successfully.");
+
+      setPlayers((prev) => [...prev, _player]);
       handleClose();
     } catch (error) {
       console.error("Error adding player:", error);

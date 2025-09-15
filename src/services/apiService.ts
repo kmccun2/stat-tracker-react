@@ -120,7 +120,7 @@ class ApiService {
   async addPlayer(playerData: {
     firstName: string;
     lastName: string;
-    dob: Dayjs | null;
+    dob: Dayjs;
     coachId: number;
   }): Promise<ApiResponse> {
     return await this.request("/players", {

@@ -241,7 +241,11 @@ const PlayersPage: React.FC = memo(() => {
         </div>
       )}
 
-      <AddPlayerModal show={showAddPlayerModal} onClose={handleCloseModal} />
+      <AddPlayerModal
+        show={showAddPlayerModal}
+        onClose={handleCloseModal}
+        setPlayers={setPlayers}
+      />
     </>
   );
 });
