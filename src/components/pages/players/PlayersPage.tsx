@@ -62,6 +62,7 @@ const PlayersPage: React.FC = memo(() => {
   const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
   const [orderBy, setOrderBy] = useState<keyof Player>("firstName");
   const [order, setOrder] = useState<"asc" | "desc">("asc");
+  const [searchFilter, setSearchFilter] = useState("");
   const { userProfile } = useAuth();
 
   // Hooks
@@ -75,6 +76,10 @@ const PlayersPage: React.FC = memo(() => {
 
   const handleCloseModal = () => {
     setShowAddPlayerModal(false);
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchFilter(event.target.value);
   };
 
   const showErrorToast = (message: string) => {
@@ -110,7 +115,23 @@ const PlayersPage: React.FC = memo(() => {
     setOrderBy(property);
   };
 
-  const sortedPlayers = players.slice().sort((a, b) => {
+  // Filter players based on search input
+  const filteredPlayers = players.filter((player) => {
+    if (!searchFilter.trim()) return true;
+
+    const searchTerm = searchFilter.toLowerCase();
+    const firstName = player.firstName?.toLowerCase() || "";
+    const lastName = player.lastName?.toLowerCase() || "";
+    const fullName = `${firstName} ${lastName}`.trim();
+
+    return (
+      firstName.includes(searchTerm) ||
+      lastName.includes(searchTerm) ||
+      fullName.includes(searchTerm)
+    );
+  });
+
+  const sortedPlayers = filteredPlayers.slice().sort((a, b) => {
     let aValue: any;
     let bValue: any;
 
@@ -144,7 +165,7 @@ const PlayersPage: React.FC = memo(() => {
   // Render helpers
   const PlayerCards = () => (
     <div className="player-list">
-      {players.map((player) => (
+      {filteredPlayers.map((player) => (
         <div key={player.id} className="player-card">
           <h5>{player.firstName + " " + player.lastName}</h5>
           <p>
@@ -225,15 +246,18 @@ const PlayersPage: React.FC = memo(() => {
               type="text"
               className="form-control search-input"
               placeholder="Search players..."
+              value={searchFilter}
+              onChange={handleSearchChange}
             />
             <TableCardToggle view={view} setView={setView} />
           </div>
 
           {/* Player cards */}
-          {players.length === 0 ? (
+          {filteredPlayers.length === 0 ? (
             <div className="alert alert-info" role="alert">
-              No players found. Click "Add Player" to create a new player
-              profile.
+              {players.length === 0
+                ? 'No players found. Click "Add Player" to create a new player profile.'
+                : "No players match your search criteria."}
             </div>
           ) : (
             <>{view === "cards" ? <PlayerCards /> : <PlayerTable />}</>
