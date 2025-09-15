@@ -43,11 +43,11 @@ import { getScoreColor } from "@/utils/getScoreColor";
  * Actions component for the Players page header
  */
 const PlayerActions: React.FC<{
-  onAddPlayer: () => void;
-}> = ({ onAddPlayer }) => (
+  onAddPlayerClick: () => void;
+}> = ({ onAddPlayerClick }) => (
   <button
     className="lumex-btn primary"
-    onClick={onAddPlayer}
+    onClick={onAddPlayerClick}
     aria-label="Add new player"
   >
     <HiOutlineUserAdd />
@@ -405,7 +405,7 @@ const PlayersPage: React.FC = memo(() => {
         title="Players"
         subtitle="Manage your team roster and track individual progress"
         icon={<FaUsers />}
-        actions={<PlayerActions onAddPlayer={handleAddPlayerClick} />}
+        actions={<PlayerActions onAddPlayerClick={handleAddPlayerClick} />}
       />
 
       {/* Main Content */}

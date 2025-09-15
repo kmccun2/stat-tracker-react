@@ -1,5 +1,8 @@
 import { useState } from "react";
 
+// React Bootstrap components
+import { Modal, Form, Button, Row, Col, Spinner } from "react-bootstrap";
+
 // Date utilities
 import dayjs, { Dayjs } from "dayjs";
 
@@ -61,6 +64,7 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
     lastName: "",
     dob: null,
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   // Helper functions
   const resetForm = () => {
@@ -172,6 +176,8 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
         return;
       }
 
+      setIsLoading(true);
+
       // Convert form data to Player object
       const playerData: Omit<Player, "id"> = {
         firstName: newPlayer.firstName,
@@ -188,149 +194,121 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
     } catch (error) {
       console.error("Error adding player:", error);
       showToast("error", "Add Player Failed", "Failed to add player.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div
-      className={`modal fade ${show ? "show d-block" : ""}`}
-      style={{
-        backgroundColor: show ? "rgba(0, 0, 0, 0.5)" : "transparent",
-      }}
-      tabIndex={-1}
-      aria-labelledby="addPlayerModalLabel"
-      aria-hidden={!show}
-    >
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title" id="addPlayerModalLabel">
-              Add New Player
-            </h5>
-            <button
-              type="button"
-              className="btn-close"
-              aria-label="Close"
-              onClick={handleClose}
+    <Modal show={show} onHide={handleClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Add New Player</Modal.Title>
+      </Modal.Header>
+      <Modal.Body className="px-4">
+        <Form>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="firstName">First Name</Form.Label>
+            <Form.Control
+              type="text"
+              value={newPlayer.firstName}
+              onChange={(e) => updatePlayerField("firstName", e.target.value)}
+              id="firstName"
+              placeholder="Enter first name"
             />
-          </div>
-          <div className="modal-body px-4">
-            <form>
-              <div className="mb-3">
-                <label htmlFor="firstName" className="form-label">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={newPlayer.firstName}
-                  onChange={(e) =>
-                    updatePlayerField("firstName", e.target.value)
-                  }
-                  id="firstName"
-                  placeholder="Enter first name"
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="lastName" className="form-label">
-                  Last Name
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  value={newPlayer.lastName}
-                  onChange={(e) =>
-                    updatePlayerField("lastName", e.target.value)
-                  }
-                  id="lastName"
-                  placeholder="Enter last name"
-                />
-              </div>
-              <div className="mb-3">
-                <label className="form-label">Date of Birth</label>
-                <div className="row g-2">
-                  <div className="col-4">
-                    <select
-                      className="form-select"
-                      value={newPlayer.dob ? newPlayer.dob.month() + 1 : ""}
-                      onChange={(e) => updateMonth(e.target.value)}
-                    >
-                      <option value="">Select Month</option>
-                      {MONTHS.map(({ value, label }) => (
-                        <option key={value} value={value}>
-                          {label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="col-4">
-                    <select
-                      className="form-select"
-                      value={newPlayer.dob?.date() || ""}
-                      onChange={(e) => updateDay(e.target.value)}
-                      disabled={!newPlayer.dob}
-                    >
-                      <option value="">Day</option>
-                      {newPlayer.dob &&
-                        Array.from(
-                          {
-                            length: dayjs(
-                              `${newPlayer.dob.year()}-${(
-                                newPlayer.dob.month() + 1
-                              )
-                                .toString()
-                                .padStart(2, "0")}-01`
-                            ).daysInMonth(),
-                          },
-                          (_, i) => i + 1
-                        ).map((day) => (
-                          <option key={day} value={day}>
-                            {day}
-                          </option>
-                        ))}
-                    </select>
-                  </div>
-                  <div className="col-4">
-                    <select
-                      className="form-select"
-                      value={newPlayer.dob?.year() || ""}
-                      onChange={(e) => updateYear(e.target.value)}
-                    >
-                      <option value="">Year</option>
-                      {Array.from(
-                        { length: YEAR_RANGE },
-                        (_, i) => CURRENT_YEAR - i
-                      ).map((year) => (
-                        <option key={year} value={year}>
-                          {year}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-          <div className="modal-footer">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={handleClose}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary"
-              onClick={handleAddNewPlayer}
-              disabled={!validatePlayer()}
-            >
-              Add Player
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="lastName">Last Name</Form.Label>
+            <Form.Control
+              type="text"
+              value={newPlayer.lastName}
+              onChange={(e) => updatePlayerField("lastName", e.target.value)}
+              id="lastName"
+              placeholder="Enter last name"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Date of Birth</Form.Label>
+            <Row className="g-2">
+              <Col xs={4}>
+                <Form.Select
+                  value={newPlayer.dob ? newPlayer.dob.month() + 1 : ""}
+                  onChange={(e) => updateMonth(e.target.value)}
+                >
+                  <option value="">Select Month</option>
+                  {MONTHS.map(({ value, label }) => (
+                    <option key={value} value={value}>
+                      {label}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+              <Col xs={4}>
+                <Form.Select
+                  value={newPlayer.dob?.date() || ""}
+                  onChange={(e) => updateDay(e.target.value)}
+                  disabled={!newPlayer.dob}
+                >
+                  <option value="">Day</option>
+                  {newPlayer.dob &&
+                    Array.from(
+                      {
+                        length: dayjs(
+                          `${newPlayer.dob.year()}-${(newPlayer.dob.month() + 1)
+                            .toString()
+                            .padStart(2, "0")}-01`
+                        ).daysInMonth(),
+                      },
+                      (_, i) => i + 1
+                    ).map((day) => (
+                      <option key={day} value={day}>
+                        {day}
+                      </option>
+                    ))}
+                </Form.Select>
+              </Col>
+              <Col xs={4}>
+                <Form.Select
+                  value={newPlayer.dob?.year() || ""}
+                  onChange={(e) => updateYear(e.target.value)}
+                >
+                  <option value="">Year</option>
+                  {Array.from(
+                    { length: YEAR_RANGE },
+                    (_, i) => CURRENT_YEAR - i
+                  ).map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+            </Row>
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={handleClose}>
+          Cancel
+        </Button>
+        <Button
+          variant="primary"
+          onClick={handleAddNewPlayer}
+          disabled={!validatePlayer() || isLoading}
+        >
+          {isLoading && (
+            <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              className="me-2"
+            />
+          )}
+          {isLoading ? "Adding..." : "Add Player"}
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 };
 
