@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Form, Button, Modal } from "react-bootstrap";
 
 // Hooks & Services
 import { useAPI } from "@/hooks/useAPI";
@@ -188,124 +189,90 @@ const AddMetricModal: React.FC<AddMetricModalProps> = ({
   if (!show) return null;
 
   return (
-    <div
-      className={`modal fade ${show ? "show d-block" : ""}`}
-      style={{
-        backgroundColor: show ? "rgba(0, 0, 0, 0.5)" : "transparent",
-      }}
-      tabIndex={-1}
-      aria-labelledby="addPlayerModalLabel"
-      aria-hidden={!show}
-    >
-      <div className="modal-overlay" onClick={handleClose}>
-        <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
-          <div className="modal-content">
-            <div className="modal-header">
-              <h4 className="modal-title">Add New Metric</h4>
-              <button
-                type="button"
-                className="btn-close"
-                onClick={handleClose}
-                aria-label="Close"
-              >
-                ×
-              </button>
+    <Modal show={show} onHide={handleClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Add New Metric</Modal.Title>
+      </Modal.Header>
+
+      <Form onSubmit={handleSubmit}>
+        <Modal.Body>
+          {/* Metric Name */}
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="metric">Metric Name *</Form.Label>
+            <Form.Control
+              type="text"
+              id="metric"
+              name="metric"
+              value={formData.metric || ""}
+              onChange={handleInputChange}
+              placeholder="e.g., Exit Velocity - Tee"
+              disabled={loading}
+              isInvalid={!!formErrors.metric}
+            />
+            <Form.Control.Feedback type="invalid">
+              {formErrors.metric}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          {/* Metric Description */}
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="description">Metric Description *</Form.Label>
+            <Form.Control
+              as="textarea"
+              id="description"
+              name="description"
+              maxLength={65}
+              value={formData.description || ""}
+              onChange={handleInputChange}
+              placeholder="Enter a description for this metric"
+              rows={3}
+              disabled={loading}
+              isInvalid={!!formErrors.description}
+            />
+            <div className="d-flex justify-content-between">
+              <Form.Control.Feedback type="invalid">
+                {formErrors.description}
+              </Form.Control.Feedback>
+              <small className="text-muted">
+                {(formData.description || "").length}/65 characters
+              </small>
             </div>
+          </Form.Group>
 
-            <form onSubmit={handleSubmit}>
-              <div className="modal-body">
-                {/* Metric Name */}
-                <div className="mb-3">
-                  <label htmlFor="metric" className="form-label">
-                    Metric Name *
-                  </label>
-                  <input
-                    type="text"
-                    className={`form-control ${formErrors.metric ? "is-invalid" : ""}`}
-                    id="metric"
-                    name="metric"
-                    value={formData.metric || ""}
-                    onChange={handleInputChange}
-                    placeholder="e.g., Exit Velocity - Tee"
-                    disabled={loading}
-                  />
-                  {formErrors.metric && (
-                    <div className="invalid-feedback">{formErrors.metric}</div>
-                  )}
-                </div>
+          {/* Category */}
+          <Form.Group className="mb-3">
+            <Form.Label htmlFor="categoryId">Category *</Form.Label>
+            <Form.Select
+              id="categoryId"
+              name="categoryId"
+              value={formData.categoryId || ""}
+              onChange={handleCategoryChange}
+              disabled={loading}
+              isInvalid={!!formErrors.category}
+            >
+              <option value="">Select a category</option>
+              {categories.map((cat, index) => (
+                <option key={cat.category} value={index + 1}>
+                  {cat.category}
+                </option>
+              ))}
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">
+              {formErrors.category}
+            </Form.Control.Feedback>
+          </Form.Group>
+        </Modal.Body>
 
-                {/* Metric Description */}
-                <div className="mb-3">
-                  <label htmlFor="description" className="form-label">
-                    Metric Description *
-                  </label>
-                  <textarea
-                    className={`form-control ${formErrors.description ? "is-invalid" : ""}`}
-                    id="description"
-                    name="description"
-                    value={formData.description || ""}
-                    onChange={handleInputChange}
-                    placeholder="Enter a description for this metric"
-                    rows={3}
-                    disabled={loading}
-                  />
-                  {formErrors.description && (
-                    <div className="invalid-feedback">
-                      {formErrors.description}
-                    </div>
-                  )}
-                </div>
-
-                {/* Category */}
-                <div className="mb-3">
-                  <label htmlFor="categoryId" className="form-label">
-                    Category *
-                  </label>
-                  <select
-                    className={`form-control ${formErrors.category ? "is-invalid" : ""}`}
-                    id="categoryId"
-                    name="categoryId"
-                    value={formData.categoryId || ""}
-                    onChange={handleCategoryChange}
-                    disabled={loading}
-                  >
-                    <option value="">Select a category</option>
-                    {categories.map((cat, index) => (
-                      <option key={cat.category} value={index + 1}>
-                        {cat.category}
-                      </option>
-                    ))}
-                  </select>
-                  {formErrors.category && (
-                    <div className="invalid-feedback">
-                      {formErrors.category}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={handleClose}
-                  disabled={loading}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={loading}
-                >
-                  {loading ? "Adding..." : "Add Metric"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose} disabled={loading}>
+            Cancel
+          </Button>
+          <Button variant="primary" type="submit" disabled={loading}>
+            {loading ? "Adding..." : "Add Metric"}
+          </Button>
+        </Modal.Footer>
+      </Form>
+    </Modal>
   );
 };
 
