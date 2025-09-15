@@ -1,10 +1,8 @@
 // React Router for client-side routing
-
-// React Bootstrap UI components
-import { Auth0Provider } from "@auth0/auth0-react";
-
-// Auth0 React SDK for authentication
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+// React Bootstrap UI components and Auth0 React SDK for authentication
+import { Auth0Provider } from "@auth0/auth0-react";
 
 // Layout and error handling components
 import ProtectedRoute from "./components/auth/ProtectedRoute";
@@ -17,20 +15,102 @@ import DashboardPage from "./components/pages/dashboard/DashboardPage";
 import MetricsPage from "./components/pages/metrics/MetricsPage";
 import PlayersPage from "./components/pages/players/PlayersPage";
 import SettingsPage from "./components/pages/settings/SettingsPage";
+import LoginPage from "./components/pages/auth/LoginPage";
 
 // React Context providers for state management
 import auth0Config from "./config/auth0Config";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 
 // Configuration files
 import AppLayout from "./layout/AppLayout";
 
-// Utility functions for goal calculations
-
 // TypeScript type definitions
 import { ReduxProvider } from "./providers/ReduxProvider";
 
-// Main application component
+// Main application component that handles authentication flow
+function AppContent(): JSX.Element {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  // Show loading state while authentication is being determined
+  if (isLoading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="text-center">
+          <div className="spinner-border text-primary mb-3" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p>Loading application...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show login page if user is not authenticated
+  if (!isAuthenticated) {
+    return <LoginPage />;
+  }
+
+  // Show main application with layout if user is authenticated
+  return (
+    <AppLayout>
+      <Routes>
+        {/* Dashboard - Main entry point */}
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <DashboardPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* Assessment workflow */}
+        <Route
+          path="/assessment-selection"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <AssessmentSelectionPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* Player management */}
+        <Route
+          path="/players"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <PlayersPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* Analytics and reporting */}
+        <Route
+          path="/analytics"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <AnalyticsPage />
+            </ProtectedRoute>
+          }
+        />
+        {/* Configuration and management */}
+        <Route
+          path="/metrics"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <MetricsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <SettingsPage />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </AppLayout>
+  );
+}
 
 function App(): JSX.Element {
   // Main application render with provider hierarchy and routing
@@ -50,71 +130,7 @@ function App(): JSX.Element {
         >
           <AuthProvider>
             <Router>
-              <AppLayout>
-                <Routes>
-                  {/* Dashboard - Main entry point */}
-                  <Route
-                    path="/"
-                    element={
-                      <ProtectedRoute requireAuth={true}>
-                        <DashboardPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  {/* Assessment workflow */}
-                  <Route
-                    path="/assessment-selection"
-                    element={
-                      <ProtectedRoute requireAuth={true}>
-                        <AssessmentSelectionPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  {/* Player management */}
-                  <Route
-                    path="/players"
-                    element={
-                      <ProtectedRoute requireAuth={true}>
-                        <PlayersPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  {/* <Route
-                    path="/player/:id"
-                    element={
-                      <ProtectedRoute requireAuth={true}>
-                        <PlayerDetailPage />
-                      </ProtectedRoute>
-                    }
-                  /> */}
-                  {/* Analytics and reporting */}
-                  <Route
-                    path="/analytics"
-                    element={
-                      <ProtectedRoute requireAuth={true}>
-                        <AnalyticsPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  {/* Configuration and management */}
-                  <Route
-                    path="/metrics"
-                    element={
-                      <ProtectedRoute requireAuth={true}>
-                        <MetricsPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                  <Route
-                    path="/settings"
-                    element={
-                      <ProtectedRoute requireAuth={true}>
-                        <SettingsPage />
-                      </ProtectedRoute>
-                    }
-                  />
-                </Routes>
-              </AppLayout>
+              <AppContent />
             </Router>
           </AuthProvider>
         </Auth0Provider>

@@ -26,6 +26,7 @@ import UserProfile from "./UserProfile";
 import LoginButton from "../components/auth/LoginButton";
 import Toast from "@/components/common/toast/Toast";
 import LumexSpinner from "@/components/common/spinner/LumexSpinner";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Props interface for the main application layout
@@ -61,6 +62,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const [isSidebarHovered, setIsSidebarHovered] = useState<boolean>(false);
   const location = useLocation();
   const { isAuthenticated, userProfile } = useAuth();
+  const navigate = useNavigate();
 
   const handleCloseMobileSidebar = (): void => setShowMobileSidebar(false);
   const handleShowMobileSidebar = (): void => setShowMobileSidebar(true);
