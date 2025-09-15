@@ -3,8 +3,14 @@ import "./MetricsPage.scss";
 import React, { memo, useEffect, useState } from "react";
 
 // Icons
-import { FaRuler } from "react-icons/fa";
-import { HiOutlinePlus } from "react-icons/hi";
+import { RiPencilRulerLine } from "react-icons/ri";
+import { FaBaseballBatBall } from "react-icons/fa6";
+import { PiPersonSimpleThrowBold } from "react-icons/pi";
+import { FaDumbbell, FaRuler } from "react-icons/fa";
+import { IoMdStopwatch } from "react-icons/io";
+import { ImPower } from "react-icons/im";
+import { TbCategory2 } from "react-icons/tb";
+import { GrYoga } from "react-icons/gr";
 
 // MUI Components
 import {
@@ -31,6 +37,31 @@ import { useAppDispatch } from "@/hooks/redux";
 // Types & Utils
 import { Metric } from "@/types/metric";
 import { addToastItem, ToastItemType } from "@/slices/globalSlice";
+import { HiOutlinePlus } from "react-icons/hi";
+
+/**
+ * Get icon for category based on category name
+ */
+const getCategoryIcon = (category: string) => {
+  switch (category) {
+    case "General":
+      return <RiPencilRulerLine className="category-icon" />;
+    case "Hitting":
+      return <FaBaseballBatBall className="category-icon" />;
+    case "Throwing":
+      return <PiPersonSimpleThrowBold className="category-icon" />;
+    case "Strength":
+      return <FaDumbbell className="category-icon" />;
+    case "Speed":
+      return <IoMdStopwatch className="category-icon" />;
+    case "Power":
+      return <ImPower className="category-icon" />;
+    case "Mobility":
+      return <GrYoga className="category-icon" />;
+    default:
+      return <TbCategory2 className="category-icon" />;
+  }
+};
 
 /**
  * Actions component for the Metrics page header
@@ -130,7 +161,7 @@ const MetricsPage: React.FC = memo(() => {
     if (orderBy === "metric" || orderBy === "category") {
       aValue = a[orderBy]?.toLowerCase() || "";
       bValue = b[orderBy]?.toLowerCase() || "";
-    } else if (orderBy === "metric_sort" || orderBy === "category_sort") {
+    } else if (orderBy === "metricSort") {
       aValue = a[orderBy] || 0;
       bValue = b[orderBy] || 0;
     } else {
@@ -153,14 +184,14 @@ const MetricsPage: React.FC = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run once on mount
 
-  // Sort metrics for cards view (by category_sort, then metric_sort)
+  // Sort metrics for cards view (by categorySort, then metricSort)
   const cardSortedMetrics = filteredMetrics.slice().sort((a, b) => {
-    // First compare by category_sort
-    if (a.category_sort !== b.category_sort) {
-      return a.category_sort - b.category_sort;
+    // First compare by categorySort
+    if (a.categorySort !== b.categorySort) {
+      return a.categorySort - b.categorySort;
     }
-    // If category_sort is the same, compare by metric_sort
-    return a.metric_sort - b.metric_sort;
+    // If categorySort is the same, compare by metricSort
+    return a.metricSort - b.metricSort;
   });
 
   // Group metrics by category for cards view
@@ -181,18 +212,18 @@ const MetricsPage: React.FC = memo(() => {
     <div className="metrics-container">
       {Object.entries(groupedMetrics).map(([category, categoryMetrics]) => (
         <div key={category} className="metric-category-section">
-          <h4 className="category-title">{category}</h4>
+          <h4 className="category-title">
+            {getCategoryIcon(category)}
+            {category}
+          </h4>
           <div className="metric-list">
             {categoryMetrics.map((metric, index) => (
               <div
-                key={`${metric.category}-${metric.metric_sort}-${index}`}
+                key={`${metric.category}-${metric.metricSort}-${index}`}
                 className="metric-card"
               >
-                <h5>{metric.metric}</h5>
-                <p>Category: {metric.category}</p>
-                <div className="metric-meta">
-                  <small>Sort: {metric.metric_sort}</small>
-                </div>
+                <h5 className="card-title">{metric.metric}</h5>
+                <p className="card-content">{metric.description}</p>
               </div>
             ))}
           </div>
@@ -224,22 +255,13 @@ const MetricsPage: React.FC = memo(() => {
                 Category
               </TableSortLabel>
             </TableCell>
-            <TableCell align="right">
+            <TableCell>
               <TableSortLabel
-                active={orderBy === "metric_sort"}
-                direction={orderBy === "metric_sort" ? order : "asc"}
-                onClick={() => handleRequestSort("metric_sort")}
+                active={orderBy === "description"}
+                direction={orderBy === "description" ? order : "asc"}
+                onClick={() => handleRequestSort("description")}
               >
-                Metric Sort
-              </TableSortLabel>
-            </TableCell>
-            <TableCell align="right">
-              <TableSortLabel
-                active={orderBy === "category_sort"}
-                direction={orderBy === "category_sort" ? order : "asc"}
-                onClick={() => handleRequestSort("category_sort")}
-              >
-                Category Sort
+                Description
               </TableSortLabel>
             </TableCell>
           </TableRow>
@@ -247,15 +269,14 @@ const MetricsPage: React.FC = memo(() => {
         <TableBody>
           {sortedMetrics.map((metric, index) => (
             <TableRow
-              key={`${metric.category}-${metric.metric_sort}-${index}`}
+              key={`${metric.category}-${metric.metricSort}-${index}`}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {metric.metric}
               </TableCell>
               <TableCell>{metric.category}</TableCell>
-              <TableCell align="right">{metric.metric_sort}</TableCell>
-              <TableCell align="right">{metric.category_sort}</TableCell>
+              <TableCell>{metric.description}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -295,10 +316,20 @@ const MetricsPage: React.FC = memo(() => {
 
           {/* Metric cards/table */}
           {filteredMetrics.length === 0 ? (
-            <div className="alert alert-info" role="alert">
-              {metrics.length === 0
-                ? 'No metrics found. Click "Add Metric" to create a new assessment metric.'
-                : "No metrics match your search criteria."}
+            <div className="content-section">
+              <div className="no-metrics-message">
+                <TbCategory2 className="icon" />
+                <h4>
+                  {metrics.length === 0
+                    ? "No metrics found"
+                    : "No matching metrics"}
+                </h4>
+                <p>
+                  {metrics.length === 0
+                    ? 'Click "Add Metric" to create a new assessment metric.'
+                    : "Try adjusting your search criteria."}
+                </p>
+              </div>
             </div>
           ) : (
             <>{view === "cards" ? <MetricCards /> : <MetricTable />}</>

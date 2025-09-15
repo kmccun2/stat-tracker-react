@@ -4,6 +4,11 @@ import React, { memo, useEffect, useState } from "react";
 // Icons
 import { FaUsers } from "react-icons/fa";
 import { HiOutlineUserAdd } from "react-icons/hi";
+import TableCardToggle from "@/components/common/table-card-toggle/TableCardToggle";
+import { FaBaseballBatBall, FaDumbbell } from "react-icons/fa6";
+import { IoMdStopwatch } from "react-icons/io";
+import { PiPersonSimpleThrowBold } from "react-icons/pi";
+import { GrYoga } from "react-icons/gr";
 
 // MUI Components
 import {
@@ -31,7 +36,7 @@ import { Player } from "@/types/player";
 import { addToastItem, ToastItemType } from "@/slices/globalSlice";
 import { useAuth } from "../../../context/AuthContext";
 import { calculateAge } from "@/utils/ageCalculation";
-import TableCardToggle from "@/components/common/table-card-toggle/TableCardToggle";
+import { ImPower } from "react-icons/im";
 
 /**
  * Actions component for the Players page header
@@ -181,19 +186,46 @@ const PlayersPage: React.FC = memo(() => {
     return 0;
   });
 
+  // Group players by first letter of first name for cards view
+  const groupedPlayers = cardSortedPlayers.reduce(
+    (acc, player) => {
+      const firstLetter = player.firstName?.charAt(0)?.toUpperCase() || "#";
+      if (!acc[firstLetter]) {
+        acc[firstLetter] = [];
+      }
+      acc[firstLetter].push(player);
+      return acc;
+    },
+    {} as Record<string, Player[]>
+  );
+
   // Render helpers
   const PlayerCards = () => (
-    <div className="player-list">
-      {cardSortedPlayers.map((player) => (
-        <div key={player.id} className="player-card">
-          <h5>{player.firstName + " " + player.lastName}</h5>
-          <p>
-            {player.dob
-              ? `${calculateAge(player.dob)} years old`
-              : "Age not available"}
-          </p>
-        </div>
-      ))}
+    <div className="players-container">
+      {Object.entries(groupedPlayers)
+        .sort(([a], [b]) => a.localeCompare(b)) // Sort alphabetically by first letter
+        .map(([firstLetter, letterPlayers]) => (
+          <div key={firstLetter} className="player-letter-section">
+            <h4 className="letter-title">{firstLetter}</h4>
+            <div className="player-list">
+              {letterPlayers.map((player) => (
+                <div key={player.id} className="player-card">
+                  <h5 className="card-title">
+                    {player.firstName + " " + player.lastName}
+                  </h5>
+                  <p className="card-content">
+                    {player.dob
+                      ? `${calculateAge(player.dob)} years old`
+                      : "Age not available"}
+                  </p>
+                  <div className="card-meta">
+                    <small>ID: {player.id}</small>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
     </div>
   );
 
@@ -211,13 +243,67 @@ const PlayersPage: React.FC = memo(() => {
                 Name
               </TableSortLabel>
             </TableCell>
-            <TableCell align="right">
+            <TableCell>
               <TableSortLabel
                 active={orderBy === "dob"}
                 direction={orderBy === "dob" ? order : "asc"}
                 onClick={() => handleRequestSort("dob")}
               >
                 Age
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "hittingScore"}
+                direction={orderBy === "hittingScore" ? order : "asc"}
+                onClick={() => handleRequestSort("hittingScore")}
+              >
+                <FaBaseballBatBall size={20} className="me-1 mb-1" />
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "throwingScore"}
+                direction={orderBy === "throwingScore" ? order : "asc"}
+                onClick={() => handleRequestSort("throwingScore")}
+              >
+                <PiPersonSimpleThrowBold size={20} className="me-1 mb-1" />
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "strengthScore"}
+                direction={orderBy === "strengthScore" ? order : "asc"}
+                onClick={() => handleRequestSort("strengthScore")}
+              >
+                <FaDumbbell size={20} className="me-1 mb-1" />
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "speedScore"}
+                direction={orderBy === "speedScore" ? order : "asc"}
+                onClick={() => handleRequestSort("speedScore")}
+              >
+                <IoMdStopwatch size={20} className="me-1 mb-1" />
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "powerScore"}
+                direction={orderBy === "powerScore" ? order : "asc"}
+                onClick={() => handleRequestSort("powerScore")}
+              >
+                <ImPower size={20} className="me-1 mb-1" />
+              </TableSortLabel>
+            </TableCell>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "mobilityScore"}
+                direction={orderBy === "mobilityScore" ? order : "asc"}
+                onClick={() => handleRequestSort("mobilityScore")}
+              >
+                <GrYoga size={20} className="me-1 mb-1" />
               </TableSortLabel>
             </TableCell>
           </TableRow>
@@ -231,9 +317,15 @@ const PlayersPage: React.FC = memo(() => {
               <TableCell component="th" scope="row">
                 {`${player.firstName} ${player.lastName}`}
               </TableCell>
-              <TableCell align="right">
-                {player.dob ? `${calculateAge(player.dob)} years old` : "N/A"}
+              <TableCell>
+                {player.dob ? `${calculateAge(player.dob)}` : "N/A"}
               </TableCell>
+              <TableCell>{player.hittingScore ?? "N/A"}</TableCell>
+              <TableCell>{player.throwingScore ?? "N/A"}</TableCell>
+              <TableCell>{player.strengthScore ?? "N/A"}</TableCell>
+              <TableCell>{player.speedScore ?? "N/A"}</TableCell>
+              <TableCell>{player.powerScore ?? "N/A"}</TableCell>
+              <TableCell>{player.mobilityScore ?? "N/A"}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -273,10 +365,20 @@ const PlayersPage: React.FC = memo(() => {
 
           {/* Player cards */}
           {filteredPlayers.length === 0 ? (
-            <div className="alert alert-info" role="alert">
-              {players.length === 0
-                ? 'No players found. Click "Add Player" to create a new player profile.'
-                : "No players match your search criteria."}
+            <div className="content-section">
+              <div className="no-players-message">
+                <FaUsers className="icon" />
+                <h4>
+                  {players.length === 0
+                    ? "No players found"
+                    : "No matching players"}
+                </h4>
+                <p>
+                  {players.length === 0
+                    ? 'Click "Add Player" to create a new player profile.'
+                    : "Try adjusting your search criteria."}
+                </p>
+              </div>
             </div>
           ) : (
             <>{view === "cards" ? <PlayerCards /> : <PlayerTable />}</>
