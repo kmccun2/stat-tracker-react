@@ -130,6 +130,28 @@ class ApiService {
   }
   // #endregion
 
+  // #region Metric methods
+  async getAllMetrics(): Promise<ApiResponse> {
+    return await this.request("/metrics");
+  }
+
+  async getMetricCategories(): Promise<ApiResponse> {
+    return await this.request("/metrics/categories");
+  }
+
+  async addMetric(metricData: {
+    metric: string;
+    category: string;
+    metric_sort: number;
+    category_sort: number;
+  }): Promise<ApiResponse> {
+    return await this.request("/metrics", {
+      method: "POST",
+      body: JSON.stringify(metricData),
+    });
+  }
+  // #endregion
+
   // Health check
   async healthCheck(): Promise<boolean> {
     try {

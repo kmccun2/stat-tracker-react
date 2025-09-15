@@ -1,0 +1,189 @@
+@import "../../../index.scss";
+
+.search-input {
+  flex: 1;
+  max-width: 500px;
+  margin-right: 15px;
+}
+
+.metrics-container {
+  margin-top: 1rem;
+}
+
+.metric-category-section {
+  margin-bottom: 2.5rem;
+
+  .category-title {
+    margin: 0 0 1rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--color-primary-light);
+    padding-bottom: 0.5rem;
+  }
+}
+
+.metric-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.metric-card {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(
+      90deg,
+      var(--color-primary-light),
+      var(--color-primary-lighter)
+    );
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--color-primary-light);
+
+    &::before {
+      transform: scaleX(1);
+    }
+
+    h5 {
+      color: var(--color-primary-light);
+    }
+  }
+
+  h5 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1f2937;
+    transition: color 0.3s ease;
+    line-height: 1.3;
+  }
+
+  p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
+    color: #6b7280;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    &::before {
+      content: "📊";
+      font-size: 1rem;
+    }
+  }
+
+  .metric-meta {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e5e7eb;
+
+    small {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      font-weight: 500;
+    }
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .metric-category-section {
+    .category-title {
+      color: #f9fafb;
+      border-bottom-color: #818cf8;
+    }
+  }
+
+  .metric-card {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+
+    h5 {
+      color: #f9fafb;
+    }
+
+    &:hover {
+      h5 {
+        color: #818cf8;
+      }
+    }
+
+    p {
+      color: #9ca3af;
+    }
+
+    .metric-meta {
+      border-top-color: #374151;
+
+      small {
+        color: #6b7280;
+      }
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .metric-list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .metric-card {
+    padding: 1.25rem;
+  }
+
+  .metric-category-section {
+    margin-bottom: 2rem;
+
+    .category-title {
+      font-size: 1.3rem;
+    }
+  }
+}
+
+// Additional utility for empty states
+.no-metrics-message {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+
+  .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  h4 {
+    margin-bottom: 0.5rem;
+    color: #374151;
+  }
+
+  p {
+    margin: 0;
+    font-size: 0.95rem;
+  }
+}
