@@ -24,7 +24,6 @@
   // Custom styling for player age display with birthday emoji
   .card-content {
     &::before {
-      content: "🎂";
       font-size: 1rem;
       margin-right: 0.5rem;
     }

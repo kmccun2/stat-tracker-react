@@ -37,6 +37,7 @@ import { addToastItem, ToastItemType } from "@/slices/globalSlice";
 import { useAuth } from "../../../context/AuthContext";
 import { calculateAge } from "@/utils/ageCalculation";
 import { ImPower } from "react-icons/im";
+import { getScoreColor } from "@/utils/getScoreColor";
 
 /**
  * Actions component for the Players page header
@@ -219,7 +220,60 @@ const PlayersPage: React.FC = memo(() => {
                       : "Age not available"}
                   </p>
                   <div className="card-meta">
-                    <small>ID: {player.id}</small>
+                    <div
+                      className={`meta-item ${getScoreColor(player.hittingScore)}`}
+                      title="Hitting Score"
+                    >
+                      <FaBaseballBatBall
+                        size={18}
+                        color="#bcbcbc"
+                        className="mb-1"
+                      />
+                      {player.hittingScore ?? "--"}
+                    </div>
+                    <div
+                      className={`meta-item ${getScoreColor(player.throwingScore)}`}
+                      title="Throwing Score"
+                    >
+                      <PiPersonSimpleThrowBold
+                        size={18}
+                        color="#bcbcbc"
+                        className="mb-1"
+                      />
+                      {player.throwingScore ?? "--"}
+                    </div>
+                    <div
+                      className={`meta-item ${getScoreColor(player.strengthScore)}`}
+                      title="Strength Score"
+                    >
+                      <FaDumbbell size={18} color="#bcbcbc" className="mb-1" />
+                      {player.strengthScore ?? "--"}
+                    </div>
+                    <div
+                      className={`meta-item ${getScoreColor(player.speedScore)}`}
+                      title="Speed Score"
+                    >
+                      <IoMdStopwatch
+                        size={18}
+                        color="#bcbcbc"
+                        className="mb-1"
+                      />
+                      {player.speedScore ?? "--"}
+                    </div>
+                    <div
+                      className={`meta-item ${getScoreColor(player.powerScore)}`}
+                      title="Power Score"
+                    >
+                      <ImPower size={18} color="#bcbcbc" className="mb-1" />
+                      {player.powerScore ?? "--"}
+                    </div>
+                    <div
+                      className={`meta-item ${getScoreColor(player.mobilityScore)}`}
+                      title="Mobility Score"
+                    >
+                      <GrYoga size={18} color="#bcbcbc" className="mb-1" />
+                      {player.mobilityScore ?? "--"}
+                    </div>
                   </div>
                 </div>
               ))}
@@ -320,12 +374,24 @@ const PlayersPage: React.FC = memo(() => {
               <TableCell>
                 {player.dob ? `${calculateAge(player.dob)}` : "N/A"}
               </TableCell>
-              <TableCell>{player.hittingScore ?? "N/A"}</TableCell>
-              <TableCell>{player.throwingScore ?? "N/A"}</TableCell>
-              <TableCell>{player.strengthScore ?? "N/A"}</TableCell>
-              <TableCell>{player.speedScore ?? "N/A"}</TableCell>
-              <TableCell>{player.powerScore ?? "N/A"}</TableCell>
-              <TableCell>{player.mobilityScore ?? "N/A"}</TableCell>
+              <TableCell className={getScoreColor(player.hittingScore)}>
+                {player.hittingScore ?? "N/A"}
+              </TableCell>
+              <TableCell className={getScoreColor(player.throwingScore)}>
+                {player.throwingScore ?? "N/A"}
+              </TableCell>
+              <TableCell className={getScoreColor(player.strengthScore)}>
+                {player.strengthScore ?? "N/A"}
+              </TableCell>
+              <TableCell className={getScoreColor(player.speedScore)}>
+                {player.speedScore ?? "N/A"}
+              </TableCell>
+              <TableCell className={getScoreColor(player.powerScore)}>
+                {player.powerScore ?? "N/A"}
+              </TableCell>
+              <TableCell className={getScoreColor(player.mobilityScore)}>
+                {player.mobilityScore ?? "N/A"}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

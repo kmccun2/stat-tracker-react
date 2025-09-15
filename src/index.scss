@@ -1,28 +1,49 @@
 @use "sass:color";
 
 :root {
+  /* === Primary Color Palette === */
   --color-primary: #35446e;
   --color-primary-hover: #{color.adjust(#35446e, $lightness: -4%)};
   --color-primary-light: #{color.adjust(#35446e, $lightness: 10%)};
   --color-primary-lighter: #{color.adjust(#35446e, $lightness: 20%)};
   --color-primary-dark: #1e293b;
   --color-primary-darker: #0f172a;
+
+  /* === Base Colors === */
   --color-white: #ffffff;
   --color-dark: rgb(32, 32, 32);
+  --color-disabled: #a1a1aa;
+
+  /* === Status Colors === */
+  --color-success: #22c55e !important; /* Green */
+  --color-warning: #eab308 !important; /* Yellow */
+  --color-danger: #ef4444 !important; /* Red */
+
+  /* === Gray Scale === */
   --color-light-gray: #f8fafc;
   --color-medium-gray: #94a3b8;
+  --color-gray-border: #e2e8f0;
+  --color-gray-grouping: #8a8c9e;
+
+  /* === Interactive States === */
   --color-active-bg: #{color.adjust(#35446e, $lightness: 5%)};
   --color-active-border: #3a5ab1;
-  --color-gray-border: #e2e8f0;
   --color-hover-light: rgba(255, 255, 255, 0.1);
-  --color-gray-grouping: #8a8c9e;
-  --box-shadow: 1px 1px 3px 1px rgb(0 0 0 / 43%) !important;
+
+  /* === Scrollbar === */
   --color-scrollbar-track: #f1f5f9;
   --color-scrollbar-thumb: #cbd5e1;
   --color-scrollbar-thumb-hover: #94a3b8;
+
+  /* === Shadows === */
+  --box-shadow: 1px 1px 3px 1px rgb(0 0 0 / 43%) !important;
+
+  /* === Typography & Layout === */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+
+  /* === Viewport === */
   min-height: 100vh;
   height: 100dvh;
   width: 100dvw;
@@ -32,6 +53,20 @@ body {
   margin: 0;
   background-color: #f8f9fa;
   color: #212529;
+}
+
+// Colors classes for scores
+.great {
+  color: var(--color-success); // Green
+}
+.good {
+  color: var(--color-warning); // Yellow
+}
+.poor {
+  color: var(--color-danger); // Red
+}
+.neutral {
+  color: var(--color-disabled); // Dark/Neutral
 }
 
 // Buttons - Global styles
@@ -140,6 +175,7 @@ body {
   border: 1px solid #e0e0e0;
   border-radius: 12px;
   padding: 1.5rem;
+  padding-bottom: 1rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   cursor: pointer;
@@ -201,8 +237,20 @@ body {
 
   .card-meta {
     margin-top: 0.75rem;
-    padding-top: 0.75rem;
+    padding-top: 20px;
     border-top: 1px solid #e5e7eb;
+    display: flex;
+
+    justify-content: space-between;
+
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-weight: 500;
+    }
 
     small {
       font-size: 0.8rem;
