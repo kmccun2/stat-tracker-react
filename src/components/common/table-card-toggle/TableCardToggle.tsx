@@ -1,11 +1,15 @@
 import "./TableCardToggle.scss";
 
-import { useState } from "react";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 
-const TableCardToggle = () => {
-  const [View, setView] = useState<"cards" | "table">("cards");
-
+type TableCardToggleProps = {
+  view: "cards" | "table";
+  setView: (view: "cards" | "table") => void;
+};
+const TableCardToggle: React.FC<TableCardToggleProps> = ({
+  view: View,
+  setView,
+}) => {
   return (
     <div className="toggle-container">
       <div

@@ -5,6 +5,18 @@ import React, { memo, useEffect, useState } from "react";
 import { FaUsers } from "react-icons/fa";
 import { HiOutlineUserAdd } from "react-icons/hi";
 
+// MUI Components
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  TableSortLabel,
+} from "@mui/material";
+
 // Components
 import PageHeader from "../../common/page-header/PageHeader";
 import LumexSpinner from "../../common/spinner/LumexSpinner";
@@ -46,8 +58,10 @@ const PlayersPage: React.FC = memo(() => {
   // State management
   const [loading, setLoading] = useState(false);
   const [players, setPlayers] = useState<Player[]>([]);
-  const [playerView, setPlayerView] = useState<"cards" | "table">("cards");
+  const [view, setView] = useState<"cards" | "table">("cards");
   const [showAddPlayerModal, setShowAddPlayerModal] = useState(false);
+  const [orderBy, setOrderBy] = useState<keyof Player>("firstName");
+  const [order, setOrder] = useState<"asc" | "desc">("asc");
   const { userProfile } = useAuth();
 
   // Hooks
@@ -89,6 +103,37 @@ const PlayersPage: React.FC = memo(() => {
     }
   };
 
+  // Sorting functionality
+  const handleRequestSort = (property: keyof Player) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
+  };
+
+  const sortedPlayers = players.slice().sort((a, b) => {
+    let aValue: any;
+    let bValue: any;
+
+    if (orderBy === "firstName" || orderBy === "lastName") {
+      aValue = a[orderBy]?.toLowerCase() || "";
+      bValue = b[orderBy]?.toLowerCase() || "";
+    } else if (orderBy === "dob") {
+      aValue = a.dob?.valueOf() || 0;
+      bValue = b.dob?.valueOf() || 0;
+    } else {
+      aValue = a[orderBy];
+      bValue = b[orderBy];
+    }
+
+    if (aValue < bValue) {
+      return order === "asc" ? -1 : 1;
+    }
+    if (aValue > bValue) {
+      return order === "asc" ? 1 : -1;
+    }
+    return 0;
+  });
+
   // Effects
   useEffect(() => {
     if (!userProfile?.id) return;
@@ -96,52 +141,65 @@ const PlayersPage: React.FC = memo(() => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userProfile?.id]); // Empty dependency array - only run once on mount
 
-  // Render methods
-  const renderContent = () => {
-    if (loading) {
-      return (
-        <div className="h-100 w-100">
-          <LumexSpinner />
+  // Render helpers
+  const PlayerCards = () => (
+    <div className="player-list">
+      {players.map((player) => (
+        <div key={player.id} className="player-card">
+          <h5>{player.firstName + " " + player.lastName}</h5>
+          <p>
+            {player.dob
+              ? `${calculateAge(player.dob)} years old`
+              : "Age not available"}
+          </p>
         </div>
-      );
-    }
+      ))}
+    </div>
+  );
 
-    return (
-      <div className="page-main-content">
-        {/* Players actions header  */}
-        <div className="d-flex justify-content-between align-items-center mb-4">
-          <input
-            type="text"
-            className="form-control search-input"
-            placeholder="Search players..."
-          />
-          <TableCardToggle />
-        </div>
-
-        {/* Player cards */}
-        {players.length === 0 ? (
-          <div className="alert alert-info" role="alert">
-            No players found. Click "Add Player" to create a new player profile.
-          </div>
-        ) : (
-          <div className="player-list">
-            {players.map((player) => (
-              <div key={player.id} className="player-card">
-                <h5>{player.firstName + " " + player.lastName}</h5>
-                <p>
-                  {player.dob
-                    ? `${calculateAge(player.dob)} years old`
-                    : "Age not available"}
-                </p>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Player table */}
-      </div>
-    );
-  };
+  const PlayerTable = () => (
+    <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="players table">
+        <TableHead>
+          <TableRow>
+            <TableCell>
+              <TableSortLabel
+                active={orderBy === "firstName"}
+                direction={orderBy === "firstName" ? order : "asc"}
+                onClick={() => handleRequestSort("firstName")}
+              >
+                Name
+              </TableSortLabel>
+            </TableCell>
+            <TableCell align="right">
+              <TableSortLabel
+                active={orderBy === "dob"}
+                direction={orderBy === "dob" ? order : "asc"}
+                onClick={() => handleRequestSort("dob")}
+              >
+                Age
+              </TableSortLabel>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {sortedPlayers.map((player) => (
+            <TableRow
+              key={player.id}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {`${player.firstName} ${player.lastName}`}
+              </TableCell>
+              <TableCell align="right">
+                {player.dob ? `${calculateAge(player.dob)} years old` : "N/A"}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 
   return (
     <>
@@ -153,7 +211,35 @@ const PlayersPage: React.FC = memo(() => {
       />
 
       {/* Main Content */}
-      {renderContent()}
+      {loading && (
+        <div className="h-100 w-100">
+          <LumexSpinner />
+        </div>
+      )}
+
+      {!loading && (
+        <div className="page-main-content">
+          {/* Players actions header  */}
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <input
+              type="text"
+              className="form-control search-input"
+              placeholder="Search players..."
+            />
+            <TableCardToggle view={view} setView={setView} />
+          </div>
+
+          {/* Player cards */}
+          {players.length === 0 ? (
+            <div className="alert alert-info" role="alert">
+              No players found. Click "Add Player" to create a new player
+              profile.
+            </div>
+          ) : (
+            <>{view === "cards" ? <PlayerCards /> : <PlayerTable />}</>
+          )}
+        </div>
+      )}
 
       <AddPlayerModal show={showAddPlayerModal} onClose={handleCloseModal} />
     </>
