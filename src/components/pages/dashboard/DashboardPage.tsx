@@ -7,6 +7,7 @@ import { LuClipboardPen } from "react-icons/lu";
 
 // Shared page header component
 import PageHeader from "../../common/page-header/PageHeader";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Actions component for the Dashboard page header
@@ -25,10 +26,12 @@ const DashboardActions: React.FC<{
 );
 
 const DashboardPage: React.FC = memo(() => {
+  // Navigation hook
+  const navigate = useNavigate();
+
   // Handlers
   const handleNewAssessmentClick = () => {
-    // Logic to open new assessment modal or navigate to assessment page
-    alert("New Assessment button clicked");
+    navigate("/assessments");
   };
 
   return (

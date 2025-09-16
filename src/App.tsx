@@ -10,7 +10,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 
 // Page components - organized by feature area
 import AnalyticsPage from "./components/pages/analytics/AnalyticsPage";
-import AssessmentSelectionPage from "./components/pages/assessments/AssessmentSelectionPage";
+import AssessmentsPage from "./components/pages/assessments/AssessmentsPage";
 import DashboardPage from "./components/pages/dashboard/DashboardPage";
 import MetricsPage from "./components/pages/metrics/MetricsPage";
 import PlayersPage from "./components/pages/players/PlayersPage";
@@ -65,10 +65,10 @@ function AppContent(): JSX.Element {
         />
         {/* Assessment workflow */}
         <Route
-          path="/assessment-selection"
+          path="/assessments"
           element={
             <ProtectedRoute requireAuth={true}>
-              <AssessmentSelectionPage />
+              <AssessmentsPage />
             </ProtectedRoute>
           }
         />
