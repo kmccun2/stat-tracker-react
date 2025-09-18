@@ -58,10 +58,10 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
   };
 
   return (
-    <Dropdown bsPrefix="dropdown audit-dd" onToggle={() => setIsOpen(!isOpen)} autoClose="outside">
+    <Dropdown bsPrefix="dropdown" onToggle={() => setIsOpen(!isOpen)} autoClose="outside">
       {/* Dropdown toggle section */}
       <Dropdown.Toggle
-        bsPrefix={`audit-dd-toggle form-select-sm d-flex align-items-center bg-white border text-dark w-100 p-0 px-2 py-1`}
+        bsPrefix={`h-100 form-select-sm d-flex align-items-center bg-white border text-dark w-100 p-0 ps-2 ps-3 py-1`}
       >
         <div className="flex-grow-1 d-flex overflow-hidden text-nowrap">{getFormValue()}</div>
         <span className="dropdown-icon-container d-flex align-items-center justify-content-center">

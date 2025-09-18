@@ -16,7 +16,8 @@
 
   /* === Gray Scale === */
   --color-light-gray: #f8fafc;
-  --color-medium-gray: #94a3b8;
+  --color-medium-gray: #e0e0e0;
+
   --color-gray-border: #e2e8f0;
   --color-gray-grouping: #8a8c9e;
 
@@ -106,6 +107,16 @@ body {
 
     &:hover {
       background-color: var(--color-primary-darker);
+    }
+  }
+
+  &.clear {
+    background-color: var(--color-medium-gray);
+    color: var(--color-dark);
+
+    &:hover {
+      background-color: var(--color-medium-gray);
+      color: var(--color-white);
     }
   }
 

@@ -99,6 +99,16 @@ const NewAssessmentPage: React.FC = () => {
             {playerDropdownProps && <LumexDropdown props={playerDropdownProps} />}
             {/* Metrics filter */}
             {metricDropdownProps && <LumexDropdown props={metricDropdownProps} />}
+            {/* Clear filters button */}
+            <button
+              className="lumex-btn clear align-self-end"
+              onClick={() => {
+                setPlayerOptions((prev) => prev.map((o) => ({ ...o, selected: false })));
+                setMetricOptions((prev) => prev.map((o) => ({ ...o, selected: false })));
+              }}
+            >
+              Clear Filters
+            </button>
           </div>
         </div>
       ) : null}
