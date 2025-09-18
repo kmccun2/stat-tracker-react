@@ -16,12 +16,12 @@ const DashboardActions: React.FC<{
   onNewAssessmentClick: () => void;
 }> = ({ onNewAssessmentClick }) => (
   <button
-    className="lumex-btn primary"
+    className="lumex-btn primary circle"
     onClick={onNewAssessmentClick}
     aria-label="Add new assessment"
+    title="Add new assessment"
   >
-    <LuClipboardPen />
-    <span className="ms-2">New Assessment</span>
+    <LuClipboardPen size={20} />
   </button>
 );
 

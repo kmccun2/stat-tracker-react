@@ -3,66 +3,23 @@
 // Local styles specific to assessments page
 .assessments-container {
   @extend .content-container;
-}
-
-.assessment-types-grid {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 1rem;
+  margin: 0;
 }
 
 .assessment-type-card-wrapper {
-  padding: 0.65rem;
-  // Custom color accents for different assessment types
-  &:nth-child(1) .assessment-type-card::before {
-    background: linear-gradient(90deg, #22c55e, #16a34a); // Green for hitting
-  }
-
-  &:nth-child(2) .assessment-type-card::before {
-    background: linear-gradient(90deg, #3b82f6, #2563eb); // Blue for bullpen
-  }
-
-  &:nth-child(3) .assessment-type-card::before {
-    background: linear-gradient(
-      90deg,
-      #f59e0b,
-      #d97706
-    ); // Orange for weightroom
-  }
-
-  &:nth-child(4) .assessment-type-card::before {
-    background: linear-gradient(90deg, #8b5cf6, #7c3aed); // Purple for showcase
-  }
-
-  &:nth-child(5) .assessment-type-card::before {
-    background: linear-gradient(90deg, #06b6d4, #0891b2); // Cyan for mobility
-  }
-
-  &:nth-child(6) .assessment-type-card::before {
-    background: linear-gradient(
-      90deg,
-      #ef4444,
-      #dc2626
-    ); // Red for build your own
-  }
+  padding-bottom: 15px;
 }
 
 .assessment-type-card {
   @extend .content-card;
   display: flex;
-  flex-direction: column;
-  min-height: 190px;
-  position: relative;
+  justify-content: space-between;
+  align-items: center;
   color: var(--color-primary);
-  height: 200px;
 
   h2 {
     @extend .card-title;
     font-size: 1.2rem;
-    margin: 0 0 3px 10px;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
     color: var(--color-primary);
   }
 
@@ -71,26 +28,14 @@
     flex: 1;
     align-items: start;
     margin: 0;
-    padding-top: 15px;
     font-size: 0.9rem;
     line-height: 1.5;
     color: #64748b;
-    margin-bottom: 25px;
   }
 
-  // Add a subtle "Start Assessment" indicator on hover
-  &::after {
-    content: "Start Assessment →";
-    position: absolute;
-    bottom: 1.25rem;
-    right: 1.5rem;
-    font-size: 0.875rem;
-    font-weight: 600;
+  .assessment-type-icon {
     color: var(--color-primary);
-    opacity: 0;
-    transform: translateX(10px);
-    transition: all 0.3s ease;
-    pointer-events: none;
+    margin-right: 10px;
   }
 
   &:hover::after {
@@ -100,39 +45,8 @@
 
   &:hover {
     h2::before {
-      background: rgba(53, 68, 110, 0.2);
       transform: scale(1.1);
       transition: all 0.3s ease;
     }
-  }
-}
-
-// Page header styles specific to assessments
-.assessments-page-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1rem;
-
-  h1 {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--color-primary-dark);
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-
-    &::before {
-      content: "📊";
-      font-size: 1.75rem;
-    }
-  }
-
-  .assessments-subtitle {
-    color: #64748b;
-    font-size: 1rem;
-    margin-top: 0.5rem;
-    font-weight: 500;
   }
 }

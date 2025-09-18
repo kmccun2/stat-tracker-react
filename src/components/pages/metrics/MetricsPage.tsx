@@ -282,7 +282,11 @@ const MetricsPage: React.FC = memo(() => {
         title="Assessment Metrics"
         subtitle="Manage the metrics used for player assessments"
         icon={<FaRuler />}
-        actions={<MetricActions onAddMetric={handleAddMetricClick} />}
+        actions={
+          // No add metric feature for MVP
+          <></>
+          // <MetricActions onAddMetric={handleAddMetricClick} />
+        }
       />
 
       {/* Main Content */}

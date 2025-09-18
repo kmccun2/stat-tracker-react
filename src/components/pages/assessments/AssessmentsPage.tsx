@@ -1,11 +1,13 @@
 import { useMemo } from "react";
 import "./AssessmentsPage.scss";
-import { FaBible, FaDumbbell } from "react-icons/fa";
+import { FaDumbbell } from "react-icons/fa";
 import { FaBaseballBatBall } from "react-icons/fa6";
 import { PiPersonSimpleThrowBold } from "react-icons/pi";
 import { IoMdStopwatch } from "react-icons/io";
 import { GrYoga } from "react-icons/gr";
 import { TbCategory2 } from "react-icons/tb";
+import { LuClipboardPen } from "react-icons/lu";
+import PageHeader from "@/components/common/page-header/PageHeader";
 
 const AssessmentsPage: React.FC = () => {
   // Array of assessment types
@@ -14,42 +16,42 @@ const AssessmentsPage: React.FC = () => {
       {
         value: "hitting-session",
         label: "Hitting Session",
-        icon: <FaBaseballBatBall size={26} />,
+        icon: <FaBaseballBatBall size={34} />,
         description:
           "A focused hitting practice session to evaluate batting performance and technique",
       },
       {
         value: "bullpen",
         label: "Bullpen",
-        icon: <PiPersonSimpleThrowBold size={24} />,
+        icon: <PiPersonSimpleThrowBold size={34} />,
         description:
           "Assesses pitch type, location, velocity and other pitching metrics",
       },
       {
         value: "weightroom-maxes",
         label: "Weightroom Maxes",
-        icon: <FaDumbbell size={24} />,
+        icon: <FaDumbbell size={34} />,
         description:
           "Max lifts for key exercises to evaluate strength and power",
       },
       {
         value: "showcase-skills",
         label: "Showcase Skills",
-        icon: <IoMdStopwatch size={24} />,
+        icon: <IoMdStopwatch size={34} />,
         description:
           "Arm strength, exit velocity and sprint times for recruiting evaluation",
       },
       {
         value: "mobility-screening",
         label: "Mobility Screening",
-        icon: <GrYoga size={24} />,
+        icon: <GrYoga size={34} />,
         description:
           "Assessment of joint mobility and flexibility to identify potential range of motion limitations",
       },
       {
         value: "build-your-own",
         label: "Build Your Own",
-        icon: <TbCategory2 size={24} />,
+        icon: <TbCategory2 size={34} />,
         description:
           "Select a variety of metrics to create a custom assessment",
       },
@@ -58,32 +60,36 @@ const AssessmentsPage: React.FC = () => {
   );
 
   return (
-    <div className="page-main-content" style={{ height: "calc(100vh - 60px)" }}>
-      <div className="assessments-page-header">
-        <div>
-          <h1>Assessments Types</h1>
-          <p className="assessments-subtitle">
-            Choose an assessment type to evaluate player performance
-          </p>
-        </div>
-      </div>
-
-      <div className="assessments-container">
-        <div className="assessment-types-grid gap-0">
+    <>
+      <PageHeader
+        title="Assessment Metrics"
+        subtitle="Choose from predefined assessment types or create a custom assessment"
+        icon={<LuClipboardPen />}
+        actions={
+          // No add metric feature for MVP
+          <></>
+          // <MetricActions onAddMetric={handleAddMetricClick} />
+        }
+      />
+      <div
+        className="page-main-content"
+        style={{ height: "calc(100vh - 60px)" }}
+      >
+        <div className="assessments-container">
           {assessmentTypes.map((type) => (
-            <div className="assessment-type-card-wrapper xs-col-12 col-sm-6 col-xl-4">
+            <div className="assessment-type-card-wrapper col-12">
               <div key={type.value} className="assessment-type-card">
-                <div className="d-flex align-items-center">
-                  {type.icon}
+                <div className="d-flex flex-column justify-content-center">
                   <h2>{type.label}</h2>
+                  <p>{type.description}</p>
                 </div>
-                <p>{type.description}</p>
+                <div className="assessment-type-icon">{type.icon}</div>
               </div>
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
