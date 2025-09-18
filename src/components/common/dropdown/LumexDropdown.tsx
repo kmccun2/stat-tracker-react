@@ -9,9 +9,9 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
   const { options, placeholder, multiSelect, selectAll, setOptions } = props;
 
   // Utils
-  const filterOptions = (options: OptionType[], search: string) => {
-    if (!search) return options;
-    return options.filter((o) => o.label?.toLowerCase().includes(search.toLowerCase()));
+  const filterOptions = () => {
+    if (!searchText) return options;
+    return options.filter((o) => o.label?.toLowerCase().includes(searchText.toLowerCase()));
   };
 
   const getFormValue = () => {
@@ -30,24 +30,18 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
   const [sliceValue, setSliceValue] = useState<number>(100);
 
   // Event handlers
-  const handleChangeSearch = (value: string) => {
-    // Update local state of searchText
-    setSearchText(value);
-    setSliceValue(100);
-  };
-
   const handleSelectOption = (option: OptionType) => {
     // Clear search text
-    setSearchText("");
     let _options = options.map((o) => (o.value === option.value ? { ...o, selected: !o.selected } : o));
     setOptions(_options);
   };
 
   const handleSelectAll = () => {
-    let _options = options.map((o) => ({ ...o, selected: false }));
-    if (options.some((o) => !o.selected)) {
-      _options = options.map((o) => ({ ...o, selected: true }));
-    }
+    const filteredOptions = filterOptions();
+    const allFilteredSelected = filteredOptions.every((o) => o.selected);
+
+    const _options = options.map((o) => (filteredOptions.includes(o) ? { ...o, selected: !allFilteredSelected } : o));
+
     setOptions(_options);
   };
 
@@ -88,13 +82,13 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
             spellCheck="false"
             placeholder="Search..."
             value={searchText}
-            onChange={(e) => handleChangeSearch(e.target.value)}
+            onChange={(e) => setSearchText(e.target.value)}
           ></input>
-          <MdClose className="clear-search" size={"1.2rem"} onClick={() => handleChangeSearch("")} />
+          <MdClose className="clear-search" size={"1.2rem"} onClick={() => setSearchText("")} />
         </div>
 
         {/* Dropdown items */}
-        {filterOptions(options, searchText).length > 0 ? (
+        {filterOptions().length > 0 ? (
           <>
             {/* Select all option */}
             {selectAll && (
@@ -105,7 +99,7 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
             )}
 
             {/* Options */}
-            {filterOptions(options, searchText)
+            {filterOptions()
               .slice(0, sliceValue)
               .map((e) => (
                 <Dropdown.Item
