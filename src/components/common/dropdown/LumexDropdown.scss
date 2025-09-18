@@ -25,6 +25,11 @@
     max-height: 60dvh;
     overflow-y: auto;
 
+    .search-container {
+      top: 0;
+      z-index: 10;
+    }
+
     .clear-search {
       cursor: pointer;
     }

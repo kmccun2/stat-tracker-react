@@ -73,7 +73,7 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
         onScroll={(e) => handleInfinityScroll(e, sliceValue, setSliceValue)}
       >
         {/* Search box */}
-        <div className="search-container search-top-0 bg-white position-sticky d-flex border-bottom align-items-center justify-content-start p-2 m-0">
+        <div className="search-container position-sticky bg-white d-flex border-bottom align-items-center justify-content-start p-2 m-0">
           <MdSearch size={18} />
           <input
             className="filter-input search-input border-0 flex-grow-1"
