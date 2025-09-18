@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import apiService from "../services/apiService";
 import { Player } from "../types/player";
 import { Metric, Category } from "../types/metric";
+import { AssessmentSubmission } from "../types/assessment";
 
 export const useAPI = () => {
   const { isAuthenticated } = useAuth();
@@ -70,6 +71,35 @@ export const useAPI = () => {
     return response.data || [];
   }, [ensureAuthenticated]);
 
+  // Assessment CRUD operations
+  const saveAssessment = useCallback(
+    async (assessmentData: {
+      assessmentType: string;
+      assessmentDate: string;
+      scores: Array<{
+        playerId: number;
+        metricId: string;
+        score: number | string;
+        notes?: string;
+      }>;
+      notes?: string;
+    }): Promise<any> => {
+      ensureAuthenticated();
+      const response = await apiService.saveAssessment(assessmentData);
+      return response.data;
+    },
+    [ensureAuthenticated]
+  );
+
+  const getAssessments = useCallback(
+    async (coachId?: number): Promise<any[]> => {
+      ensureAuthenticated();
+      const response = await apiService.getAssessments(coachId);
+      return response.data || [];
+    },
+    [ensureAuthenticated]
+  );
+
   return {
     // Player methods
     getPlayersByCoachId,
@@ -80,5 +110,8 @@ export const useAPI = () => {
     addMetric,
     // Category methods
     getCategories,
+    // Assessment methods
+    saveAssessment,
+    getAssessments,
   };
 };

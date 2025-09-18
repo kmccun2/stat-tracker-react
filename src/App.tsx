@@ -11,6 +11,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 // Page components - organized by feature area
 import AnalyticsPage from "./components/pages/analytics/AnalyticsPage";
 import AssessmentsPage from "./components/pages/assessments/AssessmentsPage";
+import NewAssessmentPage from "./components/pages/assessments/new-assessment/NewAssessmentPage";
 import DashboardPage from "./components/pages/dashboard/DashboardPage";
 import MetricsPage from "./components/pages/metrics/MetricsPage";
 import PlayersPage from "./components/pages/players/PlayersPage";
@@ -69,6 +70,14 @@ function AppContent(): JSX.Element {
           element={
             <ProtectedRoute requireAuth={true}>
               <AssessmentsPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/assessments/new/:type"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <NewAssessmentPage />
             </ProtectedRoute>
           }
         />

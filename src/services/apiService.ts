@@ -160,6 +160,30 @@ class ApiService {
   }
   // #endregion
 
+  // #region Assessment methods
+  async saveAssessment(assessmentData: {
+    assessmentType: string;
+    assessmentDate: string;
+    scores: Array<{
+      playerId: number;
+      metricId: string;
+      score: number | string;
+      notes?: string;
+    }>;
+    notes?: string;
+  }): Promise<ApiResponse> {
+    return await this.request("/assessments", {
+      method: "POST",
+      body: JSON.stringify(assessmentData),
+    });
+  }
+
+  async getAssessments(coachId?: number): Promise<ApiResponse> {
+    const query = coachId ? `?coachId=${coachId}` : "";
+    return await this.request(`/assessments${query}`);
+  }
+  // #endregion
+
   // Health check
   async healthCheck(): Promise<boolean> {
     try {

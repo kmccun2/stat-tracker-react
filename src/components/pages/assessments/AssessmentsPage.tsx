@@ -8,8 +8,11 @@ import { GrYoga } from "react-icons/gr";
 import { TbCategory2 } from "react-icons/tb";
 import { LuClipboardPen } from "react-icons/lu";
 import PageHeader from "@/components/common/page-header/PageHeader";
+import { useNavigate } from "react-router-dom";
 
 const AssessmentsPage: React.FC = () => {
+  const navigate = useNavigate();
+
   // Array of assessment types
   const assessmentTypes = useMemo(
     () => [
@@ -77,7 +80,10 @@ const AssessmentsPage: React.FC = () => {
       >
         <div className="assessments-container">
           {assessmentTypes.map((type) => (
-            <div className="assessment-type-card-wrapper col-12">
+            <div
+              className="assessment-type-card-wrapper col-12"
+              onClick={() => navigate(`/assessments/new/${type.value}`)}
+            >
               <div key={type.value} className="assessment-type-card">
                 <div className="d-flex flex-column justify-content-center">
                   <h2>{type.label}</h2>

@@ -1,5 +1,5 @@
 export interface Metric {
-  id?: string;
+  id?: number;
   metric: string;
   description: string;
   category: string;

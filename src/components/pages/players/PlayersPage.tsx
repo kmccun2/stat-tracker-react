@@ -11,16 +11,7 @@ import { PiPersonSimpleThrowBold } from "react-icons/pi";
 import { GrYoga } from "react-icons/gr";
 
 // MUI Components
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TableSortLabel,
-} from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TableSortLabel } from "@mui/material";
 
 // Components
 import PageHeader from "../../common/page-header/PageHeader";
@@ -45,11 +36,7 @@ import { getScoreColor } from "@/utils/getScoreColor";
 const PlayerActions: React.FC<{
   onAddPlayerClick: () => void;
 }> = ({ onAddPlayerClick }) => (
-  <button
-    className="lumex-btn primary"
-    onClick={onAddPlayerClick}
-    aria-label="Add new player"
-  >
+  <button className="lumex-btn primary" onClick={onAddPlayerClick} aria-label="Add new player">
     <HiOutlineUserAdd />
     <span className="ms-2">Add Player</span>
   </button>
@@ -103,9 +90,9 @@ const PlayersPage: React.FC = memo(() => {
   const fetchPlayers = async () => {
     setLoading(true);
     try {
-      const fetchedPlayers = await getPlayersByCoachId(userProfile!.id);
-      setPlayers(fetchedPlayers);
-      console.log("Players fetched:", fetchedPlayers);
+      const _fetchedPlayers = await getPlayersByCoachId(userProfile!.id);
+      setPlayers(_fetchedPlayers);
+      console.log("Players fetched:", _fetchedPlayers);
     } catch (error) {
       console.error("Error fetching players:", error);
       showErrorToast("Failed to fetch players.");
@@ -130,11 +117,7 @@ const PlayersPage: React.FC = memo(() => {
     const lastName = player.lastName?.toLowerCase() || "";
     const fullName = `${firstName} ${lastName}`.trim();
 
-    return (
-      firstName.includes(searchTerm) ||
-      lastName.includes(searchTerm) ||
-      fullName.includes(searchTerm)
-    );
+    return firstName.includes(searchTerm) || lastName.includes(searchTerm) || fullName.includes(searchTerm);
   });
 
   const sortedPlayers = filteredPlayers.slice().sort((a, b) => {
@@ -211,66 +194,32 @@ const PlayersPage: React.FC = memo(() => {
             <div className="player-list">
               {letterPlayers.map((player) => (
                 <div key={player.id} className="player-card">
-                  <h5 className="card-title">
-                    {player.firstName + " " + player.lastName}
-                  </h5>
+                  <h5 className="card-title">{player.firstName + " " + player.lastName}</h5>
                   <p className="card-content">
-                    {player.dob
-                      ? `${calculateAge(player.dob)} years old`
-                      : "Age not available"}
+                    {player.dob ? `${calculateAge(player.dob)} years old` : "Age not available"}
                   </p>
                   <div className="card-meta">
-                    <div
-                      className={`meta-item ${getScoreColor(player.hittingScore)}`}
-                      title="Hitting Score"
-                    >
-                      <FaBaseballBatBall
-                        size={18}
-                        color="#bcbcbc"
-                        className="mb-1"
-                      />
+                    <div className={`meta-item ${getScoreColor(player.hittingScore)}`} title="Hitting Score">
+                      <FaBaseballBatBall size={18} color="#bcbcbc" className="mb-1" />
                       {player.hittingScore ?? "--"}
                     </div>
-                    <div
-                      className={`meta-item ${getScoreColor(player.throwingScore)}`}
-                      title="Throwing Score"
-                    >
-                      <PiPersonSimpleThrowBold
-                        size={18}
-                        color="#bcbcbc"
-                        className="mb-1"
-                      />
+                    <div className={`meta-item ${getScoreColor(player.throwingScore)}`} title="Throwing Score">
+                      <PiPersonSimpleThrowBold size={18} color="#bcbcbc" className="mb-1" />
                       {player.throwingScore ?? "--"}
                     </div>
-                    <div
-                      className={`meta-item ${getScoreColor(player.strengthScore)}`}
-                      title="Strength Score"
-                    >
+                    <div className={`meta-item ${getScoreColor(player.strengthScore)}`} title="Strength Score">
                       <FaDumbbell size={18} color="#bcbcbc" className="mb-1" />
                       {player.strengthScore ?? "--"}
                     </div>
-                    <div
-                      className={`meta-item ${getScoreColor(player.speedScore)}`}
-                      title="Speed Score"
-                    >
-                      <IoMdStopwatch
-                        size={18}
-                        color="#bcbcbc"
-                        className="mb-1"
-                      />
+                    <div className={`meta-item ${getScoreColor(player.speedScore)}`} title="Speed Score">
+                      <IoMdStopwatch size={18} color="#bcbcbc" className="mb-1" />
                       {player.speedScore ?? "--"}
                     </div>
-                    <div
-                      className={`meta-item ${getScoreColor(player.powerScore)}`}
-                      title="Power Score"
-                    >
+                    <div className={`meta-item ${getScoreColor(player.powerScore)}`} title="Power Score">
                       <ImPower size={18} color="#bcbcbc" className="mb-1" />
                       {player.powerScore ?? "--"}
                     </div>
-                    <div
-                      className={`meta-item ${getScoreColor(player.mobilityScore)}`}
-                      title="Mobility Score"
-                    >
+                    <div className={`meta-item ${getScoreColor(player.mobilityScore)}`} title="Mobility Score">
                       <GrYoga size={18} color="#bcbcbc" className="mb-1" />
                       {player.mobilityScore ?? "--"}
                     </div>
@@ -364,34 +313,17 @@ const PlayersPage: React.FC = memo(() => {
         </TableHead>
         <TableBody>
           {sortedPlayers.map((player) => (
-            <TableRow
-              key={player.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
+            <TableRow key={player.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
               <TableCell component="th" scope="row">
                 {`${player.firstName} ${player.lastName}`}
               </TableCell>
-              <TableCell>
-                {player.dob ? `${calculateAge(player.dob)}` : "N/A"}
-              </TableCell>
-              <TableCell className={getScoreColor(player.hittingScore)}>
-                {player.hittingScore ?? "N/A"}
-              </TableCell>
-              <TableCell className={getScoreColor(player.throwingScore)}>
-                {player.throwingScore ?? "N/A"}
-              </TableCell>
-              <TableCell className={getScoreColor(player.strengthScore)}>
-                {player.strengthScore ?? "N/A"}
-              </TableCell>
-              <TableCell className={getScoreColor(player.speedScore)}>
-                {player.speedScore ?? "N/A"}
-              </TableCell>
-              <TableCell className={getScoreColor(player.powerScore)}>
-                {player.powerScore ?? "N/A"}
-              </TableCell>
-              <TableCell className={getScoreColor(player.mobilityScore)}>
-                {player.mobilityScore ?? "N/A"}
-              </TableCell>
+              <TableCell>{player.dob ? `${calculateAge(player.dob)}` : "N/A"}</TableCell>
+              <TableCell className={getScoreColor(player.hittingScore)}>{player.hittingScore ?? "N/A"}</TableCell>
+              <TableCell className={getScoreColor(player.throwingScore)}>{player.throwingScore ?? "N/A"}</TableCell>
+              <TableCell className={getScoreColor(player.strengthScore)}>{player.strengthScore ?? "N/A"}</TableCell>
+              <TableCell className={getScoreColor(player.speedScore)}>{player.speedScore ?? "N/A"}</TableCell>
+              <TableCell className={getScoreColor(player.powerScore)}>{player.powerScore ?? "N/A"}</TableCell>
+              <TableCell className={getScoreColor(player.mobilityScore)}>{player.mobilityScore ?? "N/A"}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -434,11 +366,7 @@ const PlayersPage: React.FC = memo(() => {
             <div className="content-section">
               <div className="no-players-message">
                 <FaUsers className="icon" />
-                <h4>
-                  {players.length === 0
-                    ? "No players found"
-                    : "No matching players"}
-                </h4>
+                <h4>{players.length === 0 ? "No players found" : "No matching players"}</h4>
                 <p>
                   {players.length === 0
                     ? 'Click "Add Player" to create a new player profile.'
@@ -452,11 +380,7 @@ const PlayersPage: React.FC = memo(() => {
         </div>
       )}
 
-      <AddPlayerModal
-        show={showAddPlayerModal}
-        onClose={handleCloseModal}
-        setPlayers={setPlayers}
-      />
+      <AddPlayerModal show={showAddPlayerModal} onClose={handleCloseModal} setPlayers={setPlayers} />
     </>
   );
 });
