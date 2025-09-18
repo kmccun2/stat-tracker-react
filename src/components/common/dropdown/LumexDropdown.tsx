@@ -45,6 +45,13 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
     setOptions(_options);
   };
 
+  const handleClearSearch = () => {
+    setSearchText("");
+    setSliceValue(100);
+    let _options = options.map((o) => ({ ...o, selected: false }));
+    setOptions(_options);
+  };
+
   const handleInfinityScroll = (container: any, sliceValue: number, setSliceValue: any) => {
     let height = container.target.clientHeight;
     let scrollHeight = container.target.scrollHeight;
@@ -58,8 +65,8 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
   };
 
   return (
-    <div className="dropdown-container">
-      <Dropdown bsPrefix="dropdown" onToggle={() => setIsOpen(!isOpen)} autoClose="outside">
+    <div className={`dropdown-container`}>
+      <Dropdown bsPrefix="dropdown" onToggle={() => setIsOpen(!isOpen)} autoClose="outside" align="end">
         {/* Dropdown toggle section */}
         <Dropdown.Toggle
           bsPrefix={`h-100 form-select-sm d-flex align-items-center bg-white border text-dark w-100 p-0 ps-2 ps-3 py-1`}
@@ -85,7 +92,7 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
             ></input>
-            <MdClose className="clear-search" size={"1.2rem"} onClick={() => setSearchText("")} />
+            <MdClose className="clear-search" size={"1.2rem"} onClick={() => handleClearSearch()} />
           </div>
 
           {/* Dropdown items */}

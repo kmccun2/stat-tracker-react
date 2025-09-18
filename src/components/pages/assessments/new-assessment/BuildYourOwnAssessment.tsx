@@ -16,6 +16,7 @@ import LumexDropdown from "@/components/common/dropdown/LumexDropdown";
 
 // Styles
 import "./NewAssessmentPage.scss";
+import { Table } from "react-bootstrap";
 
 const BuildYourOwnAssessment: React.FC = () => {
   // Imports from hooks
@@ -104,13 +105,15 @@ const BuildYourOwnAssessment: React.FC = () => {
         <div className="page-main-content">
           {/* Filters Section */}
           <div className="filters-section">
-            {/* Players filter */}
-            {playerDropdownProps && <LumexDropdown props={playerDropdownProps} />}
-            {/* Metrics filter */}
-            {metricDropdownProps && <LumexDropdown props={metricDropdownProps} />}
+            <div className="dropdowns">
+              {/* Players filter */}
+              {playerDropdownProps && <LumexDropdown props={playerDropdownProps} />}
+              {/* Metrics filter */}
+              {metricDropdownProps && <LumexDropdown props={metricDropdownProps} />}
+            </div>
             {/* Clear filters button */}
             <button
-              className="lumex-btn clear align-self-end"
+              className="lumex-btn clear ms-3"
               onClick={() => {
                 setPlayerOptions((prev) => prev.map((o) => ({ ...o, selected: false })));
                 setMetricOptions((prev) => prev.map((o) => ({ ...o, selected: false })));
@@ -119,6 +122,21 @@ const BuildYourOwnAssessment: React.FC = () => {
               Clear Filters
             </button>
           </div>
+
+          {/* Assessment table section */}
+          <Table bordered hover responsive className="assessment-table">
+            <thead>
+              <tr>
+                <th>Player</th>
+                {metricOptions
+                  .filter((m) => m.selected)
+                  .map((m) => (
+                    <th key={m.value}>{m.label}</th>
+                  ))}
+                <th>Score</th>
+              </tr>
+            </thead>
+          </Table>
         </div>
       ) : null}
     </>

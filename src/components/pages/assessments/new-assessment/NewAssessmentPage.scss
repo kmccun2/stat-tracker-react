@@ -11,4 +11,17 @@
   background-color: var(--color-white);
   border: 1px solid var(--color-gray-border);
   border-radius: 4px;
+
+  .dropdowns {
+    display: flex;
+    min-width: 230px;
+    width: 100%;
+    gap: 10px;
+    flex: 1;
+    flex-wrap: wrap;
+  }
+
+  .clear {
+    width: 120px;
+  }
 }
