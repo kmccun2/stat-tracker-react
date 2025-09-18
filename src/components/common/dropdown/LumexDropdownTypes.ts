@@ -3,6 +3,7 @@ export interface LumexDropdownProps {
   label: string;
   placeholder?: string;
   multiSelect?: boolean;
+  selectAll?: boolean;
   setOptions: (option: OptionType[]) => void;
 }
 

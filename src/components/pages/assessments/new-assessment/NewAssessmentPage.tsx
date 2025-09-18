@@ -64,6 +64,7 @@ const NewAssessmentPage: React.FC = () => {
       label: "Metrics",
       placeholder: "Select metrics",
       multiSelect: true,
+      selectAll: true,
       options: metricOptions,
       setOptions: setMetricOptions,
     });
@@ -76,6 +77,7 @@ const NewAssessmentPage: React.FC = () => {
       label: "Players",
       placeholder: "Select players",
       multiSelect: true,
+      selectAll: true,
       options: playerOptions,
       setOptions: setPlayerOptions,
     });
