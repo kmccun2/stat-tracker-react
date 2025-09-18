@@ -58,70 +58,77 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
   };
 
   return (
-    <Dropdown bsPrefix="dropdown" onToggle={() => setIsOpen(!isOpen)} autoClose="outside">
-      {/* Dropdown toggle section */}
-      <Dropdown.Toggle
-        bsPrefix={`h-100 form-select-sm d-flex align-items-center bg-white border text-dark w-100 p-0 ps-2 ps-3 py-1`}
-      >
-        <div className="flex-grow-1 d-flex overflow-hidden text-nowrap">{getFormValue()}</div>
-        <span className="dropdown-icon-container d-flex align-items-center justify-content-center">
-          <MdOutlineKeyboardArrowDown size={20} className={`dropdown-icon ${isOpen ? "flipped" : ""}`} />
-        </span>
-      </Dropdown.Toggle>
+    <div className="dropdown-container">
+      <Dropdown bsPrefix="dropdown" onToggle={() => setIsOpen(!isOpen)} autoClose="outside">
+        {/* Dropdown toggle section */}
+        <Dropdown.Toggle
+          bsPrefix={`h-100 form-select-sm d-flex align-items-center bg-white border text-dark w-100 p-0 ps-2 ps-3 py-1`}
+        >
+          <div className="flex-grow-1 d-flex overflow-hidden text-nowrap">{getFormValue()}</div>
+          <span className="dropdown-icon-container d-flex align-items-center justify-content-center">
+            <MdOutlineKeyboardArrowDown size={20} className={`dropdown-icon ${isOpen ? "flipped" : ""}`} />
+          </span>
+        </Dropdown.Toggle>
 
-      {/* Dropdown menu section */}
-      <Dropdown.Menu
-        bsPrefix="dropdown-menu bg-white pt-0"
-        onScroll={(e) => handleInfinityScroll(e, sliceValue, setSliceValue)}
-      >
-        {/* Search box */}
-        <div className="search-container position-sticky bg-white d-flex border-bottom align-items-center justify-content-start p-2 m-0">
-          <MdSearch size={18} />
-          <input
-            className="filter-input search-input border-0 flex-grow-1"
-            spellCheck="false"
-            placeholder="Search..."
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-          ></input>
-          <MdClose className="clear-search" size={"1.2rem"} onClick={() => setSearchText("")} />
-        </div>
+        {/* Dropdown menu section */}
+        <Dropdown.Menu
+          bsPrefix="dropdown-menu bg-white pt-0"
+          onScroll={(e) => handleInfinityScroll(e, sliceValue, setSliceValue)}
+        >
+          {/* Search box */}
+          <div className="search-container position-sticky bg-white d-flex border-bottom align-items-center justify-content-start p-2 m-0">
+            <MdSearch size={18} />
+            <input
+              className="filter-input search-input border-0 flex-grow-1"
+              spellCheck="false"
+              placeholder="Search..."
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
+            ></input>
+            <MdClose className="clear-search" size={"1.2rem"} onClick={() => setSearchText("")} />
+          </div>
 
-        {/* Dropdown items */}
-        {filterOptions().length > 0 ? (
-          <>
-            {/* Select all option */}
-            {selectAll && (
-              <Dropdown.Item bsPrefix="dropdown-item d-flex justify-content-between" onClick={() => handleSelectAll()}>
-                {multiSelect && <input type="checkbox" checked={!options.some((o) => !o.selected)} className="me-2" />}
-                <div className="flex-grow-1">Select All</div>
-              </Dropdown.Item>
-            )}
-
-            {/* Options */}
-            {filterOptions()
-              .slice(0, sliceValue)
-              .map((e) => (
+          {/* Dropdown items */}
+          {filterOptions().length > 0 ? (
+            <>
+              {/* Select all option */}
+              {selectAll && (
                 <Dropdown.Item
                   bsPrefix="dropdown-item d-flex justify-content-between"
-                  onClick={() => handleSelectOption(e)}
+                  onClick={() => handleSelectAll()}
                 >
                   {multiSelect && (
-                    <input
-                      type="checkbox"
-                      checked={options.some((o) => o.value === e.value && o.selected)}
-                      className="me-2"
-                    />
+                    <input type="checkbox" checked={!options.some((o) => !o.selected)} className="me-2" />
                   )}
-                  <div className="flex-grow-1">{e.label}</div>
+                  <div className="flex-grow-1">Select All</div>
                 </Dropdown.Item>
-              ))}
-          </>
-        ) : (
-          <div className="d-flex justify-content-center p-5 text-perf-light">No results based on search</div>
-        )}
-      </Dropdown.Menu>
-    </Dropdown>
+              )}
+
+              {/* Options */}
+              {filterOptions()
+                .slice(0, sliceValue)
+                .map((e) => (
+                  <Dropdown.Item
+                    bsPrefix="dropdown-item d-flex justify-content-between"
+                    onClick={() => handleSelectOption(e)}
+                  >
+                    {multiSelect && (
+                      <input
+                        type="checkbox"
+                        checked={options.some((o) => o.value === e.value && o.selected)}
+                        className="me-2"
+                      />
+                    )}
+                    <div className="flex-grow-1">{e.label}</div>
+                  </Dropdown.Item>
+                ))}
+            </>
+          ) : (
+            <div className="d-flex justify-content-center p-5 text-perf-light">No results based on search</div>
+          )}
+        </Dropdown.Menu>
+      </Dropdown>
+    </div>
   );
 };
 

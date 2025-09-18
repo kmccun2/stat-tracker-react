@@ -2,6 +2,8 @@
 
 .filters-section {
   display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   width: 100%;
   gap: 10px;
   margin-bottom: 1rem;

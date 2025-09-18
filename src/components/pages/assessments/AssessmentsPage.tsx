@@ -17,46 +17,40 @@ const AssessmentsPage: React.FC = () => {
   const assessmentTypes = useMemo(
     () => [
       {
-        value: "hitting-session",
+        value: "coming-soon",
         label: "Hitting Session",
         icon: <FaBaseballBatBall size={34} />,
-        description:
-          "A focused hitting practice session to evaluate batting performance and technique",
+        description: "A focused hitting practice session to evaluate batting performance and technique",
       },
       {
-        value: "bullpen",
+        value: "comming-soon",
         label: "Bullpen",
         icon: <PiPersonSimpleThrowBold size={34} />,
-        description:
-          "Assesses pitch type, location, velocity and other pitching metrics",
+        description: "Assesses pitch type, location, velocity and other pitching metrics",
       },
       {
-        value: "weightroom-maxes",
+        value: "coming-soon",
         label: "Weightroom Maxes",
         icon: <FaDumbbell size={34} />,
-        description:
-          "Max lifts for key exercises to evaluate strength and power",
+        description: "Max lifts for key exercises to evaluate strength and power",
       },
       {
-        value: "showcase-skills",
+        value: "coming-soon",
         label: "Showcase Skills",
         icon: <IoMdStopwatch size={34} />,
-        description:
-          "Arm strength, exit velocity and sprint times for recruiting evaluation",
+        description: "Arm strength, exit velocity and sprint times for recruiting evaluation",
       },
       {
-        value: "mobility-screening",
+        value: "coming-soon",
         label: "Mobility Screening",
         icon: <GrYoga size={34} />,
-        description:
-          "Assessment of joint mobility and flexibility to identify potential range of motion limitations",
+        description: "Assessment of joint mobility and flexibility to identify potential range of motion limitations",
       },
       {
         value: "build-your-own",
         label: "Build Your Own",
         icon: <TbCategory2 size={34} />,
-        description:
-          "Select a variety of metrics to create a custom assessment",
+        description: "Select a variety of metrics to create a custom assessment",
       },
     ],
     []
@@ -74,10 +68,7 @@ const AssessmentsPage: React.FC = () => {
           // <MetricActions onAddMetric={handleAddMetricClick} />
         }
       />
-      <div
-        className="page-main-content"
-        style={{ height: "calc(100vh - 60px)" }}
-      >
+      <div className="page-main-content" style={{ height: "calc(100vh - 60px)" }}>
         <div className="assessments-container">
           {assessmentTypes.map((type) => (
             <div

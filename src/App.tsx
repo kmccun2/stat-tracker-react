@@ -11,7 +11,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 // Page components - organized by feature area
 import AnalyticsPage from "./components/pages/analytics/AnalyticsPage";
 import AssessmentsPage from "./components/pages/assessments/AssessmentsPage";
-import NewAssessmentPage from "./components/pages/assessments/new-assessment/NewAssessmentPage";
+import NewAssessmentPage from "./components/pages/assessments/new-assessment/BuildYourOwnAssessment";
 import DashboardPage from "./components/pages/dashboard/DashboardPage";
 import MetricsPage from "./components/pages/metrics/MetricsPage";
 import PlayersPage from "./components/pages/players/PlayersPage";
@@ -27,6 +27,8 @@ import AppLayout from "./layout/AppLayout";
 
 // TypeScript type definitions
 import { ReduxProvider } from "./providers/ReduxProvider";
+import BuildYourOwnAssessment from "./components/pages/assessments/new-assessment/BuildYourOwnAssessment";
+import ComingSoonAssessment from "./components/pages/assessments/new-assessment/assessment-types/ComingSoonAssessment";
 
 // Main application component that handles authentication flow
 function AppContent(): JSX.Element {
@@ -73,11 +75,20 @@ function AppContent(): JSX.Element {
             </ProtectedRoute>
           }
         />
+        {/* New assessment pages */}
         <Route
-          path="/assessments/new/:type"
+          path="/assessments/new/build-your-own"
           element={
             <ProtectedRoute requireAuth={true}>
-              <NewAssessmentPage />
+              <BuildYourOwnAssessment />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/assessments/new/coming-soon"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <ComingSoonAssessment />
             </ProtectedRoute>
           }
         />

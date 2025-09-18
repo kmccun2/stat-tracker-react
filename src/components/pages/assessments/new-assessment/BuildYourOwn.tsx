@@ -1,14 +1,23 @@
-import "./NewAssessmentPage.scss";
-import PageHeader from "@/components/common/page-header/PageHeader";
+// React imports
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAPI } from "@/hooks/useAPI";
+
+// Context and hooks
 import { useAuth } from "@/context/AuthContext";
+import { useAPI } from "@/hooks/useAPI";
+
+// Types
 import { Player } from "@/types/player";
 import { LumexDropdownProps, OptionType } from "@/components/common/dropdown/LumexDropdownTypes";
+
+// Components
+import PageHeader from "@/components/common/page-header/PageHeader";
 import LumexDropdown from "@/components/common/dropdown/LumexDropdown";
 
-const NewAssessmentPage: React.FC = () => {
+// Styles
+import "./NewAssessmentPage.scss";
+
+const BuildYourOwnAssessment: React.FC = () => {
   // Imports from hooks
   const { type } = useParams<{ type: string }>();
   const { getPlayersByCoachId, getAllMetrics } = useAPI();
@@ -116,4 +125,4 @@ const NewAssessmentPage: React.FC = () => {
   );
 };
 
-export default NewAssessmentPage;
+export default BuildYourOwnAssessment;
