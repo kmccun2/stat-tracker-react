@@ -68,7 +68,7 @@ const AssessmentsPage: React.FC = () => {
           // <MetricActions onAddMetric={handleAddMetricClick} />
         }
       />
-      <div className="page-main-content" style={{ height: "calc(100vh - 60px)" }}>
+      <div className="page-main-content">
         <div className="assessments-container">
           {assessmentTypes.map((type) => (
             <div

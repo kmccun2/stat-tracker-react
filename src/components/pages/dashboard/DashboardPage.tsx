@@ -16,12 +16,13 @@ const DashboardActions: React.FC<{
   onNewAssessmentClick: () => void;
 }> = ({ onNewAssessmentClick }) => (
   <button
-    className="lumex-btn primary circle"
+    className="lumex-btn primary"
     onClick={onNewAssessmentClick}
     aria-label="Add new assessment"
     title="Add new assessment"
   >
     <LuClipboardPen size={20} />
+    <span className="ms-2">New Assessment</span>
   </button>
 );
 
@@ -41,11 +42,7 @@ const DashboardPage: React.FC = memo(() => {
         title="Dashboard"
         subtitle="Overview of assessment activity and performance tracking"
         icon={<FaTachometerAlt />}
-        actions={
-          <DashboardActions
-            onNewAssessmentClick={() => handleNewAssessmentClick()}
-          />
-        }
+        actions={<DashboardActions onNewAssessmentClick={() => handleNewAssessmentClick()} />}
       />
 
       {/* Main Content */}

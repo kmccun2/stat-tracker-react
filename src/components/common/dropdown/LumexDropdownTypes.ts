@@ -12,4 +12,5 @@ export type OptionType = {
   value: string | number;
   label: string;
   selected?: boolean;
+  group?: string;
 };
