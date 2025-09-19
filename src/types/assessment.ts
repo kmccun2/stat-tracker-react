@@ -1,11 +1,9 @@
 export interface Assessment {
-  id: string;
-  name: string;
-  description?: string;
-  category?: string;
-  unit?: string;
-  createdAt?: string;
-  updatedAt?: string;
+  id: number;
+  playerId: string;
+  playerName: string;
+  date: string;
+  [key: string]: any; // Dynamic keys for metrics (e.g., metricId: value)
 }
 
 export interface PlayerAssessmentScore {
