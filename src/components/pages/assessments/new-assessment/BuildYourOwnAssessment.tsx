@@ -61,6 +61,10 @@ const BuildYourOwnAssessment: React.FC = () => {
     }
   };
 
+  const isMetricSelected = () => {
+    return metricOptions.some((m) => m.selected);
+  };
+
   // Event handlers
   const handleSelectMetric = (value: string) => {
     setMetricOptions(metricOptions.map((m) => (String(m.value) === value ? { ...m, selected: !m.selected } : m)));
@@ -205,7 +209,7 @@ const BuildYourOwnAssessment: React.FC = () => {
       />
 
       {playerDropdownProps ? (
-        <div className="page-main-content p-0">
+        <div className="page-main-content p-2">
           {/* Assessment table section */}
           <div className="assessment-table-container">
             {!showMetricsModal && (
@@ -223,11 +227,11 @@ const BuildYourOwnAssessment: React.FC = () => {
       ) : null}
 
       {showMetricsModal && (
-        <Modal show={showMetricsModal} onHide={() => setShowMetricsModal(false)}>
-          <Modal.Header closeButton>
+        <Modal show={showMetricsModal}>
+          <Modal.Header>
             <Modal.Title>Select Metrics</Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ maxHeight: "60vh", overflowY: "auto", padding: "5px 20px" }}>
+          <Modal.Body style={{ maxHeight: "60vh", overflowY: "auto" }}>
             {metricOptions.length > 0 ? (
               Array.from(new Set(metricOptions.map((m) => m.group))).map((g) => (
                 <div key={g}>
@@ -254,7 +258,12 @@ const BuildYourOwnAssessment: React.FC = () => {
             )}
           </Modal.Body>
           <Modal.Footer>
-            <button className="lumex-btn primary" onClick={() => handleBeginAssessment()}>
+            <button
+              className={`lumex-btn primary ${!isMetricSelected() ? "disabled" : ""}`}
+              disabled={!isMetricSelected()}
+              onClick={() => handleBeginAssessment()}
+              title={!isMetricSelected() ? "Select at least one metric to begin assessment" : ""}
+            >
               Begin Assessment
             </button>
           </Modal.Footer>

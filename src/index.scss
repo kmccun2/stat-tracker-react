@@ -134,6 +134,9 @@ body {
   &:disabled {
     background-color: var(--color-medium-gray);
     cursor: not-allowed;
+    &:hover {
+      background-color: var(--color-medium-gray);
+    }
   }
 }
 
