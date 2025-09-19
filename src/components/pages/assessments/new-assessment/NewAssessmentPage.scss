@@ -4,13 +4,12 @@
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;
+  margin: 10px 0;
   width: 100%;
   gap: 10px;
-  margin-bottom: 1rem;
   padding: 1rem;
   background-color: var(--color-white);
   border: 1px solid var(--color-gray-border);
-  border-radius: 4px;
 
   .dropdowns {
     display: flex;
@@ -24,4 +23,13 @@
   .clear {
     width: 120px;
   }
+}
+
+.assessment-table-container {
+  flex: 1;
+  width: 100%;
+  overflow: auto;
+  background-color: white;
+  border: 1px solid var(--color-gray-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }

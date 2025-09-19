@@ -6,7 +6,7 @@ import { MdClose, MdOutlineKeyboardArrowDown, MdSearch } from "react-icons/md";
 
 const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
   // Descructure props
-  const { options, placeholder, multiSelect, selectAll, setOptions } = props;
+  const { options, placeholder, searchable, multiSelect, selectAll, setOptions } = props;
 
   // Utils
   const filterOptions = () => {
@@ -19,8 +19,8 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
     if (options.filter((o) => o.selected).length > 1)
       return options
         .filter((o) => o.selected)
-        .map((o) => o.label)
-        .join(", ");
+        .length.toString()
+        .concat(" selected");
     return options.filter((o) => o.selected)[0].label;
   };
 
@@ -83,17 +83,19 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
           onScroll={(e) => handleInfinityScroll(e, sliceValue, setSliceValue)}
         >
           {/* Search box */}
-          <div className="search-container position-sticky bg-white d-flex border-bottom align-items-center justify-content-start p-2 m-0">
-            <MdSearch size={18} />
-            <input
-              className="filter-input search-input border-0 flex-grow-1"
-              spellCheck="false"
-              placeholder="Search..."
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-            ></input>
-            <MdClose className="clear-search" size={"1.2rem"} onClick={() => handleClearSearch()} />
-          </div>
+          {searchable && (
+            <div className="search-container position-sticky bg-white d-flex border-bottom align-items-center justify-content-start p-2 m-0">
+              <MdSearch size={18} />
+              <input
+                className="filter-input search-input border-0 flex-grow-1"
+                spellCheck="false"
+                placeholder="Search..."
+                value={searchText}
+                onChange={(e) => setSearchText(e.target.value)}
+              ></input>
+              <MdClose className="clear-search" size={"1.2rem"} onClick={() => handleClearSearch()} />
+            </div>
+          )}
 
           {/* Dropdown items */}
           {filterOptions().length > 0 ? (

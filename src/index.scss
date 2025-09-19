@@ -138,8 +138,10 @@ body {
 }
 
 .page-main-content {
+  display: flex;
+  flex-direction: column;
   padding: 15px 20px;
-  height: calc(100vh - 60px - 70px); /* Full height minus navbar and header */
+  height: calc(100vh - 60px - 90px); /* Full height minus navbar and page header */
   overflow: auto;
   flex: 1;
 
@@ -265,8 +267,16 @@ body {
 // Global search input styles
 .search-input {
   flex: 1;
-  max-width: 500px;
   margin-right: 15px;
+  border-radius: 3px;
+  height: 100%;
+  margin: 0 5px;
+  padding-left: 8px;
+
+  &:focus-visible {
+    outline: 2px solid var(--color-medium-gray);
+    outline-offset: 2px;
+  }
 }
 
 // Dark mode support for global card styles

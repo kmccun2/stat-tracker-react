@@ -13,10 +13,11 @@ import { LumexDropdownProps, OptionType } from "@/components/common/dropdown/Lum
 // Components
 import PageHeader from "@/components/common/page-header/PageHeader";
 import LumexDropdown from "@/components/common/dropdown/LumexDropdown";
+import { ReactGrid, Column, Row } from "@silevis/reactgrid";
 
 // Styles
 import "./NewAssessmentPage.scss";
-import { Table } from "react-bootstrap";
+import "@silevis/reactgrid/styles.css";
 
 const BuildYourOwnAssessment: React.FC = () => {
   // Imports from hooks
@@ -27,6 +28,9 @@ const BuildYourOwnAssessment: React.FC = () => {
   // Local state
   const [playerOptions, setPlayerOptions] = useState<OptionType[]>([]);
   const [playerDropdownProps, setPlayerDropdownProps] = useState<LumexDropdownProps>();
+
+  const [rows, setRows] = useState<Row[]>([]);
+  const [columns, setColumns] = useState<Column[]>([]);
 
   // Metrics dropdown state
   const [metricOptions, setMetricOptions] = useState<OptionType[]>([]);
@@ -52,6 +56,16 @@ const BuildYourOwnAssessment: React.FC = () => {
     }
   };
 
+  // Event handlers
+  const handleAddBlankRow = () => {
+    let newRowId = rows.length > 1 ? (rows[rows.length - 1].rowId as number) + 1 : 1;
+    let newRow: Row = {
+      rowId: newRowId,
+      cells: columns.map((col) => ({ type: "text" as const, text: "" })),
+    };
+    setRows((prevRows) => [...prevRows, newRow]);
+  };
+
   // Hooks
   useEffect(() => {
     if (!userProfile) return;
@@ -75,6 +89,7 @@ const BuildYourOwnAssessment: React.FC = () => {
       placeholder: "Select metrics",
       multiSelect: true,
       selectAll: true,
+      searchable: true,
       options: metricOptions,
       setOptions: setMetricOptions,
     });
@@ -85,13 +100,53 @@ const BuildYourOwnAssessment: React.FC = () => {
     if (!playerOptions) return;
     setPlayerDropdownProps({
       label: "Players",
-      placeholder: "Select players",
-      multiSelect: true,
-      selectAll: true,
+      placeholder: "Select player",
       options: playerOptions,
+      searchable: true,
       setOptions: setPlayerOptions,
     });
   }, [playerOptions]);
+
+  // Initialize table columns and rows when metrics or players change
+  useEffect(() => {
+    let _selectedMetrics = metricOptions.filter((m) => m.selected).map((m) => ({ value: m.value, label: m.label }));
+
+    // Build columns array
+    let _columns = [
+      { columnId: "playerName", width: 150 },
+      { columnId: "date", width: 150 },
+    ];
+    _selectedMetrics.forEach((m) => _columns.push({ columnId: m.label, width: m.label.length * 7 + 30 }));
+
+    // Build headers row
+    let _headerRow = {
+      rowId: "header",
+      cells: [
+        { type: "header" as const, text: "Player Name" },
+        { type: "header" as const, text: "Date" },
+      ] as { type: "header"; text: string }[],
+    };
+    _selectedMetrics.forEach((m) =>
+      // Push metrics selected from dropdown
+      _headerRow.cells.push({
+        type: "header" as const,
+        text: m.label,
+      })
+    );
+
+    let _rows = [
+      _headerRow,
+      {
+        rowId: 1,
+        cells: _columns.map((col) => ({ type: "text" as const, text: "" })),
+      },
+    ];
+
+    console.log(_columns, _rows);
+
+    setColumns(_columns);
+    setRows(_rows);
+  }, [metricOptions, playerOptions]);
 
   return (
     <>
@@ -101,13 +156,11 @@ const BuildYourOwnAssessment: React.FC = () => {
         actions={<></>}
       />
 
-      {metricDropdownProps ? (
-        <div className="page-main-content">
+      {metricDropdownProps && playerDropdownProps ? (
+        <div className="page-main-content p-0">
           {/* Filters Section */}
           <div className="filters-section">
             <div className="dropdowns">
-              {/* Players filter */}
-              {playerDropdownProps && <LumexDropdown props={playerDropdownProps} />}
               {/* Metrics filter */}
               {metricDropdownProps && <LumexDropdown props={metricDropdownProps} />}
             </div>
@@ -123,20 +176,18 @@ const BuildYourOwnAssessment: React.FC = () => {
             </button>
           </div>
 
+          {/* Action items */}
+          <div className="d-flex align-items-center justify-content-between mb-2">
+            <div></div>
+            <button className="lumex-btn primary me-3" onClick={() => handleAddBlankRow()}>
+              Add Row
+            </button>
+          </div>
+
           {/* Assessment table section */}
-          <Table bordered hover responsive className="assessment-table">
-            <thead>
-              <tr>
-                <th>Player</th>
-                {metricOptions
-                  .filter((m) => m.selected)
-                  .map((m) => (
-                    <th key={m.value}>{m.label}</th>
-                  ))}
-                <th>Score</th>
-              </tr>
-            </thead>
-          </Table>
+          <div className="assessment-table-container">
+            <ReactGrid rows={rows} columns={columns} stickyTopRows={1} stickyLeftColumns={1} enableRangeSelection />
+          </div>
         </div>
       ) : null}
     </>
