@@ -74,38 +74,25 @@ const BuildYourOwnAssessment: React.FC = () => {
     setShowMetricsModal(false);
   };
 
-  const handleAddBlankRow = () => {
-    let newRowId = rows.length > 1 ? (rows[rows.length - 1].rowId as number) + 1 : 1;
-    let newRow: Row = {
-      rowId: newRowId,
-      cells: columns.map((col) =>
-        col.columnId === "playerName"
-          ? {
-              type: "dropdown" as const,
-              text: "",
-              values: playerOptions.map((p) => ({ label: p.label, value: String(p.value) })),
-            }
-          : col.columnId === "date"
-            ? { type: "date" as const, text: "" }
-            : { type: "text" as const, text: "" }
-      ),
-    };
-    setRows((prevRows) => [...prevRows, newRow]);
-  };
-
   const handleCellChanges = (changes: CellChange[]) => {
-    console.log("Changes:", changes);
-    let _rows = [...rows];
+    let _rows: Row[] = [...rows];
     changes.forEach((change) => {
-      const rowIndex = _rows.findIndex((row) => row.rowId === change.rowId);
-      const columnIndex = _rows[rowIndex].cells.findIndex((_, index) => columns[index]?.columnId === change.columnId);
-      if (rowIndex !== -1 && columnIndex !== -1) {
-        _rows[rowIndex] = {
-          ..._rows[rowIndex],
-          cells: _rows[rowIndex].cells.map((cell, index) => (index === columnIndex ? change.newCell : cell)),
+      const rowIndex = Number(change.rowId);
+      const colIndex = columns.findIndex((col) => col.columnId === change.columnId);
+      if (change.newCell.type === "dropdown") {
+        const currentCell = _rows[rowIndex].cells[colIndex];
+        _rows[rowIndex].cells[colIndex] = {
+          ...currentCell,
+          ...change.newCell,
+          selectedValue:
+            (change.newCell as any).selectedValue !== undefined
+              ? (change.newCell as any).selectedValue
+              : (currentCell as any).selectedValue || "", // Preserve existing value if undefined
+          isOpen: (change.newCell as any).isOpen ?? false, // Close dropdown after selection
         };
+      } else if (["text", "date"].includes(change.newCell.type)) {
+        _rows[rowIndex].cells[colIndex] = change.newCell;
       }
-      return _rows;
     });
     setRows(_rows);
   };
@@ -122,7 +109,7 @@ const BuildYourOwnAssessment: React.FC = () => {
       // Fetch metrics from db
       let _metrics = await getAllMetrics();
       setMetricOptions(
-        orderBy(_metrics, ["categorySort", "metric"], ["asc", "asc"]).map((m) => ({
+        orderBy(_metrics, ["categorySort", "metricSort"], ["asc", "asc"]).map((m) => ({
           value: m.id!,
           label: m.metric!,
           group: m.category,
@@ -180,8 +167,10 @@ const BuildYourOwnAssessment: React.FC = () => {
           col.columnId === "playerName"
             ? {
                 type: "dropdown" as const,
-                text: "",
                 values: playerOptions.map((p) => ({ label: p.label, value: String(p.value) })),
+                selectedValue: "",
+                isOpen: false,
+                inputValue: "",
               }
             : col.columnId === "date"
               ? { type: "date" as const, text: "" }
@@ -231,7 +220,7 @@ const BuildYourOwnAssessment: React.FC = () => {
           <Modal.Header>
             <Modal.Title>Select Metrics</Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ maxHeight: "60vh", overflowY: "auto" }}>
+          <Modal.Body style={{ maxHeight: "60dvh", minHeight: "40dvh", overflowY: "auto" }}>
             {metricOptions.length > 0 ? (
               Array.from(new Set(metricOptions.map((m) => m.group))).map((g) => (
                 <div key={g}>
