@@ -3,6 +3,7 @@ import { LumexDropdownProps, OptionType } from "./LumexDropdownTypes";
 import "./LumexDropdown.scss";
 import { useState } from "react";
 import { MdClose, MdOutlineKeyboardArrowDown, MdSearch } from "react-icons/md";
+import { handleInfinityScroll } from "@/utils/handleInfinityScroll";
 
 const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
   // Descructure props
@@ -50,18 +51,6 @@ const LumexDropdown = ({ props }: { props: LumexDropdownProps }) => {
     setSliceValue(100);
     let _options = options.map((o) => ({ ...o, selected: false }));
     setOptions(_options);
-  };
-
-  const handleInfinityScroll = (container: any, sliceValue: number, setSliceValue: any) => {
-    let height = container.target.clientHeight;
-    let scrollHeight = container.target.scrollHeight;
-    let fromTop = container.target.scrollTop;
-
-    // If user scrolls to end of container, add more values to the end
-    if (scrollHeight - height - 50 < fromTop) {
-      setSliceValue(sliceValue + 25);
-    }
-    return;
   };
 
   return (

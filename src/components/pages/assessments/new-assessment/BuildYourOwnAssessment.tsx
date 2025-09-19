@@ -22,6 +22,7 @@ import LumexSpinner from "@/components/common/spinner/LumexSpinner";
 
 // Utils
 import { orderBy } from "lodash";
+import { TbCategory2 } from "react-icons/tb";
 
 const BuildYourOwnAssessment: React.FC = () => {
   // Imports from hooks
@@ -156,7 +157,7 @@ const BuildYourOwnAssessment: React.FC = () => {
       cells: [
         { type: "header" as const, text: "Player Name" },
         { type: "header" as const, text: "Date" },
-      ] as { type: "header"; text: string }[],
+      ],
     };
     _selectedMetrics.forEach((m) =>
       // Push metrics selected from dropdown
@@ -166,10 +167,11 @@ const BuildYourOwnAssessment: React.FC = () => {
       })
     );
 
-    let _rows = [
-      _headerRow,
-      {
-        rowId: 1,
+    let _rows = [_headerRow] as Row[];
+    for (let i = 1; i < 1001; i++)
+      // Create 1000 blank rows to start
+      _rows.push({
+        rowId: String(i),
         cells: _columns.map((col) =>
           col.columnId === "playerName"
             ? {
@@ -181,8 +183,7 @@ const BuildYourOwnAssessment: React.FC = () => {
               ? { type: "date" as const, text: "" }
               : { type: "text" as const, text: "" }
         ),
-      },
-    ];
+      });
 
     setColumns(_columns);
     setRows(_rows);
@@ -193,18 +194,18 @@ const BuildYourOwnAssessment: React.FC = () => {
       <PageHeader
         title={getAssessmentTitle(type || "")}
         subtitle="Enter assessment scores for selected players and metrics"
-        actions={<></>}
+        icon={<TbCategory2 />}
+        actions={
+          <>
+            <button className="lumex-btn primary" onClick={() => alert("Assessment submitted!")}>
+              Submit Assessment
+            </button>
+          </>
+        }
       />
 
       {playerDropdownProps ? (
         <div className="page-main-content p-0">
-          {/* Action items */}
-          <div className="d-flex align-items-center mb-2">
-            <button className="lumex-btn primary ms-2" onClick={() => handleAddBlankRow()}>
-              Add Row
-            </button>
-          </div>
-
           {/* Assessment table section */}
           <div className="assessment-table-container">
             {!showMetricsModal && (
