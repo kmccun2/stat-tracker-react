@@ -1,166 +1,143 @@
-// React imports
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
-// Context and hooks
 import { useAuth } from "@/context/AuthContext";
 import { useAPI } from "@/hooks/useAPI";
-
-// Types
 import { Player } from "@/types/player";
-import { Assessment } from "@/types/assessment";
 import { OptionType } from "@/components/common/dropdown/LumexDropdownTypes";
-
-// Components
+import { Assessment } from "@/types/assessment";
 import PageHeader from "@/components/common/page-header/PageHeader";
-import { ReactGrid, Column, CellChange, DefaultCellTypes } from "@silevis/reactgrid";
+import { ReactGrid, Column, CellChange, DropdownCell } from "@silevis/reactgrid";
 import { Modal } from "react-bootstrap";
 import LumexSpinner from "@/components/common/spinner/LumexSpinner";
-
-// Styles
 import "./NewAssessmentPage.scss";
 import "@silevis/reactgrid/styles.css";
-
-// Utils
 import { orderBy } from "lodash";
 import { TbCategory2 } from "react-icons/tb";
-import { applyCellChanges } from "@/utils/handleCellChanges";
+import { applyCellChanges } from "../../../../utils/applyCellChanges";
+
+export type GridAssessment = Assessment & { isOpen: boolean };
 
 const BuildYourOwnAssessment: React.FC = () => {
-  // Hooks and params
-  const { type } = useParams<{ type: string }>();
   const { getPlayersByCoachId, getAllMetrics } = useAPI();
   const { userProfile } = useAuth();
 
-  // Local state
   const [showMetricsModal, setShowMetricsModal] = useState<boolean>(true);
   const [playerOptions, setPlayerOptions] = useState<OptionType[]>([]);
-  const [assessments, setAssessments] = useState<Assessment[]>([]);
+  const [assessments, setAssessments] = useState<GridAssessment[]>([]);
   const [columns, setColumns] = useState<Column[]>([]);
+  // const [isDropdownOpened, setIsDropdownOpened] = useState<boolean>(false);
   const [metricOptions, setMetricOptions] = useState<OptionType[]>([]);
-
-  // Utility functions
-  const getAssessmentTitle = (type: string): string => {
-    const titles: Record<string, string> = {
-      "hitting-session": "Hitting Session Assessment",
-      bullpen: "Bullpen Assessment",
-      "weightroom-maxes": "Weightroom Max Assessment",
-      "showcase-skills": "Showcase Skills Assessment",
-      "mobility-screening": "Mobility Screening Assessment",
-      "build-your-own": "Custom Assessment",
-    };
-    return titles[type] || "New Assessment";
-  };
 
   const isMetricSelected = (): boolean => {
     return metricOptions.some((m) => m.selected);
   };
 
-  const getRows = (assessments: Assessment[]) => {
-    const getCellObject = (assessment: Assessment, col: Column) => {
+  const getRows = (assessments: GridAssessment[]) => {
+    const getCellObject = (assessment: GridAssessment, col: Column) => {
       switch (col.columnId) {
-        case "Player":
+        case "playerId":
+          const dropdownValues = playerOptions.map((p) => ({ label: p.label, value: String(p.value) })) as {
+            label: string;
+            value: string;
+          }[];
           return {
             type: "dropdown",
-            text: assessment.playerName || "",
-            values: playerOptions.map((p) => ({ label: p.label, value: p.value })),
-          };
-        case "Date":
-          return { type: "date", date: assessment.date || "" };
+            selectedValue: assessment.playerName || "",
+            inputValue: assessment.playerName || "",
+            isOpen: assessment.isOpen,
+            values: dropdownValues,
+            columnId: col.columnId,
+          } as DropdownCell;
+        case "date":
+          return { type: "date", date: assessment.date || "", columnId: col.columnId };
         default:
-          return { type: "text", text: assessment[col.columnId] || "" };
+          return { type: "text", text: assessment[col.columnId] || "", columnId: col.columnId };
       }
     };
 
-    return [
+    let _rows = [
       {
         rowId: "header",
         cells: columns.map((col) => ({ type: "header", text: col.columnId })),
       },
-      ...assessments.map((assessment, index) => ({
-        rowId: index,
+      ...assessments.map((assessment) => ({
+        rowId: assessment.id,
         cells: columns.map((col) => getCellObject(assessment, col)),
       })),
     ];
+    return _rows;
   };
 
-  // Event handlers
   const handleSelectMetric = (value: string): void => {
     setMetricOptions(metricOptions.map((m) => (String(m.value) === value ? { ...m, selected: !m.selected } : m)));
   };
 
   const handleBeginAssessment = (): void => {
-    setShowMetricsModal(false);
+    if (isMetricSelected()) {
+      setShowMetricsModal(false);
+    }
   };
 
-  const handleCellChanges = (changes: CellChange<DefaultCellTypes>[]): void => {
-    setAssessments((prevAssessments: Assessment[]) => {
-      applyCellChanges(changes, prevAssessments);
-      return [...prevAssessments];
-    });
+  const handleCellChanges = (changes: CellChange<any>[]) => {
+    setAssessments((prevAssessments) => applyCellChanges(changes, prevAssessments));
   };
 
-  // Data fetching effect
   useEffect(() => {
     if (!userProfile) return;
 
     (async () => {
-      // Fetch players
-      const _players = await getPlayersByCoachId(userProfile.id);
-      setPlayerOptions(
-        _players.map((p: Player) => ({
+      try {
+        const _players = await getPlayersByCoachId(userProfile.id);
+        const options = _players.map((p: Player) => ({
           value: p.id!,
           label: `${p.firstName} ${p.lastName}`,
           selected: false,
-        }))
-      );
+        }));
+        setPlayerOptions(options);
 
-      // Fetch metrics
-      const _metrics = await getAllMetrics();
-      setMetricOptions(
-        orderBy(_metrics, ["categorySort", "metricSort"], ["asc", "asc"]).map((m) => ({
-          value: m.id!,
-          label: m.metric!,
-          group: m.category,
-          selected: false,
-        }))
-      );
+        const _metrics = await getAllMetrics();
+        setMetricOptions(
+          orderBy(_metrics, ["categorySort", "metricSort"], ["asc", "asc"]).map((m) => ({
+            value: m.id!,
+            label: m.metric!,
+            group: m.category,
+            selected: false,
+          }))
+        );
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     })();
   }, [userProfile, getPlayersByCoachId, getAllMetrics]);
 
-  // Update assessments when metrics change
   useEffect(() => {
     const _selectedMetrics = metricOptions.filter((m) => m.selected).map((m) => ({ value: m.value, label: m.label }));
 
-    const _assessments: any[] = [];
-    for (let i = 0; i < 1000; i++) {
-      const assessment: any = {
-        id: i,
-        playerId: "",
+    const _assessments: GridAssessment[] = [
+      {
+        id: 0,
+        playerId: 0,
         playerName: "",
-        date: "",
-      };
-      _selectedMetrics.forEach((m) => {
-        assessment[String(m.label)] = "";
-      });
-      _assessments.push(assessment);
-    }
+        date: undefined,
+        isOpen: false,
+      },
+    ];
+    _selectedMetrics.forEach((m) => {
+      _assessments[0][String(m.label)] = "";
+    });
 
     setAssessments(_assessments);
   }, [metricOptions]);
 
-  // Initialize table columns and rows when metrics or players change
   useEffect(() => {
-    if (showMetricsModal || assessments.length === 0) return;
+    if (showMetricsModal || assessments.length === 0 || playerOptions.length === 0) return;
 
     const _selectedMetrics = metricOptions.filter((m) => m.selected).map((m) => ({ value: m.value, label: m.label }));
 
     if (_selectedMetrics.length === 0) return;
 
-    // Build columns
     const _columns: Column[] = [
-      { columnId: "Player", width: 180 },
-      { columnId: "Date", width: 150 },
+      { columnId: "playerId", width: 180 },
+      { columnId: "date", width: 150 },
     ];
     _selectedMetrics.forEach((m) => _columns.push({ columnId: m.label, width: m.label.length * 7 + 30 }));
     setColumns(_columns);
@@ -169,7 +146,7 @@ const BuildYourOwnAssessment: React.FC = () => {
   return (
     <>
       <PageHeader
-        title={getAssessmentTitle(type || "")}
+        title={"Build Your Own Assessment"}
         subtitle="Enter assessment scores for selected players and metrics"
         icon={<TbCategory2 />}
         actions={

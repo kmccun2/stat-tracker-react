@@ -1,8 +1,8 @@
 export interface Assessment {
   id: number;
-  playerId: string;
-  playerName: string;
-  date: string;
+  playerId: number;
+  playerName?: string;
+  date?: Date;
   [key: string]: any; // Dynamic keys for metrics (e.g., metricId: value)
 }
 
