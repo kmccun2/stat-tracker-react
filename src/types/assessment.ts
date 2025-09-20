@@ -1,9 +1,10 @@
 export interface Assessment {
   id: number;
   playerId: number;
-  playerName?: string;
-  date?: Date;
-  [key: string]: any; // Dynamic keys for metrics (e.g., metricId: value)
+  playerName: string;
+  date: Date;
+  metric: string;
+  value: number;
 }
 
 export interface PlayerAssessmentScore {

@@ -18,14 +18,15 @@ export const applyCellChanges = (changes: CellChange<any>[], assessments: GridAs
         _assessments[assessmentIndex][fieldName] = date;
         break;
       case "dropdown":
+        if (isOpen) {
+          _assessments[assessmentIndex].playerName = text;
+          _assessments[assessmentIndex].playerId = selectedValue;
+        }
         _assessments[assessmentIndex].isOpen = isOpen;
-        _assessments[assessmentIndex].playerName = text;
-        _assessments[assessmentIndex].playerId = selectedValue;
         console.log(_assessments[assessmentIndex]);
-        console.log(change);
+        console.log(selectedValue, isOpen);
         break;
       default:
-        console.log("Type not found. Type: " + type);
         break;
     }
   });

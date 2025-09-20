@@ -14,7 +14,15 @@ import { orderBy } from "lodash";
 import { TbCategory2 } from "react-icons/tb";
 import { applyCellChanges } from "../../../../utils/applyCellChanges";
 
-export type GridAssessment = Assessment & { isOpen: boolean };
+export type GridAssessment = {
+  id: number;
+  playerId?: number;
+  playerName?: string;
+  date?: Date;
+  [key: string]: any;
+  // Add an optional property to track if the dropdown is open
+  isOpen: boolean;
+};
 
 const BuildYourOwnAssessment: React.FC = () => {
   const { getPlayersByCoachId, getAllMetrics } = useAPI();
@@ -57,7 +65,11 @@ const BuildYourOwnAssessment: React.FC = () => {
     let _rows = [
       {
         rowId: "header",
-        cells: columns.map((col) => ({ type: "header", text: col.columnId })),
+        cells: columns.map((col) => ({
+          type: "header",
+          text: String(col.columnId).replace("playerId", "Player").replace("date", "Date"),
+          columnId: col.columnId,
+        })),
       },
       ...assessments.map((assessment) => ({
         rowId: assessment.id,
@@ -98,7 +110,7 @@ const BuildYourOwnAssessment: React.FC = () => {
         setMetricOptions(
           orderBy(_metrics, ["categorySort", "metricSort"], ["asc", "asc"]).map((m) => ({
             value: m.id!,
-            label: m.metric!,
+            label: `${m.metric!}${m.unit ? ` (${m.unit})` : ""}`,
             group: m.category,
             selected: false,
           }))

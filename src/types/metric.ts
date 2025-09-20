@@ -4,6 +4,7 @@ export interface Metric {
   description: string;
   category: string;
   categorySort: number;
+  unit: string;
   isActive: boolean;
 }
 
