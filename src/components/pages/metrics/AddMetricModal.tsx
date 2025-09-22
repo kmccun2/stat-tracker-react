@@ -26,11 +26,7 @@ interface MetricFormData {
  * AddMetricModal Component
  * Modal form for adding new metrics to the assessment system
  */
-const AddMetricModal: React.FC<AddMetricModalProps> = ({
-  show,
-  onClose,
-  setMetrics,
-}) => {
+const AddMetricModal: React.FC<AddMetricModalProps> = ({ show, onClose, setMetrics }) => {
   // State management
   const [formData, setFormData] = useState<MetricFormData>({
     metric: "",
@@ -99,11 +95,7 @@ const AddMetricModal: React.FC<AddMetricModalProps> = ({
   };
 
   // Event handlers
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
     setFormData((prev) => ({
@@ -209,9 +201,7 @@ const AddMetricModal: React.FC<AddMetricModalProps> = ({
               disabled={loading}
               isInvalid={!!formErrors.metric}
             />
-            <Form.Control.Feedback type="invalid">
-              {formErrors.metric}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{formErrors.metric}</Form.Control.Feedback>
           </Form.Group>
 
           {/* Metric Description */}
@@ -230,12 +220,8 @@ const AddMetricModal: React.FC<AddMetricModalProps> = ({
               isInvalid={!!formErrors.description}
             />
             <div className="d-flex justify-content-between">
-              <Form.Control.Feedback type="invalid">
-                {formErrors.description}
-              </Form.Control.Feedback>
-              <small className="text-muted">
-                {(formData.description || "").length}/65 characters
-              </small>
+              <Form.Control.Feedback type="invalid">{formErrors.description}</Form.Control.Feedback>
+              <small className="text-muted">{(formData.description || "").length}/65 characters</small>
             </div>
           </Form.Group>
 
@@ -257,9 +243,7 @@ const AddMetricModal: React.FC<AddMetricModalProps> = ({
                 </option>
               ))}
             </Form.Select>
-            <Form.Control.Feedback type="invalid">
-              {formErrors.category}
-            </Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">{formErrors.category}</Form.Control.Feedback>
           </Form.Group>
         </Modal.Body>
 

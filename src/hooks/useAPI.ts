@@ -2,7 +2,7 @@
 import { useCallback } from "react";
 import { useAuth } from "../context/AuthContext";
 import apiService from "../services/apiService";
-import { Player } from "../types/player";
+import { Player, PlayerProfile } from "../types/player";
 import { Metric, Category } from "../types/metric";
 import { AssessmentSubmission } from "../types/assessment";
 
@@ -35,6 +35,23 @@ export const useAPI = () => {
     [ensureAuthenticated]
   );
 
+  const getPlayerById = useCallback(
+    async (playerId: number): Promise<PlayerProfile> => {
+      ensureAuthenticated();
+      let response = await apiService.getPlayerById(playerId);
+      return response.data;
+    },
+    [ensureAuthenticated]
+  );
+
+  const deletePlayerById = useCallback(
+    async (playerId: number): Promise<void> => {
+      ensureAuthenticated();
+      await apiService.deletePlayerById(playerId);
+    },
+    [ensureAuthenticated]
+  );
+
   // Metric CRUD operations
   const getAllMetrics = useCallback(async (): Promise<Metric[]> => {
     ensureAuthenticated();
@@ -42,9 +59,7 @@ export const useAPI = () => {
     return response.data || [];
   }, [ensureAuthenticated]);
 
-  const getMetricCategories = useCallback(async (): Promise<
-    { category: string; categorySort: number }[]
-  > => {
+  const getMetricCategories = useCallback(async (): Promise<{ category: string; categorySort: number }[]> => {
     ensureAuthenticated();
     const response = await apiService.getMetricCategories();
     return response.data || [];
@@ -104,6 +119,8 @@ export const useAPI = () => {
     // Player methods
     getPlayersByCoachId,
     addPlayer,
+    getPlayerById,
+    deletePlayerById,
     // Metric methods
     getAllMetrics,
     getMetricCategories,

@@ -29,6 +29,7 @@ import AppLayout from "./layout/AppLayout";
 import { ReduxProvider } from "./providers/ReduxProvider";
 import BuildYourOwnAssessment from "./components/pages/assessments/new-assessment/BuildYourOwnAssessment";
 import ComingSoonAssessment from "./components/pages/assessments/new-assessment/assessment-types/ComingSoonAssessment";
+import PlayerPage from "./components/pages/players/player-page/PlayerPage";
 
 // Main application component that handles authentication flow
 function AppContent(): JSX.Element {
@@ -98,6 +99,14 @@ function AppContent(): JSX.Element {
           element={
             <ProtectedRoute requireAuth={true}>
               <PlayersPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/players/:playerId"
+          element={
+            <ProtectedRoute requireAuth={true}>
+              <PlayerPage />
             </ProtectedRoute>
           }
         />

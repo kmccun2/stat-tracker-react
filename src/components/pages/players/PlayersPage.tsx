@@ -29,6 +29,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { calculateAge } from "@/utils/ageCalculation";
 import { ImPower } from "react-icons/im";
 import { getScoreColor } from "@/utils/getScoreColor";
+import { useNavigate } from "react-router-dom";
 
 /**
  * Actions component for the Players page header
@@ -61,6 +62,7 @@ const PlayersPage: React.FC = memo(() => {
   // Hooks
   const { getPlayersByCoachId } = useAPI();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   // Event handlers
   const handleAddPlayerClick = () => {
@@ -193,7 +195,7 @@ const PlayersPage: React.FC = memo(() => {
             <h4 className="letter-title">{firstLetter}</h4>
             <div className="player-list">
               {letterPlayers.map((player) => (
-                <div key={player.id} className="player-card">
+                <div key={player.id} className="player-card" onClick={() => navigate(`/players/${player.id}`)}>
                   <h5 className="card-title">{player.firstName + " " + player.lastName}</h5>
                   <p className="card-content">
                     {player.dob ? `${calculateAge(player.dob)} years old` : "Age not available"}

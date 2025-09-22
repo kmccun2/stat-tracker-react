@@ -3,7 +3,6 @@ import { useAuth } from "@/context/AuthContext";
 import { useAPI } from "@/hooks/useAPI";
 import { Player } from "@/types/player";
 import { OptionType } from "@/components/common/dropdown/LumexDropdownTypes";
-import { Assessment } from "@/types/assessment";
 import PageHeader from "@/components/common/page-header/PageHeader";
 import { ReactGrid, Column, CellChange, DropdownCell } from "@silevis/reactgrid";
 import { Modal } from "react-bootstrap";
@@ -188,7 +187,7 @@ const BuildYourOwnAssessment: React.FC = () => {
           <Modal.Header>
             <Modal.Title>Select Metrics</Modal.Title>
           </Modal.Header>
-          <Modal.Body style={{ maxHeight: "60dvh", minHeight: "40dvh", overflowY: "auto" }}>
+          <Modal.Body style={{ maxHeight: "60dvh", minHeight: "40dvh", overflowY: "auto", padding: "10px 40px" }}>
             {metricOptions.length > 0 ? (
               Array.from(new Set(metricOptions.map((m) => m.group))).map((g) => (
                 <div key={g}>

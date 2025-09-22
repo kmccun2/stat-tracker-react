@@ -2,10 +2,7 @@ import { ProfileData } from "@/types/auth";
 import { Dayjs } from "dayjs";
 
 // API base URL configuration from environment variables
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  import.meta.env.VITE_API_BASE_URL ||
-  "http://localhost:3001/api";
+const API_BASE_URL = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || "http://localhost:3001/api";
 
 /**
  * Extended request options interface
@@ -50,10 +47,7 @@ class ApiService {
     this.getAccessToken = getAccessTokenFn;
   }
 
-  async request<T = any>(
-    endpoint: string,
-    options: RequestOptions = {}
-  ): Promise<ApiResponse<T>> {
+  async request<T = any>(endpoint: string, options: RequestOptions = {}): Promise<ApiResponse<T>> {
     const url = `${API_BASE_URL}${endpoint}`;
     const config: RequestOptions = {
       headers: {
@@ -102,9 +96,7 @@ class ApiService {
     });
   }
 
-  async updateCoachProfile(
-    profileData: Partial<ProfileData>
-  ): Promise<ApiResponse> {
+  async updateCoachProfile(profileData: Partial<ProfileData>): Promise<ApiResponse> {
     return await this.request("/auth/profile", {
       method: "PUT",
       body: JSON.stringify(profileData),
@@ -126,6 +118,16 @@ class ApiService {
     return await this.request("/players", {
       method: "POST",
       body: JSON.stringify(playerData),
+    });
+  }
+
+  async getPlayerById(playerId: number): Promise<ApiResponse> {
+    return await this.request(`/players/${playerId}`);
+  }
+
+  async deletePlayerById(playerId: number): Promise<ApiResponse> {
+    return await this.request(`/players/${playerId}`, {
+      method: "DELETE",
     });
   }
   // #endregion

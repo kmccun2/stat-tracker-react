@@ -13,3 +13,17 @@ export interface Player {
   powerScore?: number;
   mobilityScore?: number;
 }
+
+export interface PlayerProfile extends Player {
+  hittingTrendingValue: number;
+  throwingTrendingValue: number;
+  strengthTrendingValue: number;
+  speedTrendingValue: number;
+  powerTrendingValue: number;
+  mobilityTrendingValue: number;
+  extededMetrics: {
+    metricName: string;
+    metricValue: number;
+    metricDate: string;
+  }[];
+}

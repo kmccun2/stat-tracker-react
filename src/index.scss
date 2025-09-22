@@ -3,7 +3,7 @@
 :root {
   /* === Primary Color Palette === */
   --color-primary: #35446e;
-  --color-primary-hover: #{color.adjust(#35446e, $lightness: -4%)};
+  --color-primary-hover: #{color.adjust(#35446e, $lightness: 10%)};
   --color-primary-light: #{color.adjust(#35446e, $lightness: 10%)};
   --color-primary-lighter: #{color.adjust(#35446e, $lightness: 20%)};
   --color-primary-dark: #1e293b;
@@ -25,6 +25,7 @@
   --color-success: #22c55e !important; /* Green */
   --color-warning: #eab308 !important; /* Yellow */
   --color-danger: #ef4444 !important; /* Red */
+  --color-danger-hover: #{color.adjust(#ef4444, $lightness: 10%)} !important;
 
   /* === Interactive States === */
   --color-active-bg: #{color.adjust(#35446e, $lightness: 5%)};
@@ -37,7 +38,8 @@
   --color-scrollbar-thumb-hover: #94a3b8;
 
   /* === Shadows === */
-  --box-shadow: 1px 1px 3px 1px rgb(0 0 0 / 43%) !important;
+  --box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.216) !important;
+  --card-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
 
   /* === Typography & Layout === */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -131,6 +133,16 @@ body {
     }
   }
 
+  &.danger {
+    background-color: var(--color-danger);
+    color: var(--color-white);
+
+    &:hover {
+      background-color: var(--color-danger-hover);
+      color: var(--color-white);
+    }
+  }
+
   &:disabled {
     background-color: var(--color-medium-gray);
     cursor: not-allowed;
@@ -196,23 +208,18 @@ body {
 .content-card {
   background: #ffffff;
   border: 1px solid #e0e0e0;
-  border-radius: 12px;
+  border-radius: 6px;
   padding: 1.5rem;
   padding-bottom: 1rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--card-box-shadow);
   transition: all 0.3s ease;
   cursor: pointer;
   position: relative;
   overflow: hidden;
 
   &:hover {
-    transform: translateY(-4px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
     border-color: var(--color-primary-light);
-
-    &::before {
-      transform: scaleX(1);
-    }
 
     .card-title {
       color: var(--color-primary-light);
@@ -267,6 +274,15 @@ body {
   }
 }
 
+.reporting-card {
+  background-color: white;
+  border: 1px solid var(--color-gray-border);
+  border-radius: 6px;
+  min-height: 350px;
+  padding: 10px 20px;
+  box-shadow: var(--card-box-shadow);
+}
+
 // Global search input styles
 .search-input {
   flex: 1;
@@ -279,29 +295,6 @@ body {
   &:focus-visible {
     outline: 2px solid var(--color-medium-gray);
     outline-offset: 2px;
-  }
-}
-
-// Dark mode support for global card styles
-@media (prefers-color-scheme: dark) {
-  .content-card {
-    background: #1f2937;
-    border-color: #374151;
-    color: #f9fafb;
-
-    .card-title {
-      color: #f9fafb;
-    }
-
-    &:hover {
-      .card-title {
-        color: #818cf8;
-      }
-    }
-
-    .card-content {
-      color: #9ca3af;
-    }
   }
 }
 
