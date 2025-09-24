@@ -12,7 +12,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { useAppDispatch } from "@/hooks/redux";
 
 // Types & Utils
-import { Player } from "@/types/player";
+import { Player, PlayerProfile } from "@/types/player";
 import { addToastItem, ToastItemType } from "@/slices/globalSlice";
 
 // Constants
@@ -35,10 +35,12 @@ const MONTHS = [
 ] as const;
 
 // Types
-interface AddPlayerModalProps {
+interface AddOrEditPlayerModalProps {
+  playerProfile?: PlayerProfile;
   show: boolean;
   onClose: () => void;
-  setPlayers: React.Dispatch<React.SetStateAction<Player[]>>;
+  setPlayerProfile?: React.Dispatch<React.SetStateAction<PlayerProfile | undefined>>;
+  setPlayers?: React.Dispatch<React.SetStateAction<Player[]>>;
 }
 
 interface PlayerFormData {
@@ -52,14 +54,20 @@ interface PlayerFormData {
  * Modal form for adding new players to the team roster
  */
 
-const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
+const AddOrEditPlayerModal = ({
+  playerProfile,
+  show,
+  onClose,
+  setPlayerProfile,
+  setPlayers,
+}: AddOrEditPlayerModalProps) => {
   // Hooks
   const { userProfile } = useAuth();
   const { addPlayer } = useAPI();
   const dispatch = useAppDispatch();
 
   // State
-  const [newPlayer, setNewPlayer] = useState<PlayerFormData>({
+  const [player, setPlayer] = useState<PlayerFormData>({
     firstName: "",
     lastName: "",
     dob: null,
@@ -68,7 +76,7 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
 
   // Helper functions
   const resetForm = () => {
-    setNewPlayer({
+    setPlayer({
       firstName: "",
       lastName: "",
       dob: null,
@@ -76,14 +84,10 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
   };
 
   const validatePlayer = (): boolean => {
-    return !!(newPlayer.firstName && newPlayer.lastName && newPlayer.dob);
+    return !!(player.firstName && player.lastName && player.dob);
   };
 
-  const showToast = (
-    type: "success" | "error",
-    title: string,
-    message: string
-  ) => {
+  const showToast = (type: "success" | "error", title: string, message: string) => {
     dispatch(
       addToastItem({
         id: Date.now().toString(),
@@ -94,29 +98,22 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
     );
   };
 
-  const updatePlayerField = <K extends keyof PlayerFormData>(
-    field: K,
-    value: PlayerFormData[K]
-  ) => {
-    setNewPlayer((prev) => ({ ...prev, [field]: value }));
+  const updatePlayerField = <K extends keyof PlayerFormData>(field: K, value: PlayerFormData[K]) => {
+    setPlayer((prev) => ({ ...prev, [field]: value }));
   };
 
   // Date handling functions
   const updateMonth = (monthValue: string) => {
     const month = monthValue ? parseInt(monthValue) : null;
     if (month) {
-      const currentYear = newPlayer.dob?.year() || CURRENT_YEAR;
+      const currentYear = player.dob?.year() || CURRENT_YEAR;
       const currentDay = Math.min(
-        newPlayer.dob?.date() || 1,
-        dayjs(
-          `${currentYear}-${month.toString().padStart(2, "0")}-01`
-        ).daysInMonth()
+        player.dob?.date() || 1,
+        dayjs(`${currentYear}-${month.toString().padStart(2, "0")}-01`).daysInMonth()
       );
       updatePlayerField(
         "dob",
-        dayjs(
-          `${currentYear}-${month.toString().padStart(2, "0")}-${currentDay.toString().padStart(2, "0")}`
-        )
+        dayjs(`${currentYear}-${month.toString().padStart(2, "0")}-${currentDay.toString().padStart(2, "0")}`)
       );
     } else {
       updatePlayerField("dob", null);
@@ -125,14 +122,12 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
 
   const updateDay = (dayValue: string) => {
     const day = dayValue ? parseInt(dayValue) : null;
-    if (day && newPlayer.dob) {
-      const currentYear = newPlayer.dob.year();
-      const currentMonth = newPlayer.dob.month() + 1;
+    if (day && player.dob) {
+      const currentYear = player.dob.year();
+      const currentMonth = player.dob.month() + 1;
       updatePlayerField(
         "dob",
-        dayjs(
-          `${currentYear}-${currentMonth.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`
-        )
+        dayjs(`${currentYear}-${currentMonth.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`)
       );
     }
   };
@@ -140,18 +135,14 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
   const updateYear = (yearValue: string) => {
     const year = yearValue ? parseInt(yearValue) : null;
     if (year) {
-      const currentMonth = newPlayer.dob ? newPlayer.dob.month() + 1 : 1;
+      const currentMonth = player.dob ? player.dob.month() + 1 : 1;
       const currentDay = Math.min(
-        newPlayer.dob?.date() || 1,
-        dayjs(
-          `${year}-${currentMonth.toString().padStart(2, "0")}-01`
-        ).daysInMonth()
+        player.dob?.date() || 1,
+        dayjs(`${year}-${currentMonth.toString().padStart(2, "0")}-01`).daysInMonth()
       );
       updatePlayerField(
         "dob",
-        dayjs(
-          `${year}-${currentMonth.toString().padStart(2, "0")}-${currentDay.toString().padStart(2, "0")}`
-        )
+        dayjs(`${year}-${currentMonth.toString().padStart(2, "0")}-${currentDay.toString().padStart(2, "0")}`)
       );
     } else {
       updatePlayerField("dob", null);
@@ -180,16 +171,17 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
 
       // Convert form data to Player object
       const playerData: Omit<Player, "id"> = {
-        firstName: newPlayer.firstName,
-        lastName: newPlayer.lastName,
-        dob: newPlayer.dob!, // We know this is not null due to validation
+        firstName: player.firstName,
+        lastName: player.lastName,
+        dob: player.dob!, // We know this is not null due to validation
         coachId: userProfile.id,
       };
 
       let _player: Player = await addPlayer(playerData);
       showToast("success", "Player Added", "Player added successfully.");
 
-      setPlayers((prev) => [...prev, _player]);
+      if (setPlayerProfile) setPlayerProfile({ ...playerProfile, ..._player } as PlayerProfile);
+      if (setPlayers) setPlayers((prev) => [...prev, _player]);
       handleClose();
     } catch (error) {
       console.error("Error adding player:", error);
@@ -210,7 +202,7 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
             <Form.Label htmlFor="firstName">First Name</Form.Label>
             <Form.Control
               type="text"
-              value={newPlayer.firstName}
+              value={player.firstName}
               onChange={(e) => updatePlayerField("firstName", e.target.value)}
               id="firstName"
               placeholder="Enter first name"
@@ -220,7 +212,7 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
             <Form.Label htmlFor="lastName">Last Name</Form.Label>
             <Form.Control
               type="text"
-              value={newPlayer.lastName}
+              value={player.lastName}
               onChange={(e) => updatePlayerField("lastName", e.target.value)}
               id="lastName"
               placeholder="Enter last name"
@@ -231,7 +223,7 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
             <Row className="g-2">
               <Col xs={4}>
                 <Form.Select
-                  value={newPlayer.dob ? newPlayer.dob.month() + 1 : ""}
+                  value={player.dob ? player.dob.month() + 1 : ""}
                   onChange={(e) => updateMonth(e.target.value)}
                 >
                   <option value="">Select Month</option>
@@ -244,18 +236,16 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
               </Col>
               <Col xs={4}>
                 <Form.Select
-                  value={newPlayer.dob?.date() || ""}
+                  value={player.dob?.date() || ""}
                   onChange={(e) => updateDay(e.target.value)}
-                  disabled={!newPlayer.dob}
+                  disabled={!player.dob}
                 >
                   <option value="">Day</option>
-                  {newPlayer.dob &&
+                  {player.dob &&
                     Array.from(
                       {
                         length: dayjs(
-                          `${newPlayer.dob.year()}-${(newPlayer.dob.month() + 1)
-                            .toString()
-                            .padStart(2, "0")}-01`
+                          `${player.dob.year()}-${(player.dob.month() + 1).toString().padStart(2, "0")}-01`
                         ).daysInMonth(),
                       },
                       (_, i) => i + 1
@@ -267,15 +257,9 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
                 </Form.Select>
               </Col>
               <Col xs={4}>
-                <Form.Select
-                  value={newPlayer.dob?.year() || ""}
-                  onChange={(e) => updateYear(e.target.value)}
-                >
+                <Form.Select value={player.dob?.year() || ""} onChange={(e) => updateYear(e.target.value)}>
                   <option value="">Year</option>
-                  {Array.from(
-                    { length: YEAR_RANGE },
-                    (_, i) => CURRENT_YEAR - i
-                  ).map((year) => (
+                  {Array.from({ length: YEAR_RANGE }, (_, i) => CURRENT_YEAR - i).map((year) => (
                     <option key={year} value={year}>
                       {year}
                     </option>
@@ -290,20 +274,9 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
         <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button
-          variant="primary"
-          onClick={handleAddNewPlayer}
-          disabled={!validatePlayer() || isLoading}
-        >
+        <Button variant="primary" onClick={handleAddNewPlayer} disabled={!validatePlayer() || isLoading}>
           {isLoading && (
-            <Spinner
-              as="span"
-              animation="border"
-              size="sm"
-              role="status"
-              aria-hidden="true"
-              className="me-2"
-            />
+            <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
           )}
           {isLoading ? "Adding..." : "Add Player"}
         </Button>
@@ -312,4 +285,4 @@ const AddPlayerModal = ({ show, onClose, setPlayers }: AddPlayerModalProps) => {
   );
 };
 
-export default AddPlayerModal;
+export default AddOrEditPlayerModal;

@@ -125,6 +125,15 @@ class ApiService {
     return await this.request(`/players/${playerId}`);
   }
 
+  async updatePlayerById(
+    playerData: Partial<{ playerId: number; firstName: string; lastName: string; dob: Dayjs }>
+  ): Promise<ApiResponse> {
+    return await this.request(`/players/${playerData.playerId}`, {
+      method: "POST",
+      body: JSON.stringify(playerData),
+    });
+  }
+
   async deletePlayerById(playerId: number): Promise<ApiResponse> {
     return await this.request(`/players/${playerId}`, {
       method: "DELETE",

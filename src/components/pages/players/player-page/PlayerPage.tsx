@@ -10,6 +10,7 @@ import { FaPencil } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import AddPlayerModal from "../AddOrEditPlayerModals";
 
 const groups = ["General", "Hitting", "Mobility", "Power", "Speed", "Strength", "Throwing"];
 
@@ -130,6 +131,15 @@ const PlayerPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Edit Player Modal */}
+      {
+        <AddOrEditPlayerModal
+          show={showEditPlayerModal}
+          onClose={() => setShowEditPlayerModal(false)}
+          player={player}
+        />
+      }
     </>
   ) : (
     <div className="page-main-content">

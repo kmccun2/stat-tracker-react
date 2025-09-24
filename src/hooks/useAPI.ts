@@ -5,6 +5,7 @@ import apiService from "../services/apiService";
 import { Player, PlayerProfile } from "../types/player";
 import { Metric, Category } from "../types/metric";
 import { AssessmentSubmission } from "../types/assessment";
+import { update } from "lodash";
 
 export const useAPI = () => {
   const { isAuthenticated } = useAuth();
@@ -39,6 +40,15 @@ export const useAPI = () => {
     async (playerId: number): Promise<PlayerProfile> => {
       ensureAuthenticated();
       let response = await apiService.getPlayerById(playerId);
+      return response.data;
+    },
+    [ensureAuthenticated]
+  );
+
+  const updatePlayerById = useCallback(
+    async (playerId: number, playerData: Partial<Player>): Promise<Player> => {
+      ensureAuthenticated();
+      let response = await apiService.updatePlayerById(playerData);
       return response.data;
     },
     [ensureAuthenticated]
@@ -120,6 +130,7 @@ export const useAPI = () => {
     getPlayersByCoachId,
     addPlayer,
     getPlayerById,
+    updatePlayerById,
     deletePlayerById,
     // Metric methods
     getAllMetrics,
