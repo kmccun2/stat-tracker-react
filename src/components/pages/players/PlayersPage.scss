@@ -59,3 +59,15 @@
     font-size: 0.95rem;
   }
 }
+
+// Player page
+.player-page {
+  .reporting-card-wrapper {
+    padding: 7px;
+
+    .reporting-card {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

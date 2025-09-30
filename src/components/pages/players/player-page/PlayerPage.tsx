@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import AddOrEditPlayerModal from "../AddOrEditPlayerModal";
+import { ImClock } from "react-icons/im";
 
 const groups = ["General", "Hitting", "Mobility", "Power", "Speed", "Strength", "Throwing"];
 
@@ -77,7 +78,7 @@ const PlayerPage: React.FC = () => {
         subtitle={`${calculateAge(player.dob)} years old`}
         actions={
           <div className="">
-            <div className="lumex-btn primary circle me-1" onClick={() => setShowEditPlayerModal(true)}>
+            <div className="lumex-btn primary circle me-2" onClick={() => setShowEditPlayerModal(true)}>
               <FaPencil size={18} />
             </div>
             <div className="lumex-btn danger circle" onClick={() => handleDeletePlayer(player.id!)}>
@@ -86,7 +87,26 @@ const PlayerPage: React.FC = () => {
           </div>
         }
       />
-      <div className="page-main-content row g-3">
+
+      <div className="page-main-content player-page">
+        {/* Filters */}
+        <div className="filters-container">
+          <div className="filter-item">
+            <div className="filter-icon">
+              <ImClock />
+            </div>
+            <select id="time-filter" className="form-select">
+              <option value="all">All Time</option>
+              <option value="last-year">Last Year</option>
+              <option value="last-6-months">Last 6 Months</option>
+              <option value="last-3-months">Last 3 Months</option>
+              <option value="last-month">Last Month</option>
+              <option value="last-week">Last Week</option>
+              <option value="last-24-hours">Last 24 Hours</option>
+            </select>
+          </div>
+        </div>
+
         {/* Player Score Card */}
         <div className="reporting-card-wrapper col-xs-12 col-md-6">
           <div className="reporting-card">
