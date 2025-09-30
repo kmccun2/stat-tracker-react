@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // React Bootstrap components
 import { Modal, Form, Button, Row, Col, Spinner } from "react-bootstrap";
@@ -36,10 +36,10 @@ const MONTHS = [
 
 // Types
 interface AddOrEditPlayerModalProps {
-  playerProfile?: PlayerProfile;
+  player?: PlayerProfile;
   show: boolean;
   onClose: () => void;
-  setPlayerProfile?: React.Dispatch<React.SetStateAction<PlayerProfile | undefined>>;
+  setPlayer?: React.Dispatch<React.SetStateAction<PlayerProfile | undefined>>;
   setPlayers?: React.Dispatch<React.SetStateAction<Player[]>>;
 }
 
@@ -54,20 +54,14 @@ interface PlayerFormData {
  * Modal form for adding new players to the team roster
  */
 
-const AddOrEditPlayerModal = ({
-  playerProfile,
-  show,
-  onClose,
-  setPlayerProfile,
-  setPlayers,
-}: AddOrEditPlayerModalProps) => {
+const AddOrEditPlayerModal = ({ player, show, onClose, setPlayer, setPlayers }: AddOrEditPlayerModalProps) => {
   // Hooks
   const { userProfile } = useAuth();
-  const { addPlayer } = useAPI();
+  const { addPlayer, updatePlayerById } = useAPI();
   const dispatch = useAppDispatch();
 
   // State
-  const [player, setPlayer] = useState<PlayerFormData>({
+  const [playerForm, setPlayerForm] = useState<PlayerFormData>({
     firstName: "",
     lastName: "",
     dob: null,
@@ -76,7 +70,7 @@ const AddOrEditPlayerModal = ({
 
   // Helper functions
   const resetForm = () => {
-    setPlayer({
+    setPlayerForm({
       firstName: "",
       lastName: "",
       dob: null,
@@ -84,7 +78,7 @@ const AddOrEditPlayerModal = ({
   };
 
   const validatePlayer = (): boolean => {
-    return !!(player.firstName && player.lastName && player.dob);
+    return !!(playerForm.firstName && playerForm.lastName && playerForm.dob);
   };
 
   const showToast = (type: "success" | "error", title: string, message: string) => {
@@ -99,16 +93,16 @@ const AddOrEditPlayerModal = ({
   };
 
   const updatePlayerField = <K extends keyof PlayerFormData>(field: K, value: PlayerFormData[K]) => {
-    setPlayer((prev) => ({ ...prev, [field]: value }));
+    setPlayerForm((prev) => ({ ...prev, [field]: value }));
   };
 
   // Date handling functions
   const updateMonth = (monthValue: string) => {
     const month = monthValue ? parseInt(monthValue) : null;
     if (month) {
-      const currentYear = player.dob?.year() || CURRENT_YEAR;
+      const currentYear = playerForm.dob?.year() || CURRENT_YEAR;
       const currentDay = Math.min(
-        player.dob?.date() || 1,
+        playerForm.dob?.date() || 1,
         dayjs(`${currentYear}-${month.toString().padStart(2, "0")}-01`).daysInMonth()
       );
       updatePlayerField(
@@ -122,9 +116,9 @@ const AddOrEditPlayerModal = ({
 
   const updateDay = (dayValue: string) => {
     const day = dayValue ? parseInt(dayValue) : null;
-    if (day && player.dob) {
-      const currentYear = player.dob.year();
-      const currentMonth = player.dob.month() + 1;
+    if (day && playerForm.dob) {
+      const currentYear = playerForm.dob.year();
+      const currentMonth = playerForm.dob.month() + 1;
       updatePlayerField(
         "dob",
         dayjs(`${currentYear}-${currentMonth.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`)
@@ -135,9 +129,9 @@ const AddOrEditPlayerModal = ({
   const updateYear = (yearValue: string) => {
     const year = yearValue ? parseInt(yearValue) : null;
     if (year) {
-      const currentMonth = player.dob ? player.dob.month() + 1 : 1;
+      const currentMonth = playerForm.dob ? playerForm.dob.month() + 1 : 1;
       const currentDay = Math.min(
-        player.dob?.date() || 1,
+        playerForm.dob?.date() || 1,
         dayjs(`${year}-${currentMonth.toString().padStart(2, "0")}-01`).daysInMonth()
       );
       updatePlayerField(
@@ -155,7 +149,7 @@ const AddOrEditPlayerModal = ({
     onClose();
   };
 
-  const handleAddNewPlayer = async () => {
+  const handleAction = async () => {
     try {
       if (!validatePlayer()) {
         showToast("error", "Validation Error", "Please fill in all fields.");
@@ -171,17 +165,33 @@ const AddOrEditPlayerModal = ({
 
       // Convert form data to Player object
       const playerData: Omit<Player, "id"> = {
-        firstName: player.firstName,
-        lastName: player.lastName,
-        dob: player.dob!, // We know this is not null due to validation
+        firstName: playerForm.firstName,
+        lastName: playerForm.lastName,
+        dob: playerForm.dob!, // We know this is not null due to validation
         coachId: userProfile.id,
       };
 
-      let _player: Player = await addPlayer(playerData);
-      showToast("success", "Player Added", "Player added successfully.");
+      // Edit player
+      if (player && setPlayer) {
+        let _player: Player = await updatePlayerById(player.id!, playerData);
+        showToast("success", "Player Updated", "Player updated successfully.");
+        setPlayer({
+          ...player,
+          firstName: playerForm.firstName,
+          lastName: playerForm.lastName,
+          dob: playerForm.dob!,
+        } as PlayerProfile);
+      }
 
-      if (setPlayerProfile) setPlayerProfile({ ...playerProfile, ..._player } as PlayerProfile);
-      if (setPlayers) setPlayers((prev) => [...prev, _player]);
+      // Add player
+      if (setPlayers) {
+        let _player: Player = await addPlayer(playerData);
+        showToast("success", "Player Added", "Player added successfully.");
+        setPlayers((prev) => [...prev, _player]);
+      }
+
+      // Close modal and reset form
+      resetForm();
       handleClose();
     } catch (error) {
       console.error("Error adding player:", error);
@@ -191,10 +201,21 @@ const AddOrEditPlayerModal = ({
     }
   };
 
+  // Hooks
+  useEffect(() => {
+    if (player) {
+      setPlayerForm({
+        firstName: player.firstName,
+        lastName: player.lastName,
+        dob: player.dob ? dayjs(player.dob) : null,
+      });
+    }
+  }, [player]);
+
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header closeButton>
-        <Modal.Title>Add New Player</Modal.Title>
+        <Modal.Title>{player ? "Edit Player" : "Add New Player"}</Modal.Title>
       </Modal.Header>
       <Modal.Body className="px-4">
         <Form>
@@ -202,7 +223,7 @@ const AddOrEditPlayerModal = ({
             <Form.Label htmlFor="firstName">First Name</Form.Label>
             <Form.Control
               type="text"
-              value={player.firstName}
+              value={playerForm.firstName}
               onChange={(e) => updatePlayerField("firstName", e.target.value)}
               id="firstName"
               placeholder="Enter first name"
@@ -212,7 +233,7 @@ const AddOrEditPlayerModal = ({
             <Form.Label htmlFor="lastName">Last Name</Form.Label>
             <Form.Control
               type="text"
-              value={player.lastName}
+              value={playerForm.lastName}
               onChange={(e) => updatePlayerField("lastName", e.target.value)}
               id="lastName"
               placeholder="Enter last name"
@@ -223,7 +244,7 @@ const AddOrEditPlayerModal = ({
             <Row className="g-2">
               <Col xs={4}>
                 <Form.Select
-                  value={player.dob ? player.dob.month() + 1 : ""}
+                  value={playerForm.dob ? playerForm.dob.month() + 1 : ""}
                   onChange={(e) => updateMonth(e.target.value)}
                 >
                   <option value="">Select Month</option>
@@ -236,16 +257,16 @@ const AddOrEditPlayerModal = ({
               </Col>
               <Col xs={4}>
                 <Form.Select
-                  value={player.dob?.date() || ""}
+                  value={playerForm.dob?.date() || ""}
                   onChange={(e) => updateDay(e.target.value)}
-                  disabled={!player.dob}
+                  disabled={!playerForm.dob}
                 >
                   <option value="">Day</option>
-                  {player.dob &&
+                  {playerForm.dob &&
                     Array.from(
                       {
                         length: dayjs(
-                          `${player.dob.year()}-${(player.dob.month() + 1).toString().padStart(2, "0")}-01`
+                          `${playerForm.dob.year()}-${(playerForm.dob.month() + 1).toString().padStart(2, "0")}-01`
                         ).daysInMonth(),
                       },
                       (_, i) => i + 1
@@ -257,7 +278,7 @@ const AddOrEditPlayerModal = ({
                 </Form.Select>
               </Col>
               <Col xs={4}>
-                <Form.Select value={player.dob?.year() || ""} onChange={(e) => updateYear(e.target.value)}>
+                <Form.Select value={playerForm.dob?.year() || ""} onChange={(e) => updateYear(e.target.value)}>
                   <option value="">Year</option>
                   {Array.from({ length: YEAR_RANGE }, (_, i) => CURRENT_YEAR - i).map((year) => (
                     <option key={year} value={year}>
@@ -274,11 +295,11 @@ const AddOrEditPlayerModal = ({
         <Button variant="secondary" onClick={handleClose}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={handleAddNewPlayer} disabled={!validatePlayer() || isLoading}>
+        <Button variant="primary" onClick={() => handleAction()} disabled={!validatePlayer() || isLoading}>
           {isLoading && (
             <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
           )}
-          {isLoading ? "Adding..." : "Add Player"}
+          {isLoading ? `${player ? "Saving..." : "Adding..."}` : `${player ? "Save" : "Add Player"}`}
         </Button>
       </Modal.Footer>
     </Modal>

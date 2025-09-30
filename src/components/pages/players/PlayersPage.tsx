@@ -16,7 +16,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 // Components
 import PageHeader from "../../common/page-header/PageHeader";
 import LumexSpinner from "../../common/spinner/LumexSpinner";
-import AddPlayerModal from "./AddOrEditPlayerModals";
+import AddPlayerModal from "./AddOrEditPlayerModal";
 
 // Hooks & Services
 import { useAPI } from "@/hooks/useAPI";

@@ -22,6 +22,7 @@ export const excelSerialToDate = (serial: number): Date => {
  * @returns Age in years
  */
 export const calculateAge = (dob: Dayjs): number => {
+  console.log(dob);
   const today = new Date();
   // Convert dayjs to js Date object
   const birthDate = new Date(String(dob).split("T")[0]);

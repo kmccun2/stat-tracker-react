@@ -126,9 +126,10 @@ class ApiService {
   }
 
   async updatePlayerById(
+    playerId: number,
     playerData: Partial<{ playerId: number; firstName: string; lastName: string; dob: Dayjs }>
   ): Promise<ApiResponse> {
-    return await this.request(`/players/${playerData.playerId}`, {
+    return await this.request(`/players/${playerId}`, {
       method: "POST",
       body: JSON.stringify(playerData),
     });

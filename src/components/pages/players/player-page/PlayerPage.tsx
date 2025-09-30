@@ -10,7 +10,7 @@ import { FaPencil } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
-import AddPlayerModal from "../AddOrEditPlayerModals";
+import AddOrEditPlayerModal from "../AddOrEditPlayerModal";
 
 const groups = ["General", "Hitting", "Mobility", "Power", "Speed", "Strength", "Throwing"];
 
@@ -138,6 +138,7 @@ const PlayerPage: React.FC = () => {
           show={showEditPlayerModal}
           onClose={() => setShowEditPlayerModal(false)}
           player={player}
+          setPlayer={setPlayer}
         />
       }
     </>

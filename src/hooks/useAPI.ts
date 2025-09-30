@@ -4,8 +4,6 @@ import { useAuth } from "../context/AuthContext";
 import apiService from "../services/apiService";
 import { Player, PlayerProfile } from "../types/player";
 import { Metric, Category } from "../types/metric";
-import { AssessmentSubmission } from "../types/assessment";
-import { update } from "lodash";
 
 export const useAPI = () => {
   const { isAuthenticated } = useAuth();
@@ -48,7 +46,7 @@ export const useAPI = () => {
   const updatePlayerById = useCallback(
     async (playerId: number, playerData: Partial<Player>): Promise<Player> => {
       ensureAuthenticated();
-      let response = await apiService.updatePlayerById(playerData);
+      let response = await apiService.updatePlayerById(playerId, playerData);
       return response.data;
     },
     [ensureAuthenticated]
