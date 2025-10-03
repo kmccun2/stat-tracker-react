@@ -62,9 +62,10 @@
 
 // Player page
 .player-page {
+  height: fit-content !important;
   .reporting-card-wrapper {
     padding: 7px;
-
+    flex: 1 1 350px;
     .reporting-card {
       display: flex;
       flex-direction: column;

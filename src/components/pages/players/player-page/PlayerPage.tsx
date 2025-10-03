@@ -13,7 +13,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import AddOrEditPlayerModal from "../AddOrEditPlayerModal";
 import { ImClock } from "react-icons/im";
 
-const groups = ["General", "Hitting", "Mobility", "Power", "Speed", "Strength", "Throwing"];
+const groups = ["Hitting", "Throwing", "Strength", "Speed", "Power", "Mobility"];
 
 // Sample data for demonstration purposes. In a real app, this would be computed based on player assessments,
 // goals per metric, and whether each metric meets/fails the goal or is not assessed.
@@ -88,9 +88,9 @@ const PlayerPage: React.FC = () => {
         }
       />
 
-      <div className="page-main-content player-page">
+      <div className="page-main-content player-page flex-row w-100 flex-wrap">
         {/* Filters */}
-        <div className="filters-container">
+        <div className="filters-container col-12">
           <div className="filter-item">
             <div className="filter-icon">
               <ImClock />
@@ -108,7 +108,7 @@ const PlayerPage: React.FC = () => {
         </div>
 
         {/* Player Score Card */}
-        <div className="reporting-card-wrapper col-xs-12 col-md-6">
+        <div className="reporting-card-wrapper">
           <div className="reporting-card">
             <h2 style={{ marginTop: 0 }}>Player Scores</h2>
             <p>
@@ -125,7 +125,7 @@ const PlayerPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="reporting-card-wrapper col-xs-12 col-md-6">
+        <div className="reporting-card-wrapper">
           <div className="reporting-card">
             {/* Bar chart  */}
             <ResponsiveContainer width="100%" height={300}>

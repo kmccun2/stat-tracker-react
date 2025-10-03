@@ -1,0 +1,123 @@
+// PlayerPage specific styles
+.player-page {
+  .filters-container {
+    margin-bottom: 1.5rem;
+  }
+
+  .content-grid {
+    margin-bottom: 2rem;
+
+    .reporting-card-wrapper {
+      flex: 1 1 270px;
+      min-width: 300px;
+
+      .reporting-card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 350px;
+
+        h4 {
+          margin-bottom: 1rem;
+          color: var(--color-primary-dark);
+
+          &:first-child {
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--color-gray-border);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.25rem;
+          }
+        }
+
+        ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+
+          li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+
+            &:last-child {
+              border-bottom: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Assessment History section
+  .assessment-history-section {
+    width: 100%;
+
+    h3 {
+      color: var(--color-primary-dark);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .reporting-card {
+      margin-bottom: 0;
+
+      p {
+        color: #6b7280;
+        font-style: italic;
+        text-align: center;
+        margin: 2rem 0;
+      }
+    }
+  }
+}
+
+// Player actions styling
+.player-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+
+  button {
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// Responsive adjustments for PlayerPage
+@media (max-width: 768px) {
+  .player-page {
+    .content-grid {
+      flex-direction: column;
+
+      .reporting-card-wrapper {
+        min-width: 100%;
+
+        .reporting-card {
+          min-height: auto;
+        }
+      }
+    }
+
+    .filters-container {
+      .filter-item {
+        width: 100%;
+
+        #time-filter {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
